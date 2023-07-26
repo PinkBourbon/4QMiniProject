@@ -13,13 +13,13 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{def1847b-72f6-48b6-a8aa-bb6a3127e2fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TestSpace">
+      <UniqueIdentifier>{cdf1ab62-61c8-44f2-8cd8-2fc983a658c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameProcess.h">
       <Filter>GameProcess</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Acquitaine Engine\IObject.h">
-      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="IComponent.h">
       <Filter>Component</Filter>
@@ -32,6 +32,18 @@
     </ClInclude>
     <ClInclude Include="ParentScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="IObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>TestSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObject.h">
+      <Filter>TestSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent.h">
+      <Filter>TestSpace</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +58,15 @@
     </ClCompile>
     <ClCompile Include="ParentScene.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>TestSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObject.cpp">
+      <Filter>TestSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent.cpp">
+      <Filter>TestSpace</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

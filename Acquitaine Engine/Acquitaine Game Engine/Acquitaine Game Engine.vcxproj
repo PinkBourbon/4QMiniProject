@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -127,18 +127,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Acquitaine Engine\IObject.h" />
     <ClInclude Include="GameProcess.h" />
     <ClInclude Include="IComponent.h" />
+    <ClInclude Include="IObject.h" />
     <ClInclude Include="ParentComponent.h" />
     <ClInclude Include="ParentObject.h" />
     <ClInclude Include="ParentScene.h" />
+    <ClInclude Include="TestComponent.h" />
+    <ClInclude Include="TestObject.h" />
+    <ClInclude Include="TestScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameProcess.cpp" />
     <ClCompile Include="ParentComponent.cpp" />
     <ClCompile Include="ParentObject.cpp" />
     <ClCompile Include="ParentScene.cpp" />
+    <ClCompile Include="TestComponent.cpp" />
+    <ClCompile Include="TestObject.cpp" />
+    <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
