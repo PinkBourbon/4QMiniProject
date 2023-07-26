@@ -1,0 +1,66 @@
+#pragma once
+#include <unordered_map>
+#include <string>
+#include <atomic>
+#include <mutex>
+
+namespace aptoCore
+{
+	struct ResourceBase;
+	struct IBuilderBase;
+
+	class ResourceMgr
+	{
+	public:
+		ResourceMgr() = default;
+		~ResourceMgr()
+		{
+			CheckManagedData();
+		}
+
+	public:
+		void* GetResource(ResourceBase* resource, const IBuilderBase& builder);
+		bool ReleaseResource(ResourceBase* resource);
+
+	private:
+		void CheckManagedData()
+		{
+			for (const auto& [key, value] : resources)
+			{
+				printf("%s, аж╪р : 0x%p, refcount : %d\n", value.typeName.c_str(), value.data, value.refCount);
+			}
+		}
+
+	private:
+		struct ManagedData
+		{
+			ManagedData() : data(nullptr), refCount(0) {}
+			ManagedData(void* data, const std::string& typeName) : data(data), refCount(1), typeName(typeName) {}
+
+			void* data;
+			int refCount;
+			std::string typeName;
+
+			void* GetData()
+			{
+				refCount++;
+				return data;
+			}
+
+			bool Release()
+			{
+				refCount--;
+				if (refCount <= 0)
+				{
+					return true;
+				}
+				return false;
+			}
+		};
+
+		std::unordered_map<std::string, ManagedData> resources;
+		std::mutex mutex;
+	};
+
+	extern ResourceMgr g_resourceMgr;
+}

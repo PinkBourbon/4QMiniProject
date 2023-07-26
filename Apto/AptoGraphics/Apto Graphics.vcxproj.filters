@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="DataStructure">
+      <UniqueIdentifier>{066314b4-98d5-4177-85aa-4b3138ec91b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{4e145bb3-8522-4ad0-a5f8-37f634eb0eef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{6fb03f3b-3b0e-42fc-bbf7-c9ed21ebb0ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Renderable">
+      <UniqueIdentifier>{153ef1ca-6eae-45b6-96d2-e3c120fb446d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Renderable\Helper">
+      <UniqueIdentifier>{5749a296-8a31-4f21-a0b6-94205741e7fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\RawData">
+      <UniqueIdentifier>{276683c7-46e9-41aa-b9b3-219d19c983b1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMgr.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="IBuilder.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderableObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>DataStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyFrameData.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine.ixx">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngineDX11.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngineDX12.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.ixx">
+      <Filter>DataStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>DataStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceMgr.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.ixx">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderable.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderable.ixx">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderableObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="aptoCore.ixx">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RawMesh.cpp">
+      <Filter>Resource\RawData</Filter>
+    </ClCompile>
+    <ClCompile Include="rawData.ixx">
+      <Filter>Resource\RawData</Filter>
+    </ClCompile>
+    <ClCompile Include="RawNode.cpp">
+      <Filter>Resource\RawData</Filter>
+    </ClCompile>
+    <ClCompile Include="RawNode.ixx">
+      <Filter>Resource\RawData</Filter>
+    </ClCompile>
+    <ClCompile Include="RawMesh.ixx">
+      <Filter>Resource\RawData</Filter>
+    </ClCompile>
+    <ClCompile Include="apto.ixx">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics.ixx">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyFrameData.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

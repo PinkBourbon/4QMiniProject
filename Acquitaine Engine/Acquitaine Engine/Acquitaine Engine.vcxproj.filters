@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="MainProcess.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="Main_Entry.cpp">
+      <Filter>Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Utility\Timer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainProcess.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utility\Timer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Entry">
+      <UniqueIdentifier>{471a07f7-ccdc-41f9-8456-0261a7421d4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Process">
+      <UniqueIdentifier>{8d189cd4-1a8a-43ea-82e3-c1ffa26bac2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{62fce327-196b-4044-aa38-8edd6bccae57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Timer">
+      <UniqueIdentifier>{5b9d7ffd-16f7-4159-a552-5b9a85e26309}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

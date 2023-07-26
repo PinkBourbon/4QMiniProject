@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GameProcess">
+      <UniqueIdentifier>{76a60cbe-8fd4-4b65-8f74-2b6c4225312e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{24f96793-6c80-47a8-b72a-0b9f82e514ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{62e95e26-08e0-4dd7-84ce-e7d2d6ec67cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{def1847b-72f6-48b6-a8aa-bb6a3127e2fc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameProcess.h">
+      <Filter>GameProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Acquitaine Engine\IObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="IComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ParentComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ParentObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ParentScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameProcess.cpp">
+      <Filter>GameProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="ParentComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ParentObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ParentScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+</Project>
