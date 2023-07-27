@@ -2,6 +2,7 @@
 /// 2023.07.20 작성 시작
 #pragma once
 #include <vector>
+#include <iostream>
 
 #include "IObject.h"
 
@@ -28,12 +29,11 @@ public:
 	void RunningGameProcess(double deltaTime);	// 이 함수 내에서 생명주기 함수들이 순서대로 실행된다.
 
 	template<typename T>
-	IObject* CreateObjects()	// 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
+	void CreateObjects() // 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
 	{
 		IObject* temp = new T();
 		objectList.push_back(temp);
 		waitingObjectList.push_back(temp);
-		return temp;
 	}
 
 private:
@@ -186,7 +186,4 @@ private:
 /// 현재 최대 고민거리
 // 오브젝트를 추가하려고 할때 new로 불러오는데, 이때 어떤 타입이 올지 모른다.
 // 즉 타입에 대해 알아야 하는데.. 어떻게 할 수 있지?????
-
-// 생각 해보니 오브젝트를 상태로 돌리는게 문제가 좀 있는데????
-// 오브젝트 안의 컴포넌트들의 상태가 다를 수 도 있잖아
-// 어떤건 AWAKE고 어떤건 Start 일수도 있는데 이러면 어떻게 해야 하지????
+// 템플레이트를 쓰기로 했다.

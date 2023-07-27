@@ -17,8 +17,14 @@ public:
 	virtual ~ParentObject();
 
 public:
-	virtual void AddComponent(IComponent* component);
-	virtual void RemoveComponent();
+	template<typename T>
+	void AddComponent()
+	{
+		IComponent* temp = new T();
+		componentList.push_back(temp);
+	}
+
+	void RemoveComponent();
 
 //private:
 public:
