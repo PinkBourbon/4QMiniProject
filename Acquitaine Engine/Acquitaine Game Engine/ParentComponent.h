@@ -1,6 +1,10 @@
 #pragma once
+#include <string>
+
 #include "IComponent.h"
 #include "IObject.h"
+
+using namespace std;
 
 class ParentComponent : IComponent
 {
@@ -8,7 +12,8 @@ public:
 	ParentComponent();
 	~ParentComponent();
 
-private:
+//private:
+public:
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 
@@ -28,6 +33,9 @@ private:
 	virtual void SetGameObject(IObject* parentObject);
 
 private:
-	IObject* gameObject;
+	string ComponentName;		// 컴포넌트의 이름
+	static int componentIDs;	// 컴포넌트의 ID? 왠지 있어야 할것 같아서.
+	int componentID;			// 컴포넌트의 ID.
+	IObject* gameObject;		// 내가 소속된 오브젝트
+	bool isEnabled;				// 컴포넌트가 활성화 되어 있는지? 아닌지.
 };
-

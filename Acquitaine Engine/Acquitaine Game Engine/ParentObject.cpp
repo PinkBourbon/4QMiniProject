@@ -27,7 +27,7 @@ void ParentObject::Initialize()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->Initialize();
+		pObject->Initialize();
 	}
 }
 
@@ -35,7 +35,7 @@ void ParentObject::Finalize()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->Finalize();
+		pObject->Finalize();
 	}
 }
 
@@ -43,7 +43,7 @@ void ParentObject::Awake()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->Awake();
+		pObject->Awake();
 	}
 }
 
@@ -51,7 +51,7 @@ void ParentObject::Enable()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->Enable();
+		pObject->Enable();
 	}
 }
 
@@ -71,7 +71,15 @@ void ParentObject::FixedUpdate()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->FixedUpdate();
+		pObject->FixedUpdate();
+	}
+}
+
+void ParentObject::Phsics()
+{
+	for (auto pObject : componentList)
+	{
+		pObject->Phsics();
 	}
 }
 
@@ -79,7 +87,7 @@ void ParentObject::Update()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->Update();
+		pObject->Update();
 	}
 }
 
@@ -87,7 +95,7 @@ void ParentObject::Render()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->Render();
+		pObject->Render();
 	}
 }
 
@@ -95,7 +103,7 @@ void ParentObject::Disable()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->Disable();
+		pObject->Disable();
 	}
 }
 
@@ -103,7 +111,7 @@ void ParentObject::Release()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->Release();
+		pObject->Release();
 	}
 	Finalize();
 }
