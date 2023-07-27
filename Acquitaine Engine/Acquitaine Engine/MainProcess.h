@@ -2,7 +2,7 @@
 #include <windows.h>
 #include "Timer.h"
 
-class DX_GraphicsMain;
+class GameProcess;
 
 class MainProcess
 {
@@ -18,8 +18,12 @@ private:
 	MSG m_msg;
 	HINSTANCE m_hInstance;
 
+	//게임엔진
+	GameProcess* gameprocess;
+
 	// 시간과 관련된 부분
 	Timer* timer;
 	double deltatime;
+
 };
 

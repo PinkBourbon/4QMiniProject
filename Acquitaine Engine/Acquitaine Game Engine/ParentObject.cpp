@@ -13,12 +13,6 @@ ParentObject::~ParentObject()
 {
 }
 
-void ParentObject::AddComponent(IComponent* component)
-{
-	componentList.push_back(component);
-	// dynamic_cast<ParentComponent>(component)->SetGameObject(this);		///RTTI? ÅÛÇÃ¸´? ¹¹¸¦ ½á¾ß ÇÒ±î...
-}
-
 void ParentObject::RemoveComponent()
 {
 }
@@ -59,7 +53,7 @@ void ParentObject::Start()
 {
 	for (auto pObject : componentList)
 	{
-		//pObject->Start();
+		pObject->Start();
 	}
 }
 

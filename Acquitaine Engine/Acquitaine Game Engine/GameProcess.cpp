@@ -19,6 +19,7 @@ void GameProcess::Finalize()
 void GameProcess::RunningGameProcess(double deltaTime)
 {
 	float fixedupdateTimeRate = 0;
+	std::cout << "게임엔진 실행" << endl;
 
 	/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 	ObjectStateChange();
@@ -41,13 +42,16 @@ void GameProcess::RunningGameProcess(double deltaTime)
 	Release();
 
 	/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-	CreateObjects();
 	InitializeObjects();
 }
 
 void GameProcess::InitializeObjects()
 {
-	waitingObjectList
+	for (auto pObject : waitingObjectList)
+	{
+		pObject->Initialize();
+		PutStateChangeBuffer(ObjectState::START, pObject);
+	}
 }
 
 void GameProcess::Awake()

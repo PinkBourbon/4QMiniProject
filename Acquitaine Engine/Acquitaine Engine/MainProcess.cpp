@@ -1,12 +1,13 @@
 #include "MainProcess.h"
+#include "GameProcess.h"
+
+#pragma comment (lib,"Acquitaine Game Engine.lib")
 
 constexpr int windowLength = 1280;
 constexpr int windowHeight = 720;
 
 constexpr int windowPositionX = 500;
 constexpr int windowPositionY = 100;
-
-DX_GraphicsMain* Graphics;
 
 HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 {
@@ -45,6 +46,9 @@ HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 
 	deltatime = 0;
 	timer = new Timer();
+	
+	gameprocess = new GameProcess();
+	gameprocess->Initialize();
 
 	///여기 아래는 그래픽스
 
@@ -68,19 +72,23 @@ void MainProcess::Loop()
 			deltatime = timer->GetDeltaTime();
 
 			// 게임 엔진이 위치할 내용
+			gameprocess->RunningGameProcess(deltatime);
 		}
 	}
 }
 
 void MainProcess::Finalize()
 {
-
+	gameprocess->Finalize();
 }
 
 LRESULT CALLBACK MainProcess::WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
+		case WM_CREATE:
+			AllocConsole();
+			break;
 		case WM_RBUTTONDOWN:
 			return 0;
 		case WM_RBUTTONUP:
