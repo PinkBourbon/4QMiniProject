@@ -25,14 +25,23 @@ public:
 public:
 	void Initialize();			// 프로그램을 시작할때의 전처리
 	void Finalize();			// 프로그램을 종료할때의 후처리
-	void RunningGameProcess();	// 이 함수 내에서 생명주기 함수들이 순서대로 실행된다.
+	void RunningGameProcess(double deltaTime);	// 이 함수 내에서 생명주기 함수들이 순서대로 실행된다.
+
+	template<typename T>
+	IObject* CreateObjects()	// 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
+	{
+		IObject* temp = new T();
+		objectList.push_back(temp);
+		waitingObjectList.push_back(temp);
+		return temp;
+	}
+
 private:
 	/// 함수들의 실행 주기에 맞춰 함수들을 나열
 	/// 각 오브젝트들이 한 프레임에 한번의 상태를 가지도록 하는것이 원칙.
 	/// 한 프레임 내에 중복하여 다른 주기함수에서 실행되지 않게 할것.
 	
-	IObject* CreateObjects();	// 오브젝트들이 담겨 있는 리소스 매니저에서 생성 대기중인 오브젝트를 읽어내고 그 오브젝트들을 생성해줄 함수.
-	void InitializeObjects();	// 생성된 오브젝트들의 Initialize 함수들은 여기서 실행할 것 (Initialize함수를 밖으로 노출하지 말것)
+	void InitializeObjects();	// 생성대기 리스트를 순회해서 Initialize 함수를 호출하고 start로 대기시킨다.(Initialize함수를 밖으로 노출하지 말것)
 
 	void Awake();			// 가장 먼저 실행되는 함수. // 우선적으로 실행되어야 할 오브젝트가 가끔은 있기때문에 존재.
 	void Enable();			// enable 상태로 전환된 오브젝트들이 그에 대한 처리가 실행될 함수
@@ -69,6 +78,8 @@ private:
 	vector<IObject*> updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
 	vector<IObject*> disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
 	vector<IObject*> releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
+
+	vector<IObject*> waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
 
 	vector < pair<ObjectState, IObject*>> stateChangeBuffer;
 };
@@ -169,3 +180,13 @@ private:
 //  스크립팅 영역을 분리하는것이 가능한가?
 //	*일단 리소스 매니저나 빌더, 팩토리는 의도적으로 제외한다.
 //  *어디까지나 엔진에서 쓰이게 될 기능들을 구현해 보는것이 목표
+
+/// 생각나는대로 이거저거 막 하다보니까 너무 파편화 되어 있어서 머가 뭔지 모르겠어!
+
+/// 현재 최대 고민거리
+// 오브젝트를 추가하려고 할때 new로 불러오는데, 이때 어떤 타입이 올지 모른다.
+// 즉 타입에 대해 알아야 하는데.. 어떻게 할 수 있지?????
+
+// 생각 해보니 오브젝트를 상태로 돌리는게 문제가 좀 있는데????
+// 오브젝트 안의 컴포넌트들의 상태가 다를 수 도 있잖아
+// 어떤건 AWAKE고 어떤건 Start 일수도 있는데 이러면 어떻게 해야 하지????
