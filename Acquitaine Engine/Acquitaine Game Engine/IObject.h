@@ -6,7 +6,8 @@ struct IObject
 	IObject() {};
 	virtual ~IObject() {};
 
-protected:
+//protected:
+public:
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
 
@@ -16,6 +17,7 @@ protected:
 
 	virtual void InputEvent() = 0;
 	virtual void FixedUpdate() = 0;
+	virtual void Phsics() = 0;
 	virtual void Update() = 0;
 
 	virtual void Render() = 0;

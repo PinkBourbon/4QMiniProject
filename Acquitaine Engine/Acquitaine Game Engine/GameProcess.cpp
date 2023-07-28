@@ -16,9 +16,10 @@ void GameProcess::Finalize()
 {
 }
 
-void GameProcess::RunningGameProcess()
+void GameProcess::RunningGameProcess(double deltaTime)
 {
 	float fixedupdateTimeRate = 0;
+	std::cout << "게임엔진 실행" << endl;
 
 	/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 	ObjectStateChange();
@@ -41,28 +42,23 @@ void GameProcess::RunningGameProcess()
 	Release();
 
 	/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-	CreateObjects();
 	InitializeObjects();
-}
-
-IObject* GameProcess::CreateObjects()
-{
-	//IObject* temp = new /*IObject*/();
-	//objectList.push_back(temp);
-	//startObjectList.push_back(temp);
-	//return temp;
-	return nullptr;
 }
 
 void GameProcess::InitializeObjects()
 {
+	for (auto pObject : waitingObjectList)
+	{
+		pObject->Initialize();
+		PutStateChangeBuffer(ObjectState::START, pObject);
+	}
 }
 
 void GameProcess::Awake()
 {
 	for (auto pObject : awakeObjectList)
 	{
-		//pObject->Awake();
+		pObject->Awake();
 		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
 	}
 }
@@ -71,7 +67,7 @@ void GameProcess::Enable()
 {
 	for (auto pObject : awakeObjectList)
 	{
-		//pObject->Awake();
+		pObject->Enable();
 		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
 	}
 }
@@ -80,7 +76,7 @@ void GameProcess::Start()
 {
 	for (auto pObject : awakeObjectList)
 	{
-		//pObject->Awake();
+		pObject->Start();
 		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
 	}
 }
@@ -89,7 +85,7 @@ void GameProcess::InputEvent()
 {
 	for (auto pObject : awakeObjectList)
 	{
-		//pObject->InputEvent();
+		pObject->InputEvent();
 	}
 }
 
@@ -98,8 +94,8 @@ float GameProcess::FixedUpdate()
 	///물리연산이 실행되는 부분이고, 실행 시간을 초단위로 반환하도록 구성
 	for (auto pObject : awakeObjectList)
 	{
-		//pObject->FixedUpdate();
-		//pObject->phsics();
+		pObject->FixedUpdate();
+		pObject->Phsics();
 	}
 
 	return 0.0;
@@ -109,7 +105,7 @@ void GameProcess::Update()
 {
 	for (auto pObject : awakeObjectList)
 	{
-		//pObject->Update();
+		pObject->Update();
 	}
 }
 
@@ -117,7 +113,7 @@ void GameProcess::Render()
 {
 	for (auto pObject : awakeObjectList)
 	{
-		//pObject->Render();
+		pObject->Render();
 	}
 }
 
@@ -125,7 +121,7 @@ void GameProcess::Disable()
 {
 	for (auto pObject : awakeObjectList)
 	{
-		//pObject->Disable();
+		pObject->Disable();
 	}
 }
 
@@ -133,7 +129,7 @@ void GameProcess::Release()
 {
 	for (auto pObject : awakeObjectList)
 	{
-		//pObject->Release();
+		pObject->Release();
 	}
 }
 

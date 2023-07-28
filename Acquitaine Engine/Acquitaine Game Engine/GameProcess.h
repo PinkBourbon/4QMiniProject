@@ -2,6 +2,7 @@
 /// 2023.07.20 작성 시작
 #pragma once
 #include <vector>
+#include <iostream>
 
 #include "IObject.h"
 
@@ -25,14 +26,22 @@ public:
 public:
 	void Initialize();			// 프로그램을 시작할때의 전처리
 	void Finalize();			// 프로그램을 종료할때의 후처리
-	void RunningGameProcess();	// 이 함수 내에서 생명주기 함수들이 순서대로 실행된다.
+	void RunningGameProcess(double deltaTime);	// 이 함수 내에서 생명주기 함수들이 순서대로 실행된다.
+
+	template<typename T>
+	void CreateObjects() // 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
+	{
+		IObject* temp = new T();
+		objectList.push_back(temp);
+		waitingObjectList.push_back(temp);
+	}
+
 private:
 	/// 함수들의 실행 주기에 맞춰 함수들을 나열
 	/// 각 오브젝트들이 한 프레임에 한번의 상태를 가지도록 하는것이 원칙.
 	/// 한 프레임 내에 중복하여 다른 주기함수에서 실행되지 않게 할것.
 	
-	IObject* CreateObjects();	// 오브젝트들이 담겨 있는 리소스 매니저에서 생성 대기중인 오브젝트를 읽어내고 그 오브젝트들을 생성해줄 함수.
-	void InitializeObjects(); // 생성된 오브젝트들의 Initialize 함수들은 여기서 실행할 것 (Initialize함수를 밖으로 노출하지 말것)
+	void InitializeObjects();	// 생성대기 리스트를 순회해서 Initialize 함수를 호출하고 start로 대기시킨다.(Initialize함수를 밖으로 노출하지 말것)
 
 	void Awake();			// 가장 먼저 실행되는 함수. // 우선적으로 실행되어야 할 오브젝트가 가끔은 있기때문에 존재.
 	void Enable();			// enable 상태로 전환된 오브젝트들이 그에 대한 처리가 실행될 함수
@@ -63,12 +72,14 @@ private:
 
 	vector<IObject*> objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
 
-	vector<IObject*> awakeObjectList; // Awake State의 오브젝트를 가지고 있는 리스트
-	vector<IObject*> enableObjectList; // Enable State의 오브젝트를 가지고 있는 리스트
-	vector<IObject*> startObjectList; // Start State의 오브젝트를 가지고 있는 리스트
-	vector<IObject*> updateObjectList; // Update State의 오브젝트를 가지고 있는 리스트
+	vector<IObject*> awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
+	vector<IObject*> enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
+	vector<IObject*> startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
+	vector<IObject*> updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
 	vector<IObject*> disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
 	vector<IObject*> releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
+
+	vector<IObject*> waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
 
 	vector < pair<ObjectState, IObject*>> stateChangeBuffer;
 };
@@ -96,6 +107,7 @@ private:
 //	컴포넌트는 추상화 + 일반화 + RTTI라는데 이건 내가 봤을 때 좀더 찾아봐야 할 것 같고.
 //  아니 근데 왜 그생각을 못했지? 잘 모르겠다.
 //  그래서 인터페이스를 두고 부모 클래스를 따로 두고 그러는구나.
+//  --> 하지만 굳이 그런 방식으로 레이어를 증가 시킬 이유가 없다고 한다. 하지만 인터페이스는 순수해야해!
 /// 
 //  스크립트 영역은 분리한다고 했지만 다른 언어를 쓸것 같진 않다. 다만 스크립팅 할때 엔진 내부를 직접 건드리지 않도록 하는게 목표.
 //  예를 들어, 어떤 물체를 추가 하기 위해 AddCude() 라는 함수를 호출하면 실제론 AddCube 내부에선 Cube라는 오브젝트를 등록하여 달라는 내용을
@@ -168,3 +180,10 @@ private:
 //  스크립팅 영역을 분리하는것이 가능한가?
 //	*일단 리소스 매니저나 빌더, 팩토리는 의도적으로 제외한다.
 //  *어디까지나 엔진에서 쓰이게 될 기능들을 구현해 보는것이 목표
+
+/// 생각나는대로 이거저거 막 하다보니까 너무 파편화 되어 있어서 머가 뭔지 모르겠어!
+
+/// 현재 최대 고민거리
+// 오브젝트를 추가하려고 할때 new로 불러오는데, 이때 어떤 타입이 올지 모른다.
+// 즉 타입에 대해 알아야 하는데.. 어떻게 할 수 있지?????
+// 템플레이트를 쓰기로 했다.
