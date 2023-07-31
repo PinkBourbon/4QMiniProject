@@ -1,4 +1,9 @@
 #include "GameProcess.h"
+#include "TestScene.h"
+
+import aptoCore.Graphics;
+
+
 
 GameProcess::GameProcess()
 {
@@ -10,16 +15,21 @@ GameProcess::~GameProcess()
 
 void GameProcess::Initialize()
 {
+	gameEnginePointer = this;
+	bool ret = aptoCore::Graphics::Initialize();
+	aptoCore::Graphics::Render(1.0f);
 }
 
 void GameProcess::Finalize()
 {
+	aptoCore::Graphics::Finalize();
 }
 
 void GameProcess::RunningGameProcess(double deltaTime)
 {
+	cout << "엔진 구동 중" << endl;
+
 	float fixedupdateTimeRate = 0;
-	std::cout << "게임엔진 실행" << endl;
 
 	/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 	ObjectStateChange();
@@ -43,6 +53,11 @@ void GameProcess::RunningGameProcess(double deltaTime)
 
 	/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 	InitializeObjects();
+}
+
+void GameProcess::AddScene(ParentScene* pscene) const
+{
+	SceneList.push_back(pscene);
 }
 
 void GameProcess::InitializeObjects()
@@ -175,3 +190,5 @@ void GameProcess::PutStateChangeBuffer(ObjectState state, IObject* pObject)
 {
 	stateChangeBuffer.push_back(make_pair(state, pObject));
 }
+
+const GameProcess* GameProcess::gameEnginePointer;

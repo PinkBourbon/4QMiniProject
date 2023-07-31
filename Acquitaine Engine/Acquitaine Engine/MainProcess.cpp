@@ -44,11 +44,17 @@ HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 	ShowWindow(m_hWnd, SW_SHOWNORMAL);
 	UpdateWindow(m_hWnd);
 
+	// 디버깅, 테스트용 콘솔을 생성
+ 	AllocConsole();
+	FILE* _tempFile;
+	freopen_s(&_tempFile, "CONOUT$", "w", stdout);
+
 	deltatime = 0;
 	timer = new Timer();
 	
 	gameprocess = new GameProcess();
 	gameprocess->Initialize();
+
 
 	///여기 아래는 그래픽스
 
@@ -87,7 +93,6 @@ LRESULT CALLBACK MainProcess::WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPA
 	switch (msg)
 	{
 		case WM_CREATE:
-			AllocConsole();
 			break;
 		case WM_RBUTTONDOWN:
 			return 0;
@@ -97,6 +102,7 @@ LRESULT CALLBACK MainProcess::WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPA
 			return 0;
 		case WM_DESTROY:
 			PostQuitMessage(0);
+			FreeConsole();
 			return 0;
 	}
 
