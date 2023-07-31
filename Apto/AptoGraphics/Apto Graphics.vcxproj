@@ -129,7 +129,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalBMIDirectories>
       </AdditionalBMIDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDir)AptoUtil;$(SolutionDir)AptoMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\AptoUtil;..\AptoMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
@@ -151,7 +151,7 @@
       <AdditionalBMIDirectories>
       </AdditionalBMIDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)AptoUtil;$(SolutionDir)AptoMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\AptoUtil;..\AptoMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
