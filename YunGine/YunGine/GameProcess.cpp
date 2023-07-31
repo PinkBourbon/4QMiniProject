@@ -1,5 +1,7 @@
 #include "GameProcess.h"
 
+import aptoCore.Graphics;
+
 GameProcess::~GameProcess()
 {
 

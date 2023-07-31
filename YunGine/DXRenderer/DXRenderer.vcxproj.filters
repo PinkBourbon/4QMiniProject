@@ -39,6 +39,9 @@
     <Filter Include="소스 파일\Texture">
       <UniqueIdentifier>{5c625633-9e8b-4fe1-9a33-dd24a13e5b6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\FBXLoader">
+      <UniqueIdentifier>{7933402e-e337-430f-9e08-ee4d359ed8ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX11Render.h">
@@ -77,6 +80,9 @@
     <ClInclude Include="Renderable.h">
       <Filter>소스 파일\DllInterface</Filter>
     </ClInclude>
+    <ClInclude Include="FBXLoader.h">
+      <Filter>소스 파일\FBXLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11Render.cpp">
@@ -99,6 +105,9 @@
     </ClCompile>
     <ClCompile Include="aptoDllInterface.cpp">
       <Filter>소스 파일\DllInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXLoader.cpp">
+      <Filter>소스 파일\FBXLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

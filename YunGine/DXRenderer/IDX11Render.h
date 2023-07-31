@@ -24,7 +24,7 @@ public:
 extern "C" __declspec(dllexport) IDX11Render * CreateRenderer();
 extern "C" __declspec(dllexport) void DeleteRenderer(IDX11Render * renderer);
 
-// 용훈이형의 인터페이스
+// 용훈이형의 인터페이스에 맞췄음
 extern "C" __declspec(dllexport) bool Initialize();
 extern "C" __declspec(dllexport) void Finalize();
 extern "C" __declspec(dllexport) void Render(float deltaTime);

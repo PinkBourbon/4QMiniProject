@@ -23,7 +23,7 @@ void Finalize()
 
 void Render(float deltaTime)
 {
-
+	g_renderer->Render();
 }
 
 
