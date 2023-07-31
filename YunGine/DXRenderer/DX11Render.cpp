@@ -27,7 +27,11 @@ void DeleteRenderer(IDX11Render* instance)
 DX11Render::DX11Render()
 	: VertexBuffer(nullptr),
 	IndexBuffer(nullptr),
+	m_deltaTime(0.0f),
 	m_pAxis(nullptr),
+	m_pCube(nullptr),
+	m_pGrid(nullptr),
+	m_pCamera(nullptr),
 	m_WorldMatrix
 	{ 1.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f,
@@ -86,45 +90,45 @@ long DX11Render::Initialize(void* hwnd)
 
 void DX11Render::Update(float deltaTime)
 {
-	 m_deltaTime = deltaTime;
-	 
-	 // 카메라
-	 if (GetAsyncKeyState('W') & 0x8000)
-	 	m_pCamera->Walk(10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('S') & 0x8000)
-	 	m_pCamera->Walk(-10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('A') & 0x8000)
-	 	m_pCamera->Strafe(-10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('D') & 0x8000)
-	 	m_pCamera->Strafe(10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('Q') & 0x8000)
-	 	m_pCamera->WorldUpDown(-10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('E') & 0x8000)
-	 	m_pCamera->WorldUpDown(10.0f * deltaTime);
-	 
-	 m_pCamera->UpdateViewMatrix();
+	m_deltaTime = deltaTime;
 
-	 m_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
-	 m_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
-	 m_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
+	// 카메라
+	if (GetAsyncKeyState('W') & 0x8000)
+		m_pCamera->Walk(10.0f * deltaTime);
 
-// 	m_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), view,proj);
-// 	m_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), view,proj);
-// 	m_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), view,proj);
+	if (GetAsyncKeyState('S') & 0x8000)
+		m_pCamera->Walk(-10.0f * deltaTime);
 
+	if (GetAsyncKeyState('A') & 0x8000)
+		m_pCamera->Strafe(-10.0f * deltaTime);
 
+	if (GetAsyncKeyState('D') & 0x8000)
+		m_pCamera->Strafe(10.0f * deltaTime);
+
+	if (GetAsyncKeyState('Q') & 0x8000)
+		m_pCamera->WorldUpDown(-10.0f * deltaTime);
+
+	if (GetAsyncKeyState('E') & 0x8000)
+		m_pCamera->WorldUpDown(10.0f * deltaTime);
+
+	m_pCamera->UpdateViewMatrix();
+
+	m_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
+	m_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
+	m_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
 
 }
 
 void DX11Render::Render()
 {
 	// 이 안에다가 비긴렌더, 드로우오브젝트, 엔드렌더를 넣는게 효율적인가?
-	// 
+
+	BeginRender(0, 0, 0, 1);
+
+	DrawObject();
+
+	EndRender();
+
 }
 
 void DX11Render::BeginRender(float red, float green, float blue, float alpha)
@@ -181,7 +185,7 @@ HRESULT DX11Render::InitVB()
 
 void DX11Render::Finalize()
 {
-	
+
 }
 
 HRESULT DX11Render::CreateDevice()
@@ -401,17 +405,17 @@ HRESULT DX11Render::CreateCamera()
 	HRESULT hr = S_OK;
 
 	m_pCamera = new Camera();
- 
+
 	// 카메라를 만들고
 	// 세팅을 해준다.
-	 m_pCamera->SetLens(0.25f * 3.1415926535f, 1280.0f / 720.0f, 1.0f,1000.0f);
+	m_pCamera->SetLens(0.25f * 3.1415926535f, 1280.0f / 720.0f, 1.0f, 1000.0f);
 
-	 // LH(Left Hand)방향으로
-	 DirectX::XMMATRIX p = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
-	 DirectX::XMStoreFloat4x4(&m_ProjectionMatrix, p);
+	// LH(Left Hand)방향으로
+	DirectX::XMMATRIX p = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
+	DirectX::XMStoreFloat4x4(&m_ProjectionMatrix, p);
 
-	 // 맨처음에 보는 카메라의 포지션, 쳐다보는 방향,UP벡터 정하기
-	 m_pCamera->LookAt(DirectX::XMFLOAT3(8.0f, 8.0f, -8.0f), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 1.0f, 0));
+	// 맨처음에 보는 카메라의 포지션, 쳐다보는 방향,UP벡터 정하기
+	m_pCamera->LookAt(DirectX::XMFLOAT3(8.0f, 8.0f, -8.0f), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 1.0f, 0));
 
 	return S_OK;
 }

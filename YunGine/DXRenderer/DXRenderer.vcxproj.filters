@@ -74,6 +74,9 @@
     <ClInclude Include="ICamera.h">
       <Filter>소스 파일\Object\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Renderable.h">
+      <Filter>소스 파일\DllInterface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11Render.cpp">
@@ -93,6 +96,9 @@
     </ClCompile>
     <ClCompile Include="TextureLoader.cpp">
       <Filter>소스 파일\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="aptoDllInterface.cpp">
+      <Filter>소스 파일\DllInterface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

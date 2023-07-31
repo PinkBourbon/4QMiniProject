@@ -74,7 +74,7 @@ void GameProcess::Loop()
 		}
 
 	}
-	}
+}
 
 
 void GameProcess::Update()
@@ -131,12 +131,14 @@ void GameProcess::Render()
 {
 	/// 그리기를 준비한다.
 	// 그래픽엔진을 아직 붙이지 않았다.
-	renderer->BeginRender(0, 0, 0, 1);
+	//renderer->BeginRender(0, 0, 0, 1);
+	//
+	//renderer->DrawObject();
+	//
+	///// 그리기를 끝낸다.
+	//renderer->EndRender();
 
-	renderer->DrawObject();
-
-	/// 그리기를 끝낸다.
-	renderer->EndRender();
+	renderer->Render();
 }
 
 HRESULT GameProcess::CreateGraphicEngine()
@@ -178,7 +180,7 @@ HRESULT GameProcess::DeleteGraphicEngine()
 	renderer.release();
 
 	FreeLibrary(m_hModule);
-	
+
 	return S_OK;
 }
 
