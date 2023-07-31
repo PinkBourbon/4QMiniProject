@@ -1,4 +1,4 @@
-export module apto.Graphics.Camera;
+export module apto.graphics.Camera;
 
 import apto.math.Matrix4f;
 import apto.math.Common;

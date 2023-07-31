@@ -1,9 +1,10 @@
 #include <iostream>
 #include "Vertex.h"
 
+
 import apto.math;
 import apto.util.Time;
-import apto.Graphics.Camera;
+import apto.graphics.Camera;
 import aptoCore.Graphics;
 
 bool isResize = false;

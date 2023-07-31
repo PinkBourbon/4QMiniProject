@@ -120,7 +120,7 @@
       <EnableModules>true</EnableModules>
       <CompileAs>Default</CompileAs>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>..\AptoUtil%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)AptoUtil</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +139,7 @@
       <EnableModules>true</EnableModules>
       <CompileAs>Default</CompileAs>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>..\AptoUtil%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)AptoUtil</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

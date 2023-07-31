@@ -74,10 +74,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
     <IntDir>$(IntDir)</IntDir>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
     <IntDir>$(IntDir)</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,7 +129,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalBMIDirectories>
       </AdditionalBMIDirectories>
-      <AdditionalIncludeDirectories>..\AptoUtil;..\AptoMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)AptoUtil;$(SolutionDir)AptoMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
@@ -146,7 +151,7 @@
       <AdditionalBMIDirectories>
       </AdditionalBMIDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>..\AptoUtil;..\AptoMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)AptoUtil;$(SolutionDir)AptoMath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
@@ -160,13 +165,13 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="IBuilder.h" />
-    <ClCompile Include="RawKeyFrameData.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
     <ClInclude Include="KeyFrameData.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Node.h" />
+    <ClCompile Include="apto.ixx" />
     <ClCompile Include="aptoCore.ixx" />
+    <ClCompile Include="graphics.ixx" />
+    <ClCompile Include="KeyFrameData.cpp" />
     <ClCompile Include="rawData.ixx" />
     <ClCompile Include="RawMesh.cpp" />
     <ClCompile Include="RawNode.cpp" />
@@ -211,6 +216,9 @@
   <ItemGroup>
     <ProjectReference Include="..\AptoMath\Apto Math.vcxproj">
       <Project>{ad83a6c0-1a44-4522-8db9-e88a6805f670}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\AptoUtil\Apto Util.vcxproj">
+      <Project>{215cc7a8-fbe2-4a97-bbc4-de25de5e2d15}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

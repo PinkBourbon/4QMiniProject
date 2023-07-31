@@ -61,6 +61,7 @@ export namespace apto
 		{
 			return Vector2f(-x, -y);
 		}
+
 		float Norm() const noexcept
 		{
 			return sqrtf(x * x + y * y);
