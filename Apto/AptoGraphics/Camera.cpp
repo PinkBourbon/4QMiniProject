@@ -1,6 +1,6 @@
 module;
 #include <cmath>
-module apto.graphics.Camera;
+module apto.Graphics.Camera;
 
 import apto.math.Vector3f;
 

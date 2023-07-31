@@ -127,14 +127,8 @@
     <ClCompile Include="RawMesh.ixx">
       <Filter>Resource\RawData</Filter>
     </ClCompile>
-    <ClCompile Include="apto.ixx">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="graphics.ixx">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyFrameData.cpp">
-      <Filter>Resource</Filter>
+    <ClCompile Include="RawKeyFrameData.ixx">
+      <Filter>Resource\RawData</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
