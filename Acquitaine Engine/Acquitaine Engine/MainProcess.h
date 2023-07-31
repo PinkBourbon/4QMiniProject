@@ -17,6 +17,7 @@ private:
 	HWND m_hWnd;
 	MSG m_msg;
 	HINSTANCE m_hInstance;
+	HANDLE consoleHandle;
 
 	//게임엔진
 	GameProcess* gameprocess;

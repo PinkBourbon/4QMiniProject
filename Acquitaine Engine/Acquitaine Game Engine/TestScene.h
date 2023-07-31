@@ -1,5 +1,11 @@
 #pragma once
-class TestScene
+#include "ParentScene.h"
+
+class TestScene : public ParentScene
 {
+public:
+	TestScene();
+	virtual ~TestScene();
+
 };
 
