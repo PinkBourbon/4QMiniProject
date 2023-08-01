@@ -1,10 +1,10 @@
 #include "Camera.h"
 
 Camera::Camera()
-	: m_Position(0.0f, 0.0f, 0.0f),	// Ä«¸Ş¶óÀÇ À§Ä¡
-	m_Right(1.0f, 0.0f, 0.0f),		// ¿À¸¥ÂÊÀ¸·Î µ¹±â À§ÇÑ º¯¼ö
-	m_Up(0.0f, 1.0f, 0.0f),			// ¿ŞÂÊÀ¸·Î µ¹±â À§ÇÑ º¯¼ö
-	m_Look(0.0f, 0.0f, 1.0f)		// Ä«¸Ş¶ó°¡ º¸´Â ¹æÇâÀ» À§ÇÑ º¯¼ö
+	: m_Position(0.0f, 0.0f, 0.0f),	// ì¹´ë©”ë¼ì˜ ìœ„ì¹˜
+	m_Right(1.0f, 0.0f, 0.0f),		// ì˜¤ë¥¸ìª½ìœ¼ë¡œ ëŒê¸° ìœ„í•œ ë³€ìˆ˜
+	m_Up(0.0f, 1.0f, 0.0f),			// ì™¼ìª½ìœ¼ë¡œ ëŒê¸° ìœ„í•œ ë³€ìˆ˜
+	m_Look(0.0f, 0.0f, 1.0f)		// ì¹´ë©”ë¼ê°€ ë³´ëŠ” ë°©í–¥ì„ ìœ„í•œ ë³€ìˆ˜
 {
 
 }
@@ -128,8 +128,8 @@ void Camera::SetLens(float fovY, float aspect, float zn, float zf)
 
 void Camera::LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp)
 {
-	// ½Ã¼±º¤ÅÍ¿Í ¿ùµå¾÷À» ¿ÜÀûÇÏ¸é rightº¤ÅÍ°¡ ³ª¿À°í
-	// ´Ù½Ã ±× rightº¤ÅÍ¿Í ½Ã¼±º¤ÅÍ¸¦ ¿ÜÀûÇÏ¸é ³» upº¤ÅÍ°¡ ³ª¿È
+	// ì‹œì„ ë²¡í„°ì™€ ì›”ë“œì—…ì„ ì™¸ì í•˜ë©´ rightë²¡í„°ê°€ ë‚˜ì˜¤ê³ 
+	// ë‹¤ì‹œ ê·¸ rightë²¡í„°ì™€ ì‹œì„ ë²¡í„°ë¥¼ ì™¸ì í•˜ë©´ ë‚´ upë²¡í„°ê°€ ë‚˜ì˜´
 	DirectX::XMVECTOR L = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(target, pos));
 	DirectX::XMVECTOR R = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(worldUp, L));
 	DirectX::XMVECTOR U = DirectX::XMVector3Cross(L, R);

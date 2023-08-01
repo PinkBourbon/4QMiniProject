@@ -35,7 +35,7 @@ void Grid::ObjectSetting()
 		{DirectX::XMFLOAT3(4.f,0.f,5.f),DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},	// 9
 		{DirectX::XMFLOAT3(5.f,0.f,5.f),DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},	// 10
 
-		// °¡·ÎÁ¡
+		// ê°€ë¡œì 
 		{DirectX::XMFLOAT3(-5.f,0.f,4.f),DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},	// 11
 		{DirectX::XMFLOAT3(5.f,0.f,4.f),DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},	// 12
 
@@ -66,7 +66,7 @@ void Grid::ObjectSetting()
 		{DirectX::XMFLOAT3(-5.f,0.f,-5.f),DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},
 		{DirectX::XMFLOAT3(5.f,0.f,-5.f),DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},	// 30
 
-		//¼¼·Î Á¡
+		//ì„¸ë¡œ ì 
 		{DirectX::XMFLOAT3(-4.f,0.f,-5.f),DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},	// 31
 		{DirectX::XMFLOAT3(-3.f,0.f,-5.f),DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},	// 32
 		{DirectX::XMFLOAT3(-2.f,0.f,-5.f),DirectX::XMFLOAT4(1.0f,1.0f,1.0f,1.0f)},	// 33
@@ -82,19 +82,19 @@ void Grid::ObjectSetting()
 	D3D11_BUFFER_DESC bufferDesc;
 	bufferDesc.ByteWidth = sizeof(GridVertex);
 	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;	// ¹öÆÛ°¡ ÆÄÀÌÇÁ¶óÀÎ¿¡ ¹ÙÀÎµùµÇ´Â ¹æ¹ı½Äº°
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;	// ë²„í¼ê°€ íŒŒì´í”„ë¼ì¸ì— ë°”ì¸ë”©ë˜ëŠ” ë°©ë²•ì‹ë³„
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 	bufferDesc.StructureByteStride = 0;
 
-	// ¹öÆÛ ÃÊ±âÈ­´Â ¿£Áø¿¡¼­->D3Dµğ¹ÙÀÌ½º¸¦ ¿£Áø¿¡¼­ µé°íÀÖ±â ¶§¹®¿¡ Á¤º¸¸¸ ³Ñ°ÜÁØ´Ù.
-	// ÅØ½ºÃ³ ÇÒ¶§ »ç¿ëÇÑ´Ù.
+	// ë²„í¼ ì´ˆê¸°í™”ëŠ” ì—”ì§„ì—ì„œ->D3Dë””ë°”ì´ìŠ¤ë¥¼ ì—”ì§„ì—ì„œ ë“¤ê³ ìˆê¸° ë•Œë¬¸ì— ì •ë³´ë§Œ ë„˜ê²¨ì¤€ë‹¤.
+	// í…ìŠ¤ì²˜ í• ë•Œ ì‚¬ìš©í•œë‹¤.
 	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = GridVertex;	// const ¹«È¿-> ÃÊ±âÈ­ µ¥ÀÌÅÍ¿¡ ´ëÇÑ Æ÷ÀÎÅÍÀÌ´Ù.
-	InitData.SysMemPitch = 0;		// ÅØ½ºÃ³ ÇÑ ÁÙ ½ÃÀÛ ºÎºĞ¿¡¼­ ´ÙÀ½ÁÙ ±îÁöÀÇ °Å¸®(byte)
-	InitData.SysMemSlicePitch = 0;	// ÇÑ ±íÀÌ ¼öÁØÀÇ ½ÃÀÛºÎÅÍ ´ÙÀ½ ¼öÁØ±îÁöÀÇ °Å¸®(byte)
+	InitData.pSysMem = GridVertex;	// const ë¬´íš¨-> ì´ˆê¸°í™” ë°ì´í„°ì— ëŒ€í•œ í¬ì¸í„°ì´ë‹¤.
+	InitData.SysMemPitch = 0;		// í…ìŠ¤ì²˜ í•œ ì¤„ ì‹œì‘ ë¶€ë¶„ì—ì„œ ë‹¤ìŒì¤„ ê¹Œì§€ì˜ ê±°ë¦¬(byte)
+	InitData.SysMemSlicePitch = 0;	// í•œ ê¹Šì´ ìˆ˜ì¤€ì˜ ì‹œì‘ë¶€í„° ë‹¤ìŒ ìˆ˜ì¤€ê¹Œì§€ì˜ ê±°ë¦¬(byte)
 
-	//D3D¿£Áø¿¡¼­ µğ¹ÙÀÌ½º¸¦ ¿©±â¼­ ³Ñ°ÜÁà¾ßÇÏ³ª?
+	//D3Dì—”ì§„ì—ì„œ ë””ë°”ì´ìŠ¤ë¥¼ ì—¬ê¸°ì„œ ë„˜ê²¨ì¤˜ì•¼í•˜ë‚˜?
 	hr = m_3DDevice->CreateBuffer
 	(
 		&bufferDesc,
@@ -105,7 +105,7 @@ void Grid::ObjectSetting()
 
 	UINT indices[] =
 	{
-		// x -5¿¡¼­ 5±îÁö °¡·Î¼±
+		// x -5ì—ì„œ 5ê¹Œì§€ ê°€ë¡œì„ 
 		0,10,
 		11,12,
 		13,14,
@@ -118,7 +118,7 @@ void Grid::ObjectSetting()
 		27,28,
 		29,30,
 
-		// z5ºÎÅÍ -5±îÁö ¼¼·Î¼±
+		// z5ë¶€í„° -5ê¹Œì§€ ì„¸ë¡œì„ 
 		0,29,
 		1,31,
 		2,32,
@@ -139,7 +139,7 @@ void Grid::ObjectSetting()
 
 	D3D11_BUFFER_DESC indexBufferDesc;
 	indexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-	indexBufferDesc.ByteWidth = Gridindexcount * sizeof(UINT);	// Â÷ÀÌ°¡ ¾ø´Ù
+	indexBufferDesc.ByteWidth = Gridindexcount * sizeof(UINT);	// ì°¨ì´ê°€ ì—†ë‹¤
 	//indexBufferDesc.ByteWidth = sizeof(indices); 
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
@@ -164,15 +164,15 @@ void Grid::ObjectSetting()
 void Grid::BuildFX()
 {
 	HRESULT hr = S_OK;
-	//ÀÌÆåÆ®¸¦ ¾²´ÂºÎºĞÀº Â÷Â÷ ÇØº¸ÀÚ
+	//ì´í™íŠ¸ë¥¼ ì“°ëŠ”ë¶€ë¶„ì€ ì°¨ì°¨ í•´ë³´ì
 
-	/// ÄÄÆÄÀÏµÈ ÆÄÀÏµµ ±¦Âú°í
-	/// ÄÄÆÄÀÏ ÇÏ´Â °Íµµ ¹®Á¦¾øÀÌ µ¹¾Æ°¨.
+	/// ì»´íŒŒì¼ëœ íŒŒì¼ë„ ê´œì°®ê³ 
+	/// ì»´íŒŒì¼ í•˜ëŠ” ê²ƒë„ ë¬¸ì œì—†ì´ ëŒì•„ê°.
 
-	UINT shaderFlag = D3DCOMPILE_ENABLE_STRICTNESS;	// ½¦ÀÌ´õ ÄÄÆÄÀÏ½Ã ¾ö°İÇÑ ¹®¹ı °Ë»ç¸¦ ¼öÇàÇÏµµ·Ï ÇÏ´Â ÄÄÆÄÀÏ ÇÃ·¡±×
+	UINT shaderFlag = D3DCOMPILE_ENABLE_STRICTNESS;	// ì‰ì´ë” ì»´íŒŒì¼ì‹œ ì—„ê²©í•œ ë¬¸ë²• ê²€ì‚¬ë¥¼ ìˆ˜í–‰í•˜ë„ë¡ í•˜ëŠ” ì»´íŒŒì¼ í”Œë˜ê·¸
 
-#if defined( DEBUG ) || defined( _DEBUG )	// µğ¹ö±× ¸ğµå¿¡¼­ ½¦ÀÌ´õ ÄÄÆÄÀÏ½Ã µğ¹ö±ë¿¡ ÇÊ¿äÇÑ Á¤º¸¸¦ Ãß°¡
-	shaderFlag |= D3D10_SHADER_DEBUG;		// ÃÖÀûÈ­ °úÁ¤À» °Ç³Ê¶Ùµµ·Ï ¼³Á¤ÇÏ´Â ¿ªÇÒÀÌ´Ù.
+#if defined( DEBUG ) || defined( _DEBUG )	// ë””ë²„ê·¸ ëª¨ë“œì—ì„œ ì‰ì´ë” ì»´íŒŒì¼ì‹œ ë””ë²„ê¹…ì— í•„ìš”í•œ ì •ë³´ë¥¼ ì¶”ê°€
+	shaderFlag |= D3D10_SHADER_DEBUG;		// ìµœì í™” ê³¼ì •ì„ ê±´ë„ˆë›°ë„ë¡ ì„¤ì •í•˜ëŠ” ì—­í• ì´ë‹¤.
 	shaderFlag |= D3D10_SHADER_SKIP_OPTIMIZATION;
 #endif
 	ID3DBlob* compiledShader;
@@ -228,29 +228,29 @@ void Grid::ObjectUpdate(const DirectX::XMMATRIX& world, const DirectX::XMMATRIX&
 
 void Grid::Render()
 {
-	// ÀÔ·Â ¹èÄ¡ °´Ã¼ ¼ÂÆÃ
+	// ì…ë ¥ ë°°ì¹˜ ê°ì²´ ì…‹íŒ…
 	m_3DDeviceContext->IASetInputLayout(m_InputLayout.Get());
 	m_3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	// ÀÎµ¦½º¹öÆÛ¿Í ¹öÅØ½º ¹öÆÛ ¼ÂÆÃ
+	// ì¸ë±ìŠ¤ë²„í¼ì™€ ë²„í…ìŠ¤ ë²„í¼ ì…‹íŒ…
 	UINT stride = sizeof(ColorVertex);
 	UINT offset = 0;
 	m_3DDeviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), &stride, &offset);
-	// &m_cubVertexBuffer¿Í AddressOfÂ÷ÀÌ°¡ ¹¹ÀÏ±î-> &´Â ÃÊ±âÈ­¸¦ ÇØ¹ö¸°´Ù.
+	// &m_cubVertexBufferì™€ AddressOfì°¨ì´ê°€ ë­ì¼ê¹Œ-> &ëŠ” ì´ˆê¸°í™”ë¥¼ í•´ë²„ë¦°ë‹¤.
 	m_3DDeviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-	///WVP TMµîÀ» ¼ÂÆÃ
+	///WVP TMë“±ì„ ì…‹íŒ…
 	DirectX::XMMATRIX worldViewProj = m_World * m_View * m_Proj;
 	m_MatrixVariable->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
 
-	//·£´õ½ºÅ×ÀÌÆ®
+	//ëœë”ìŠ¤í…Œì´íŠ¸
 	m_3DDeviceContext->RSSetState(m_RasterState.Get());
 
-	//Å×Å©´Ğ
+	//í…Œí¬ë‹‰
 	D3DX11_TECHNIQUE_DESC techDesc;
 	m_Technique->GetDesc(&techDesc);
 
-	//·£´õÆĞ½º
+	//ëœë”íŒ¨ìŠ¤
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
 		m_Technique->GetPassByIndex(p)->Apply(0, m_3DDeviceContext.Get());

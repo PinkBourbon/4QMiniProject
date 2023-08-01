@@ -11,9 +11,9 @@
 #endif // _DEBUG
 
 /// <summary>
-/// ¼ö¾÷½Ã°£¿¡ ¸¸µç °ÔÀÓ ¿£ÁøÀÇ ÃÖ¿Ü°û ºÎºÐ
+/// ìˆ˜ì—…ì‹œê°„ì— ë§Œë“  ê²Œìž„ ì—”ì§„ì˜ ìµœì™¸ê³½ ë¶€ë¶„
 /// 
-/// ±æÀÒÀº ¾î¸°¾çÀ» ±¸¿øÇØÁÖ¼¼¿ä
+/// ê¸¸ìžƒì€ ì–´ë¦°ì–‘ì„ êµ¬ì›í•´ì£¼ì„¸ìš”
 /// 
 /// 23.06.16 -Dispact-
 /// </summary>
@@ -27,28 +27,28 @@ public:
 	~GameProcess();
 
 private:
-	// °øÅëÀûÀÎ ¼³Á¤
+	// ê³µí†µì ì¸ ì„¤ì •
 
-	// È­¸éÀÇ Å©±â
+	// í™”ë©´ì˜ í¬ê¸°
 	const int m_ScreenWidth = 1920;
 	const int m_ScreenHeight = 1080;
 
-	// À©µµ °ü·Ã
+	// ìœˆë„ ê´€ë ¨
 	HWND hWnd;
 	MSG m_Msg;
 	
-	// ±×·¡ÇÈ½º ¿£Áø
+	// ê·¸ëž˜í”½ìŠ¤ ì—”ì§„
 	HMODULE m_hModule;
 	std::unique_ptr<IDX11Render> renderer;
 	
-	// °ÔÀÓ Å¸ÀÌ¸Ó
+	// ê²Œìž„ íƒ€ì´ë¨¸
 	GameTimer* m_pTimer;
 
 public:
-	// °ÔÀÓ¿ë À©µµ ÇÁ·¹ÀÓ¿÷À» ÃÊ±âÈ­ÇÑ´Ù.
+	// ê²Œìž„ìš© ìœˆë„ í”„ë ˆìž„ì›ì„ ì´ˆê¸°í™”í•œë‹¤.
 	HRESULT Initialize(HINSTANCE hInstance);
 
-	// ¸ÞÀÎ °ÔÀÓ ·çÇÁ. ½ÇÁ¦ °ÔÀÓÀÌ ÁøÇàµÇ´Â ¹Ýº¹±¸¹®
+	// ë©”ì¸ ê²Œìž„ ë£¨í”„. ì‹¤ì œ ê²Œìž„ì´ ì§„í–‰ë˜ëŠ” ë°˜ë³µêµ¬ë¬¸
 	void Loop();
 
 	void Update();
@@ -57,10 +57,10 @@ public:
 	HRESULT CreateGraphicEngine();
 	HRESULT DeleteGraphicEngine();
 
-	// °ÔÀÓÀ» Á¤¸®ÇÑ´Ù.
+	// ê²Œìž„ì„ ì •ë¦¬í•œë‹¤.
 	void Finalize();
 
-	// ¸Þ½ÃÁö ÇÚµé·¯ (À©µµ ÄÝ¹é)
+	// ë©”ì‹œì§€ í•¸ë“¤ëŸ¬ (ìœˆë„ ì½œë°±)
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 };

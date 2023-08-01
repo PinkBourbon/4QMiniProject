@@ -10,15 +10,15 @@
 #include "Grid.h"
 #include "Camera.h"
 
-// dll·Î ºÎ¸¦¶§ ·£´õ·¯¸¦ ¸¸µå´Â ÇÔ¼öÀÇ ÁÖ¼Ò¸¦ °¡Áö°í ÀÖ´Â´Ù.
-// returnÀ» Æ÷ÀÎÅÍ·Î ¹Þ¾ÆÁÙ ¼ö ÀÖ´Ù.
+// dllë¡œ ë¶€ë¥¼ë•Œ ëžœë”ëŸ¬ë¥¼ ë§Œë“œëŠ” í•¨ìˆ˜ì˜ ì£¼ì†Œë¥¼ ê°€ì§€ê³  ìžˆëŠ”ë‹¤.
+// returnì„ í¬ì¸í„°ë¡œ ë°›ì•„ì¤„ ìˆ˜ ìžˆë‹¤.
 IDX11Render* CreateRenderer()
 {
 	return new DX11Render();
 }
 
-// dll·Î ·£´õ·¯¸¦ Áö¿ì´Â ÇÔ¼ö
-// ÇÔ¼öÀÇ ÁÖ¼Ò¸¸ »èÁ¦ÇÏ¸é µÈ´Ù.
+// dllë¡œ ëžœë”ëŸ¬ë¥¼ ì§€ìš°ëŠ” í•¨ìˆ˜
+// í•¨ìˆ˜ì˜ ì£¼ì†Œë§Œ ì‚­ì œí•˜ë©´ ëœë‹¤.
 void DeleteRenderer(IDX11Render* instance)
 {
 	delete instance;
@@ -56,12 +56,12 @@ long DX11Render::Initialize(void* hwnd)
 	if (FAILED(hr))
 	{
 		return false;
-		// ÀåÄ¡ ÀÎÅÍÆäÀÌ½º »ý¼º ½ÇÆÐ°¡ ¹ß»ýÇÒ °æ¿ì ÀÌ¸¦ Ã³¸®ÇÕ´Ï´Ù.
-		// ¿¹¸¦ µé¾î, ±â´É ¼öÁØ ¿ä±¸ »çÇ×À» ÁÙÀÌ°Å³ª ÆäÀÏ¿À¹ö 
-		// ¿öÇÁ ·»´õ¸µ.
+		// ìž¥ì¹˜ ì¸í„°íŽ˜ì´ìŠ¤ ìƒì„± ì‹¤íŒ¨ê°€ ë°œìƒí•  ê²½ìš° ì´ë¥¼ ì²˜ë¦¬í•©ë‹ˆë‹¤.
+		// ì˜ˆë¥¼ ë“¤ì–´, ê¸°ëŠ¥ ìˆ˜ì¤€ ìš”êµ¬ ì‚¬í•­ì„ ì¤„ì´ê±°ë‚˜ íŽ˜ì¼ì˜¤ë²„ 
+		// ì›Œí”„ ë Œë”ë§.
 	}
 
-	hr = CreateSwapChain((HWND)hwnd);	// ½º¿ÒÃ¼ÀÎ »ý¼º
+	hr = CreateSwapChain((HWND)hwnd);	// ìŠ¤ì™‘ì²´ì¸ ìƒì„±
 	if (FAILED(hr))
 	{
 		return false;
@@ -79,7 +79,7 @@ long DX11Render::Initialize(void* hwnd)
 		return false;
 	}
 
-	hr = CreateObject();	// ¿ÀºêÁ§Æ®µéÀ» ¸ðµÎ ¿©±â¼­ ¸¸µç´Ù.
+	hr = CreateObject();	// ì˜¤ë¸Œì íŠ¸ë“¤ì„ ëª¨ë‘ ì—¬ê¸°ì„œ ë§Œë“ ë‹¤.
 	if (FAILED(hr))
 	{
 		return false;
@@ -92,7 +92,7 @@ void DX11Render::Update(float deltaTime)
 {
 	m_deltaTime = deltaTime;
 
-	// Ä«¸Þ¶ó
+	// ì¹´ë©”ë¼
 	if (GetAsyncKeyState('W') & 0x8000)
 		m_pCamera->Walk(10.0f * deltaTime);
 
@@ -121,7 +121,7 @@ void DX11Render::Update(float deltaTime)
 
 void DX11Render::Render()
 {
-	// ÀÌ ¾È¿¡´Ù°¡ ºñ±ä·»´õ, µå·Î¿ì¿ÀºêÁ§Æ®, ¿£µå·»´õ¸¦ ³Ö´Â°Ô È¿À²ÀûÀÎ°¡?
+	// ì´ ì•ˆì—ë‹¤ê°€ ë¹„ê¸´ë Œë”, ë“œë¡œìš°ì˜¤ë¸Œì íŠ¸, ì—”ë“œë Œë”ë¥¼ ë„£ëŠ”ê²Œ íš¨ìœ¨ì ì¸ê°€?
 
 	BeginRender(0, 0, 0, 1);
 
@@ -167,7 +167,7 @@ void DX11Render::DrawObject()
 	m_pGrid->Render();
 	m_pCube->Render();
 
-	// ·¹½ºÅÍ¶óÀÌÀú »óÅÂ ¼³Á¤ 
+	// ë ˆìŠ¤í„°ë¼ì´ì € ìƒíƒœ ì„¤ì • 
 	m_p3DDeviceContext->RSSetState(0);
 }
 
@@ -210,16 +210,16 @@ HRESULT DX11Render::CreateDevice()
 #endif
 
 	HRESULT hr = D3D11CreateDevice(
-		nullptr,                    // ±âº» ¾î´ðÅÍ¸¦ »ç¿ëÇÏ·Á¸é nullptrÀ» ÁöÁ¤ÇÏ½Ê½Ã¿À.
-		D3D_DRIVER_TYPE_HARDWARE,   // ÇÏµå¿þ¾î ±×·¡ÇÈ µå¶óÀÌ¹ö¸¦ »ç¿ëÇÏ¿© ÀåÄ¡¸¦ »ý¼ºÇÕ´Ï´Ù.
-		nullptr,                       // µå¶óÀÌ¹ö°¡ D3D_DRIVER_TYPE_SOFTWARE°¡ ¾Æ´Ñ ÇÑ 0ÀÌ¾î¾ß ÇÕ´Ï´Ù.
-		deviceFlags,                // µð¹ö±× ¹× Direct2D È£È¯¼º ÇÃ·¡±×¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-		levels,                     // ÀÌ ¾ÛÀÌ Áö¿øÇÒ ¼ö ÀÖ´Â ±â´É ¼öÁØ ¸ñ·ÏÀÔ´Ï´Ù.
-		ARRAYSIZE(levels),          // À§ ¸ñ·ÏÀÇ Å©±âÀÔ´Ï´Ù.
-		D3D11_SDK_VERSION,          // Windows Store ¾ÛÀÇ °æ¿ì Ç×»ó D3D11_SDK_VERSIONÀ¸·Î ¼³Á¤ÇÏ½Ê½Ã¿À.
-		&m_p3DDevice,   // »ý¼ºµÈ Direct3D ÀåÄ¡¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-		&FeatureLevels,             // »ý¼ºµÈ µð¹ÙÀÌ½ºÀÇ ÇÇÃÄ ¼öÁØÀ» ¹ÝÈ¯ÇÕ´Ï´Ù.
-		&m_p3DDeviceContext			        // ÀåÄ¡ Áï½Ã ÄÁÅØ½ºÆ®¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
+		nullptr,                    // ê¸°ë³¸ ì–´ëŒ‘í„°ë¥¼ ì‚¬ìš©í•˜ë ¤ë©´ nullptrì„ ì§€ì •í•˜ì‹­ì‹œì˜¤.
+		D3D_DRIVER_TYPE_HARDWARE,   // í•˜ë“œì›¨ì–´ ê·¸ëž˜í”½ ë“œë¼ì´ë²„ë¥¼ ì‚¬ìš©í•˜ì—¬ ìž¥ì¹˜ë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
+		nullptr,                       // ë“œë¼ì´ë²„ê°€ D3D_DRIVER_TYPE_SOFTWAREê°€ ì•„ë‹Œ í•œ 0ì´ì–´ì•¼ í•©ë‹ˆë‹¤.
+		deviceFlags,                // ë””ë²„ê·¸ ë° Direct2D í˜¸í™˜ì„± í”Œëž˜ê·¸ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+		levels,                     // ì´ ì•±ì´ ì§€ì›í•  ìˆ˜ ìžˆëŠ” ê¸°ëŠ¥ ìˆ˜ì¤€ ëª©ë¡ìž…ë‹ˆë‹¤.
+		ARRAYSIZE(levels),          // ìœ„ ëª©ë¡ì˜ í¬ê¸°ìž…ë‹ˆë‹¤.
+		D3D11_SDK_VERSION,          // Windows Store ì•±ì˜ ê²½ìš° í•­ìƒ D3D11_SDK_VERSIONìœ¼ë¡œ ì„¤ì •í•˜ì‹­ì‹œì˜¤.
+		&m_p3DDevice,   // ìƒì„±ëœ Direct3D ìž¥ì¹˜ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+		&FeatureLevels,             // ìƒì„±ëœ ë””ë°”ì´ìŠ¤ì˜ í”¼ì³ ìˆ˜ì¤€ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
+		&m_p3DDeviceContext			        // ìž¥ì¹˜ ì¦‰ì‹œ ì»¨í…ìŠ¤íŠ¸ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	);
 
 	return hr;
@@ -265,7 +265,7 @@ HRESULT DX11Render::CreateBackBuffer()
 {
 	HRESULT hr;
 
-	// ¹é¹öÆÛ ¸¸µé±â
+	// ë°±ë²„í¼ ë§Œë“¤ê¸°
 	//====================================
 	D3D11_TEXTURE2D_DESC m_BackBufferDesc;
 
@@ -280,11 +280,11 @@ HRESULT DX11Render::CreateBackBuffer()
 		m_pRenderTargetView.GetAddressOf()
 	);
 
-	m_pBackBuffer->GetDesc(&m_BackBufferDesc);	// Desc ¼­¼úÀÚ? -> ¹é¹öÆÛ¿¡´ëÇÑ ¼³Á¤°ªÀÌ µé¾îÀÖ´Â ±¸Á¶Ã¼
+	m_pBackBuffer->GetDesc(&m_BackBufferDesc);	// Desc ì„œìˆ ìž? -> ë°±ë²„í¼ì—ëŒ€í•œ ì„¤ì •ê°’ì´ ë“¤ì–´ìžˆëŠ” êµ¬ì¡°ì²´
 
 
-	// µª½º ½ºÅÄ½Ç
-	// 3D¸¦ ¶ç¿ì±â ½ÃÀÛÇÒ¶§ ÇÊ¿äÇÔ
+	// ëŽìŠ¤ ìŠ¤íƒ ì‹¤
+	// 3Dë¥¼ ë„ìš°ê¸° ì‹œìž‘í• ë•Œ í•„ìš”í•¨
 	//======================================
 
 	CD3D11_TEXTURE2D_DESC depthStencilDesc(
@@ -310,7 +310,7 @@ HRESULT DX11Render::CreateBackBuffer()
 		&m_pDepthStencilView
 	);
 
-	//ºäÆ÷Æ®
+	//ë·°í¬íŠ¸
 	//=================================================
 
 	D3D11_VIEWPORT m_ViewPort;
@@ -332,15 +332,15 @@ HRESULT DX11Render::CreateRaster()
 {
 	HRESULT hr = S_OK;
 
-	// ·¹½ºÅÍ
+	// ë ˆìŠ¤í„°
 	//=================================================
 
-	D3D11_RASTERIZER_DESC solidRasterDesc;	// Ã¤¿ì´Â ¸ðµå
+	D3D11_RASTERIZER_DESC solidRasterDesc;	// ì±„ìš°ëŠ” ëª¨ë“œ
 	ZeroMemory(&solidRasterDesc, sizeof(D3D11_RASTERIZER_DESC));
-	solidRasterDesc.FillMode = D3D11_FILL_SOLID;	// Ã¤¿ì±â ¸ðµå
-	solidRasterDesc.CullMode = D3D11_CULL_BACK;		// BackÀº ±×¸®Áö ¾ÊÀ½
-	solidRasterDesc.FrontCounterClockwise = false;	// ¹Ý½Ã°Ô¸¦ false = ½Ã°è¹æÇâÀ¸·Î ±×¸®°Ú´Ù´Â ¶æÀÌ´Ù.
-	solidRasterDesc.DepthClipEnable = true;			// °Å¸®¿¡ µû¶ó Å¬¸®ÇÎÀ» ÇÒÁö
+	solidRasterDesc.FillMode = D3D11_FILL_SOLID;	// ì±„ìš°ê¸° ëª¨ë“œ
+	solidRasterDesc.CullMode = D3D11_CULL_BACK;		// Backì€ ê·¸ë¦¬ì§€ ì•ŠìŒ
+	solidRasterDesc.FrontCounterClockwise = false;	// ë°˜ì‹œê²Œë¥¼ false = ì‹œê³„ë°©í–¥ìœ¼ë¡œ ê·¸ë¦¬ê² ë‹¤ëŠ” ëœ»ì´ë‹¤.
+	solidRasterDesc.DepthClipEnable = true;			// ê±°ë¦¬ì— ë”°ë¼ í´ë¦¬í•‘ì„ í• ì§€
 
 	hr = m_p3DDevice->CreateRasterizerState
 	(
@@ -351,7 +351,7 @@ HRESULT DX11Render::CreateRaster()
 
 	//=================================================
 
-	D3D11_RASTERIZER_DESC wireRasterDesc;	// Ã¤¿ìÁö¾ÊÀ½-> ¼±À»±×¸²
+	D3D11_RASTERIZER_DESC wireRasterDesc;	// ì±„ìš°ì§€ì•ŠìŒ-> ì„ ì„ê·¸ë¦¼
 	ZeroMemory(&wireRasterDesc, sizeof(D3D11_RASTERIZER_DESC));
 	wireRasterDesc.FillMode = D3D11_FILL_WIREFRAME;
 	wireRasterDesc.CullMode = D3D11_CULL_NONE;
@@ -406,15 +406,15 @@ HRESULT DX11Render::CreateCamera()
 
 	m_pCamera = new Camera();
 
-	// Ä«¸Þ¶ó¸¦ ¸¸µé°í
-	// ¼¼ÆÃÀ» ÇØÁØ´Ù.
+	// ì¹´ë©”ë¼ë¥¼ ë§Œë“¤ê³ 
+	// ì„¸íŒ…ì„ í•´ì¤€ë‹¤.
 	m_pCamera->SetLens(0.25f * 3.1415926535f, 1280.0f / 720.0f, 1.0f, 1000.0f);
 
-	// LH(Left Hand)¹æÇâÀ¸·Î
+	// LH(Left Hand)ë°©í–¥ìœ¼ë¡œ
 	DirectX::XMMATRIX p = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
 	DirectX::XMStoreFloat4x4(&m_ProjectionMatrix, p);
 
-	// ¸ÇÃ³À½¿¡ º¸´Â Ä«¸Þ¶óÀÇ Æ÷Áö¼Ç, ÃÄ´Ùº¸´Â ¹æÇâ,UPº¤ÅÍ Á¤ÇÏ±â
+	// ë§¨ì²˜ìŒì— ë³´ëŠ” ì¹´ë©”ë¼ì˜ í¬ì§€ì…˜, ì³ë‹¤ë³´ëŠ” ë°©í–¥,UPë²¡í„° ì •í•˜ê¸°
 	m_pCamera->LookAt(DirectX::XMFLOAT3(8.0f, 8.0f, -8.0f), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 1.0f, 0));
 
 	return S_OK;
@@ -424,7 +424,7 @@ HRESULT DX11Render::CreateCube()
 {
 	HRESULT hr = S_OK;
 
-	m_pCube = new Cube(m_p3DDevice, m_p3DDeviceContext, m_pWireRasterState);
+	m_pCube = new Cube(m_p3DDevice, m_p3DDeviceContext, m_pSolidRasterState);
 
 	return S_OK;
 }
