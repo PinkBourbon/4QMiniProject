@@ -27,7 +27,9 @@ int main()
 	camera.AddRotationAxis(apto::Vector3f(1.0f, 0.0f, 0.0f), 0.1f);
 
 	apto::Matrix4f mat2 = camera.GetViewMatrix4f();*/
-
+#ifdef _WIN32
+	SetConsoleOutputCP(65001);
+#endif
 	std::cout << "테스트";
 
 	aptoCore::Graphics::Initialize();
