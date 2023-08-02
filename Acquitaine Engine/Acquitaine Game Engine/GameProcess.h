@@ -8,6 +8,9 @@
 
 using namespace std;
 
+class ParentScene;
+class TestScene;
+
 enum class ObjectState
 {
 	AWAKE,
@@ -27,6 +30,8 @@ public:
 	void Initialize();			// 프로그램을 시작할때의 전처리
 	void Finalize();			// 프로그램을 종료할때의 후처리
 	void RunningGameProcess(double deltaTime);	// 이 함수 내에서 생명주기 함수들이 순서대로 실행된다.
+
+	void AddScene(ParentScene* pscene) const;
 
 	template<typename T>
 	void CreateObjects() // 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
@@ -65,7 +70,11 @@ private:
 	// 바로 바꿔주는것은 안되므로 이 함수를 통해 풀에 넣어두고 나중에 바꾼다.
 	// 리소스 매니저가 추가된다면 리소스 매니저로 넣어주라는 명령함수만 가지고 있는 놈이 될지도
 
+public:
+
+	static const GameProcess* gameEnginePointer;
 private:
+
 	float deltatime;		// 프레임당 시간
 	float fixedupdatetime;	// fixedUpdate를 위한 고정 실행주기
 
@@ -82,6 +91,8 @@ private:
 	vector<IObject*> waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
 
 	vector < pair<ObjectState, IObject*>> stateChangeBuffer;
+
+	mutable vector <ParentScene*> SceneList;
 };
 
 /// 이번의 달성 목표에 대해서 정리 해보자면
