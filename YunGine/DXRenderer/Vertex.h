@@ -1,7 +1,6 @@
 #pragma once
 #include <DirectXMath.h> // 귀찮으니 Math도 포함시켜 버리자
 
-
 /// <summary>
 /// 버텍스의 포지션과 색깔과 위치정보를 담는 버텍스
 /// </summary>

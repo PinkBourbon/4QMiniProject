@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <string>
 #include <fbxsdk.h>
+#include "Vertex.h"
 
 /// 디버그와 릴리즈할 떄 라이브러리를 나눠두어야 할까?
 /// -23.08.01- Dispact 인재원에서
@@ -31,10 +32,15 @@ private:
 	FbxNode* m_pFbxNode;
 	FbxCamera* m_pFbxCamera;
 
+	DirectX::XMFLOAT3* position;
+
 	bool FbxInit();
 
 	bool FbxRelease();
-	void NodeProcess(FbxNode* m_pFbxNode);
+	void NodeProcess(FbxNode* node);
+	void ControlPointProcess(FbxMesh* mesh);
+
+
 
 };
 

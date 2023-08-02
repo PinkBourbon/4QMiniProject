@@ -6,7 +6,8 @@ FbxLoader::FbxLoader()
 	 m_pFbxImporter(nullptr),
 	 m_pFbxScene(nullptr),
 	m_pFbxNode(nullptr),
-	m_pFbxCamera(nullptr)
+	m_pFbxCamera(nullptr),
+	position(nullptr)
 {
 
 }
@@ -77,13 +78,40 @@ bool FbxLoader::FbxRelease()
 }
 
 /// 재귀함수를 이용한 노드 탐색
-void FbxLoader::NodeProcess(FbxNode* m_pFbxNode)
+void FbxLoader::NodeProcess(FbxNode* node)
 {
-	const int childCount = m_pFbxNode->GetChildCount();
+	FbxNodeAttribute* nodeAttribute = node->GetNodeAttribute();
+
+	if (nodeAttribute)
+	{
+		if (nodeAttribute->GetAttributeType() == FbxNodeAttribute::eMesh)
+		{
+			// 노드의 속성이 메쉬이다.
+			// 메쉬 작업 수행 부분
+			FbxMesh* mesh = node->GetMesh();
+
+		}
+	}
+
+
+	const int childCount = node->GetChildCount();
 	for (unsigned int i = 0; i < childCount; ++i)
 	{
-		NodeProcess(m_pFbxNode->GetChild(i));
+		NodeProcess(node->GetChild(i));
 	}
+
+	//FbxNode* rootNode = m_pFbxScene->GetRootNode();
+
+	//NodeProcess(rootNode);	// 재귀 함수
+
+}
+
+
+void FbxLoader::ControlPointProcess(FbxMesh* mesh)
+{
+
+
+
 
 }
 
