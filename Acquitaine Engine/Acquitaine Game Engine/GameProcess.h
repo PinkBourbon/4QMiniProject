@@ -71,8 +71,8 @@ private:
 	// 바로 바꿔주는것은 안되므로 이 함수를 통해 풀에 넣어두고 나중에 바꾼다.
 	// 리소스 매니저가 추가된다면 리소스 매니저로 넣어주라는 명령함수만 가지고 있는 놈이 될지도
 
-public:
 
+public:
 	static GameProcess* gameEnginePointer;
 private:
 
