@@ -27,7 +27,7 @@ namespace aptoCore
 		{
 			for (const auto& [key, value] : resources)
 			{
-				printf("%s, ÁÖ¼Ò : 0x%p, refcount : %d\n", value.typeName.c_str(), value.data, value.refCount);
+				printf("%s, ì£¼ì†Œ : 0x%p, refcount : %d\n", value.typeName.c_str(), value.data, value.refCount);
 			}
 		}
 

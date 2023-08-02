@@ -12,7 +12,7 @@ namespace apto
 		float radY = DegToRad(degreeY * 0.5f);
 		float radZ = DegToRad(degreeZ * 0.5f);
 
-		//// ÀÏ´Ü YXZ ¼ø¼­·Î ±¸Çö
+		//// ì¼ë‹¨ YXZ ìˆœì„œë¡œ êµ¬í˜„
 		float cosR = cosf(radZ);
 		float sinR = sinf(radZ);
 		float cosY = cosf(radY);
@@ -35,7 +35,7 @@ namespace apto
 
 	Vector3f Quaternion::GetEuler() const noexcept
 	{
-		// ÀÏ´Ü YXZ ¼ø¼­·Î ±¸Çö
+		// ì¼ë‹¨ YXZ ìˆœì„œë¡œ êµ¬í˜„
 		float sRcP = 2.0f * (w * z + x * y);  // sinRoll * cosPitch
 		float cRcP = 1.0f - 2.0f * (z * z + x * x); // cosRoll * cosPitch
 		float roll = atan2(sRcP, cRcP);
@@ -43,7 +43,7 @@ namespace apto
 		float sP = 2.0f * (w * x - y * z); // sinPitch
 		float pitch = 0.0f;
 
-		// ¾ÆÅ© »çÀÎ ÇÔ¼öÀÇ Á¤ÀÇ¿ªÀÌ -1 ~ 1ÀÌ¹Ç·Î, ÀÌ¸¦ ¹ş¾î³ª´Â °æ¿ì¸¦ Ã³¸®ÇØÁà¾ß ÇÑ´Ù.
+		// ì•„í¬ ì‚¬ì¸ í•¨ìˆ˜ì˜ ì •ì˜ì—­ì´ -1 ~ 1ì´ë¯€ë¡œ, ì´ë¥¼ ë²—ì–´ë‚˜ëŠ” ê²½ìš°ë¥¼ ì²˜ë¦¬í•´ì¤˜ì•¼ í•œë‹¤.
 		if (sP < -1.0f)
 		{
 			pitch = -PI<float> / 2.0f;

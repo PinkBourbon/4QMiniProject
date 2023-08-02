@@ -39,7 +39,7 @@ export namespace apto
 		}
 		Vector4f& operator*=(const Vector4f& rhs) noexcept
 		{
-			// Çì¹ÐÅÏ °ö
+			// í—¤ë°€í„´ ê³±
 
 			Vector4f temp = *this;
 			w = temp.w * rhs.w - temp.x * rhs.x - temp.y * rhs.y - temp.z * rhs.z;
