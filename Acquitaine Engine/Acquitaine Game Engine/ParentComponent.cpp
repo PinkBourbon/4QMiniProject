@@ -1,4 +1,5 @@
-#include "ParentComponent.h"
+﻿#include "ParentComponent.h"
+#include "IObject.h"
 
 ParentComponent::ParentComponent()
 {

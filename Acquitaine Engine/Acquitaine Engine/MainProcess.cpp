@@ -11,8 +11,8 @@ constexpr int windowPositionY = 100;
 
 HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 {
-	/// Win32 °ü·Ã
-	// À©µµ Å¬·¡½º
+	/// Win32 ê´€ë ¨
+	// ìœˆë„ í´ëž˜ìŠ¤
 	LPCWSTR szAppName = L"Acquitain Project";
 	WNDCLASS wndclass;
 
@@ -27,10 +27,10 @@ HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 	wndclass.lpszMenuName = NULL;
 	wndclass.lpszClassName = szAppName;
 
-	// À©µµ Å¬·¡½º µî·Ï
+	// ìœˆë„ í´ëž˜ìŠ¤ ë“±ë¡
 	RegisterClass(&wndclass);
 
-	// À©µµ »ý¼º
+	// ìœˆë„ ìƒì„±
 	m_hWnd = CreateWindow(
 		szAppName,
 		szAppName,
@@ -40,23 +40,20 @@ HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 
 	if (!m_hWnd) return S_FALSE;
 
-	// »ý¼ºµÈ À©µµ¸¦ È­¸é¿¡ Ç¥½Ã
+	// ìƒì„±ëœ ìœˆë„ë¥¼ í™”ë©´ì— í‘œì‹œ
 	ShowWindow(m_hWnd, SW_SHOWNORMAL);
 	UpdateWindow(m_hWnd);
 
-	// µð¹ö±ë, Å×½ºÆ®¿ë ÄÜ¼ÖÀ» »ý¼º
+	// ë””ë²„ê¹…, í…ŒìŠ¤íŠ¸ìš© ì½˜ì†”ì„ ìƒì„±
  	AllocConsole();
 	FILE* _tempFile;
 	freopen_s(&_tempFile, "CONOUT$", "w", stdout);
-
+		
 	deltatime = 0;
 	timer = new Timer();
 	
 	gameprocess = new GameProcess();
 	gameprocess->Initialize();
-
-
-	///¿©±â ¾Æ·¡´Â ±×·¡ÇÈ½º
 
 	///
  	return S_OK;
@@ -73,11 +70,11 @@ void MainProcess::Loop()
 		}
 		else
 		{
-			// µ¨Å¸ Å¸ÀÓÀ» ¾ò¾î¿À´Â ºÎºÐ
+			// ë¸íƒ€ íƒ€ìž„ì„ ì–»ì–´ì˜¤ëŠ” ë¶€ë¶„
 			timer->Update();
 			deltatime = timer->GetDeltaTime();
 
-			// °ÔÀÓ ¿£ÁøÀÌ À§Ä¡ÇÒ ³»¿ë
+			// ê²Œìž„ ì—”ì§„ì´ ìœ„ì¹˜í•  ë‚´ìš©
 			gameprocess->RunningGameProcess(deltatime);
 		}
 	}

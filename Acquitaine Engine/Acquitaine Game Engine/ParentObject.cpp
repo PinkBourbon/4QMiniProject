@@ -1,10 +1,14 @@
 #include "ParentObject.h"
 #include "ParentComponent.h"
 
+int ParentObject::objectIDs;
+
 ParentObject::ParentObject()
 	:objectName("Empty_name_space"), objectID(0), componentList(0)
 	, includedScene(nullptr), includedSceneID(0)
 {
+	objectIDs = 0;
+
 	objectIDs++;
 	objectID = objectIDs;
 }

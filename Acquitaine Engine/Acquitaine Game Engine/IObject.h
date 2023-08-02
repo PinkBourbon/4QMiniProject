@@ -1,4 +1,4 @@
-/// ObjectÀÇ ÀÎÅÍÆäÀÌ½º
+ï»¿/// Objectì˜ ì¸í„°í˜ì´ìŠ¤
 #pragma once
 
 struct IObject

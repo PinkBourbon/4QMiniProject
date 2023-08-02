@@ -1,5 +1,7 @@
 #include "GameProcess.h"
 #include "TestScene.h"
+#include "SceneManager.h"
+#include "IObject.h"
 
 import aptoCore.Graphics;
 
@@ -16,8 +18,13 @@ GameProcess::~GameProcess()
 void GameProcess::Initialize()
 {
 	gameEnginePointer = this;
+
+	sceneManager = new SceneManager();
+	sceneManager->Initialize();
+
 	bool ret = aptoCore::Graphics::Initialize();
-	aptoCore::Graphics::Render(1.0f);
+
+	cout << "Engine Initialized sucess" << endl;
 }
 
 void GameProcess::Finalize()
@@ -27,35 +34,37 @@ void GameProcess::Finalize()
 
 void GameProcess::RunningGameProcess(double deltaTime)
 {
-	cout << "¿£Áø ±¸µ¿ Áß" << endl;
+	cout << "Engine is working" << endl;
 
 	float fixedupdateTimeRate = 0;
 
-	/// ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌÁö ¾Ê´Â ºÎºÐ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ
+	/// ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ì§€ ì•ŠëŠ” ë¶€ë¶„ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡
 	ObjectStateChange();
 	
-	/// ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌ´Â ºÎºÐ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ
-	// ÃÊ±âÈ­,Ãß°¡, ½ÃÀÛ
+	/// ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ëŠ” ë¶€ë¶„ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡
+	// ì´ˆê¸°í™”,ì¶”ê°€, ì‹œìž‘
 	Awake();
 	Enable();
 	Start();
 
-	// ÀÎÇ² ÀÔ·Â, ¹°¸®¿¬»ê, ¾÷µ¥ÀÌÆ®
-	InputEvent(); /// ¾ê´Â ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌÁö ¾Ê°Ô ÇÒ°Í.
-	while (fixedupdateTimeRate > FixedUpdate());	//¹°¸®¿¬»êÀÌ µé¾î°£ ºÎºÐ. ½ÇÇà½Ã°£ÀÌ fixedupdatetimeº¸´Ù ÀÛ´Ù¸é ÇÈ½ºµå ¾÷µ¥ÀÌÆ®¸¦ ¹Ýº¹ ½ÇÇàÇÑ´Ù.
+	// ì¸í’‹ ìž…ë ¥, ë¬¼ë¦¬ì—°ì‚°, ì—…ë°ì´íŠ¸
+	InputEvent(); /// ì–˜ëŠ” ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ì§€ ì•Šê²Œ í• ê²ƒ.
+	while (fixedupdateTimeRate > FixedUpdate());	//ë¬¼ë¦¬ì—°ì‚°ì´ ë“¤ì–´ê°„ ë¶€ë¶„. ì‹¤í–‰ì‹œê°„ì´ fixedupdatetimeë³´ë‹¤ ìž‘ë‹¤ë©´ í”½ìŠ¤ë“œ ì—…ë°ì´íŠ¸ë¥¼ ë°˜ë³µ ì‹¤í–‰í•œë‹¤.
 	Update();
 
-	Render();	/// ¾ê´Â ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌÁö ¾Ê°Ô ÇÒ°Í.
+	Render();	/// ì–˜ëŠ” ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ì§€ ì•Šê²Œ í• ê²ƒ.
 
-	// ºñÈ°¼ºÈ­, »ç¿ë Á¾·á
+	// ë¹„í™œì„±í™”, ì‚¬ìš© ì¢…ë£Œ
 	Disable();
 	Release();
 
-	/// ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌÁö ¾Ê´Â ºÎºÐ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ
+	/// ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ì§€ ì•ŠëŠ” ë¶€ë¶„ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡
 	InitializeObjects();
+
+	Sleep(1000);
 }
 
-void GameProcess::AddScene(ParentScene* pscene) const
+void GameProcess::AddScene(ParentScene* pscene)
 {
 	SceneList.push_back(pscene);
 }
@@ -67,6 +76,7 @@ void GameProcess::InitializeObjects()
 		pObject->Initialize();
 		PutStateChangeBuffer(ObjectState::START, pObject);
 	}
+	waitingObjectList.clear();
 }
 
 void GameProcess::Awake()
@@ -80,7 +90,7 @@ void GameProcess::Awake()
 
 void GameProcess::Enable()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : enableObjectList)
 	{
 		pObject->Enable();
 		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
@@ -89,7 +99,7 @@ void GameProcess::Enable()
 
 void GameProcess::Start()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : startObjectList)
 	{
 		pObject->Start();
 		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
@@ -106,7 +116,7 @@ void GameProcess::InputEvent()
 
 float GameProcess::FixedUpdate()
 {
-	///¹°¸®¿¬»êÀÌ ½ÇÇàµÇ´Â ºÎºÐÀÌ°í, ½ÇÇà ½Ã°£À» ÃÊ´ÜÀ§·Î ¹ÝÈ¯ÇÏµµ·Ï ±¸¼º
+	///ë¬¼ë¦¬ì—°ì‚°ì´ ì‹¤í–‰ë˜ëŠ” ë¶€ë¶„ì´ê³ , ì‹¤í–‰ ì‹œê°„ì„ ì´ˆë‹¨ìœ„ë¡œ ë°˜í™˜í•˜ë„ë¡ êµ¬ì„±
 	for (auto pObject : awakeObjectList)
 	{
 		pObject->FixedUpdate();
@@ -118,7 +128,7 @@ float GameProcess::FixedUpdate()
 
 void GameProcess::Update()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : updateObjectList)
 	{
 		pObject->Update();
 	}
@@ -134,7 +144,7 @@ void GameProcess::Render()
 
 void GameProcess::Disable()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : disableObjectList)
 	{
 		pObject->Disable();
 	}
@@ -142,7 +152,7 @@ void GameProcess::Disable()
 
 void GameProcess::Release()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : releaseObjectList)
 	{
 		pObject->Release();
 	}
@@ -184,6 +194,7 @@ void GameProcess::ObjectStateChange()
 			}break;
 		}
 	}
+	stateChangeBuffer.clear();
 }
 
 void GameProcess::PutStateChangeBuffer(ObjectState state, IObject* pObject)
@@ -191,4 +202,4 @@ void GameProcess::PutStateChangeBuffer(ObjectState state, IObject* pObject)
 	stateChangeBuffer.push_back(make_pair(state, pObject));
 }
 
-const GameProcess* GameProcess::gameEnginePointer;
+GameProcess* GameProcess::gameEnginePointer;

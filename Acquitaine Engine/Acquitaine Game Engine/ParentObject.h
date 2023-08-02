@@ -3,12 +3,12 @@
 #include <string>
 
 #include "IObject.h"
-#include "IComponent.h"
 
 using namespace std;
 
 class ParentScene;
 class ParentComponent;
+class IComponent;
 
 class ParentObject : public IObject
 {
@@ -31,30 +31,33 @@ public:
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 
+	virtual void InputEvent() override;
+	virtual void Phsics() override;
+	virtual void Render() override;
+	
+public:
 	virtual void Awake() override;
 	virtual void Enable() override;
 	virtual void Start() override;
 
-	virtual void InputEvent() override;
 	virtual void FixedUpdate() override;
-	virtual void Phsics() override;
 	virtual void Update() override;
 
-	virtual void Render() override;
 
 	virtual void Disable() override;
 	virtual void Release() override;
 
-private:
-	static int objectIDs;					// ÀÌ°Ç... »ı¼ºÀÚ°¡ È£Ãâ µÉ ¶§¸¶´Ù ÀÚµ¿À¸·Î 1¾¿ ´õÇØÁø´Ù. ±×¸®°í ±×°É ID·Î »ï´Â´Ù.
+protected:
+	static int objectIDs;					// ì´ê±´... ìƒì„±ìê°€ í˜¸ì¶œ ë  ë•Œë§ˆë‹¤ ìë™ìœ¼ë¡œ 1ì”© ë”í•´ì§„ë‹¤. ê·¸ë¦¬ê³  ê·¸ê±¸ IDë¡œ ì‚¼ëŠ”ë‹¤.
 
-	/// ¿ÀºêÁ§Æ®ÀÇ ±âÃÊ Á¤º¸°¡ ÀúÀåµÇ¾î ÀÖ´Â ºÎºĞ
-	int objectID;							// ½ÇÁ¦ ÀÌ ¿ÀºêÁ§Æ®¸¦ ±¸ºĞÇÏ´Â ¿ëµµ·Î ¾²ÀÏ ID
-	string objectName;						// ¿ÀºêÁ§Æ®ÀÇ ÀÌ¸§
-	vector<IComponent*> componentList;		// ¿ÀºêÁ§Æ®°¡ °¡Áö°í ÀÖ´Â ÄÄÆ÷³ÍÆ®ÀÇ ¸ñ·Ï
+
+	/// ì˜¤ë¸Œì íŠ¸ì˜ ê¸°ì´ˆ ì •ë³´ê°€ ì €ì¥ë˜ì–´ ìˆëŠ” ë¶€ë¶„
+	int objectID;							// ì‹¤ì œ ì´ ì˜¤ë¸Œì íŠ¸ë¥¼ êµ¬ë¶„í•˜ëŠ” ìš©ë„ë¡œ ì“°ì¼ ID
+	string objectName;						// ì˜¤ë¸Œì íŠ¸ì˜ ì´ë¦„
+	vector<IComponent*> componentList;		// ì˜¤ë¸Œì íŠ¸ê°€ ê°€ì§€ê³  ìˆëŠ” ì»´í¬ë„ŒíŠ¸ì˜ ëª©ë¡
 	bool isEnabled;
 
-	///¼Ò¼ÓµÈ Scene Á¤º¸
+	///ì†Œì†ëœ Scene ì •ë³´
 	ParentScene* includedScene;
 	int includedSceneID;
 };

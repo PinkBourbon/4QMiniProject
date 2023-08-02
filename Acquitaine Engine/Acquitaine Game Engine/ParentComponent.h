@@ -2,9 +2,10 @@
 #include <string>
 
 #include "IComponent.h"
-#include "IObject.h"
 
 using namespace std;
+
+struct IObject;
 
 class ParentComponent : IComponent
 {
@@ -33,9 +34,9 @@ public:
 	virtual void SetGameObject(IObject* parentObject);
 
 private:
-	string ComponentName;		// ÄÄÆ÷³ÍÆ®ÀÇ ÀÌ¸§
-	static int componentIDs;	// ÄÄÆ÷³ÍÆ®ÀÇ ID? ¿ØÁö ÀÖ¾î¾ß ÇÒ°Í °°¾Æ¼­.
-	int componentID;			// ÄÄÆ÷³ÍÆ®ÀÇ ID.
-	IObject* gameObject;		// ³»°¡ ¼Ò¼ÓµÈ ¿ÀºêÁ§Æ®
-	bool isEnabled;				// ÄÄÆ÷³ÍÆ®°¡ È°¼ºÈ­ µÇ¾î ÀÖ´ÂÁö? ¾Æ´ÑÁö.
+	string ComponentName;		// ì»´í¬ë„ŒíŠ¸ì˜ ì´ë¦„
+	static int componentIDs;	// ì»´í¬ë„ŒíŠ¸ì˜ ID? ì™ ì§€ ìˆì–´ì•¼ í• ê²ƒ ê°™ì•„ì„œ.
+	int componentID;			// ì»´í¬ë„ŒíŠ¸ì˜ ID.
+	IObject* gameObject;		// ë‚´ê°€ ì†Œì†ëœ ì˜¤ë¸Œì íŠ¸
+	bool isEnabled;				// ì»´í¬ë„ŒíŠ¸ê°€ í™œì„±í™” ë˜ì–´ ìˆëŠ”ì§€? ì•„ë‹Œì§€.
 };

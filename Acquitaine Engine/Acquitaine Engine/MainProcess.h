@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <windows.h>
 #include "Timer.h"
 
@@ -19,10 +19,10 @@ private:
 	HINSTANCE m_hInstance;
 	HANDLE consoleHandle;
 
-	//°ÔÀÓ¿£Áø
+	//ê²Œì„ì—”ì§„
 	GameProcess* gameprocess;
 
-	// ½Ã°£°ú °ü·ÃµÈ ºÎºĞ
+	// ì‹œê°„ê³¼ ê´€ë ¨ëœ ë¶€ë¶„
 	Timer* timer;
 	double deltatime;
 
