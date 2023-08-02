@@ -9,6 +9,7 @@
 #include "Cube.h"
 #include "Grid.h"
 #include "Camera.h"
+#include "FbxLoaderV2.h"
 
 // dll로 부를때 랜더러를 만드는 함수의 주소를 가지고 있는다.
 // return을 포인터로 받아줄 수 있다.
@@ -27,18 +28,18 @@ void DeleteRenderer(IDX11Render* instance)
 DX11Render::DX11Render()
 	: VertexBuffer(nullptr),
 	IndexBuffer(nullptr),
-	m_deltaTime(0.0f),
-	m_pAxis(nullptr),
-	m_pCube(nullptr),
-	m_pGrid(nullptr),
-	m_pCamera(nullptr),
-	m_WorldMatrix
+	_deltaTime(0.0f),
+	_pAxis(nullptr),
+	_pCube(nullptr),
+	_pGrid(nullptr),
+	_pCamera(nullptr),
+	_worldMatrix
 	{ 1.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f },
-	m_ViewMatrix(),
-	m_ProjectionMatrix()
+	_viewMatrix(),
+	_projectionMatrix()
 {
 
 }
@@ -90,32 +91,32 @@ long DX11Render::Initialize(void* hwnd)
 
 void DX11Render::Update(float deltaTime)
 {
-	m_deltaTime = deltaTime;
+	_deltaTime = deltaTime;
 
 	// 카메라
 	if (GetAsyncKeyState('W') & 0x8000)
-		m_pCamera->Walk(10.0f * deltaTime);
+		_pCamera->Walk(10.0f * deltaTime);
 
 	if (GetAsyncKeyState('S') & 0x8000)
-		m_pCamera->Walk(-10.0f * deltaTime);
+		_pCamera->Walk(-10.0f * deltaTime);
 
 	if (GetAsyncKeyState('A') & 0x8000)
-		m_pCamera->Strafe(-10.0f * deltaTime);
+		_pCamera->Strafe(-10.0f * deltaTime);
 
 	if (GetAsyncKeyState('D') & 0x8000)
-		m_pCamera->Strafe(10.0f * deltaTime);
+		_pCamera->Strafe(10.0f * deltaTime);
 
 	if (GetAsyncKeyState('Q') & 0x8000)
-		m_pCamera->WorldUpDown(-10.0f * deltaTime);
+		_pCamera->WorldUpDown(-10.0f * deltaTime);
 
 	if (GetAsyncKeyState('E') & 0x8000)
-		m_pCamera->WorldUpDown(10.0f * deltaTime);
+		_pCamera->WorldUpDown(10.0f * deltaTime);
 
-	m_pCamera->UpdateViewMatrix();
+	_pCamera->UpdateViewMatrix();
 
-	m_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
-	m_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
-	m_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
+	_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
 
 }
 
@@ -141,39 +142,39 @@ void DX11Render::BeginRender(float red, float green, float blue, float alpha)
 	color[2] = blue;	// b
 	color[3] = alpha;	// a
 
-	m_p3DDeviceContext->OMSetRenderTargets(
+	_p3DDeviceContext->OMSetRenderTargets(
 		1,
-		m_pRenderTargetView.GetAddressOf(),
-		m_pDepthStencilView.Get()
+		_pRenderTargetView.GetAddressOf(),
+		_pDepthStencilView.Get()
 	);
 
 	// Clear the back buffer.
-	m_p3DDeviceContext->ClearRenderTargetView(m_pRenderTargetView.Get(), color);
+	_p3DDeviceContext->ClearRenderTargetView(_pRenderTargetView.Get(), color);
 	// Clear the depth buffer.
-	m_p3DDeviceContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	_p3DDeviceContext->ClearDepthStencilView(_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 	//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
 
 }
 
 void DX11Render::DrawObject()
 {
-	DirectX::XMMATRIX worldMatrix = XMLoadFloat4x4(&m_WorldMatrix);
-	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&m_ViewMatrix);
-	DirectX::XMMATRIX projMatrix = XMLoadFloat4x4(&m_ProjectionMatrix);
+	DirectX::XMMATRIX worldMatrix = XMLoadFloat4x4(&_worldMatrix);
+	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&_viewMatrix);
+	DirectX::XMMATRIX projMatrix = XMLoadFloat4x4(&_projectionMatrix);
 
-	m_p3DDeviceContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 0);
+	_p3DDeviceContext->OMSetDepthStencilState(_pDepthStencilState.Get(), 0);
 
-	m_pAxis->Render();
-	m_pGrid->Render();
-	m_pCube->Render();
+	_pAxis->Render();
+	_pGrid->Render();
+	_pCube->Render();
 
 	// 레스터라이저 상태 설정 
-	m_p3DDeviceContext->RSSetState(0);
+	_p3DDeviceContext->RSSetState(0);
 }
 
 void DX11Render::EndRender()
 {
-	sm_SwapChain->Present(1, 0);
+	s_SwapChain->Present(1, 0);
 
 	return;
 }
@@ -217,9 +218,9 @@ HRESULT DX11Render::CreateDevice()
 		levels,                     // 이 앱이 지원할 수 있는 기능 수준 목록입니다.
 		ARRAYSIZE(levels),          // 위 목록의 크기입니다.
 		D3D11_SDK_VERSION,          // Windows Store 앱의 경우 항상 D3D11_SDK_VERSION으로 설정하십시오.
-		&m_p3DDevice,   // 생성된 Direct3D 장치를 반환합니다.
+		&_p3DDevice,   // 생성된 Direct3D 장치를 반환합니다.
 		&FeatureLevels,             // 생성된 디바이스의 피쳐 수준을 반환합니다.
-		&m_p3DDeviceContext			        // 장치 즉시 컨텍스트를 반환합니다.
+		&_p3DDeviceContext			        // 장치 즉시 컨텍스트를 반환합니다.
 	);
 
 	return hr;
@@ -243,7 +244,7 @@ HRESULT DX11Render::CreateSwapChain(HWND hWnd)
 	desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 	desc.OutputWindow = hWnd;
 
-	m_p3DDevice.As(&dxgiDevice);
+	_p3DDevice.As(&dxgiDevice);
 
 	hr = dxgiDevice->GetAdapter(&adapter);
 
@@ -252,9 +253,9 @@ HRESULT DX11Render::CreateSwapChain(HWND hWnd)
 		adapter->GetParent(IID_PPV_ARGS(&factory));
 
 		hr = factory->CreateSwapChain(
-			m_p3DDevice.Get(),
+			_p3DDevice.Get(),
 			&desc,
-			&sm_SwapChain
+			&s_SwapChain
 		);
 	}
 
@@ -267,21 +268,20 @@ HRESULT DX11Render::CreateBackBuffer()
 
 	// 백버퍼 만들기
 	//====================================
-	D3D11_TEXTURE2D_DESC m_BackBufferDesc;
+	D3D11_TEXTURE2D_DESC _BackBufferDesc;
 
-	hr = sm_SwapChain->GetBuffer(
+	hr = s_SwapChain->GetBuffer(
 		0,
 		__uuidof(ID3D11Texture2D),
-		(void**)(m_pBackBuffer.GetAddressOf()));
+		(void**)(_pbackBuffer.GetAddressOf()));
 
-	hr = m_p3DDevice->CreateRenderTargetView(
-		m_pBackBuffer.Get(),
+	hr = _p3DDevice->CreateRenderTargetView(
+		_pbackBuffer.Get(),
 		nullptr,
-		m_pRenderTargetView.GetAddressOf()
+		_pRenderTargetView.GetAddressOf()
 	);
 
-	m_pBackBuffer->GetDesc(&m_BackBufferDesc);	// Desc 서술자? -> 백버퍼에대한 설정값이 들어있는 구조체
-
+	_pbackBuffer->GetDesc(&_BackBufferDesc);	// Desc 서술자? -> 백버퍼에대한 설정값이 들어있는 구조체
 
 	// 뎁스 스탠실
 	// 3D를 띄우기 시작할때 필요함
@@ -289,40 +289,40 @@ HRESULT DX11Render::CreateBackBuffer()
 
 	CD3D11_TEXTURE2D_DESC depthStencilDesc(
 		DXGI_FORMAT_D24_UNORM_S8_UINT,
-		static_cast<UINT> (m_BackBufferDesc.Width),
-		static_cast<UINT> (m_BackBufferDesc.Height),
+		static_cast<UINT> (_BackBufferDesc.Width),
+		static_cast<UINT> (_BackBufferDesc.Height),
 		1, // This depth stencil view has only one texture.
 		1, // Use a single mipmap level.
 		D3D11_BIND_DEPTH_STENCIL
 	);
 
-	m_p3DDevice->CreateTexture2D(
+	_p3DDevice->CreateTexture2D(
 		&depthStencilDesc,
 		nullptr,
-		&m_pTexture2D
+		&_pTexture2D
 	);
 
 	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
 
-	m_p3DDevice->CreateDepthStencilView(
-		m_pTexture2D.Get(),
+	_p3DDevice->CreateDepthStencilView(
+		_pTexture2D.Get(),
 		&depthStencilViewDesc,
-		&m_pDepthStencilView
+		&_pDepthStencilView
 	);
 
 	//뷰포트
 	//=================================================
 
-	D3D11_VIEWPORT m_ViewPort;
-	ZeroMemory(&m_ViewPort, sizeof(D3D11_VIEWPORT));
-	m_ViewPort.Height = (float)m_BackBufferDesc.Height;
-	m_ViewPort.Width = (float)m_BackBufferDesc.Width;
-	m_ViewPort.MinDepth = 0;
-	m_ViewPort.MaxDepth = 1;
+	D3D11_VIEWPORT _ViewPort;
+	ZeroMemory(&_ViewPort, sizeof(D3D11_VIEWPORT));
+	_ViewPort.Height = (float)_BackBufferDesc.Height;
+	_ViewPort.Width = (float)_BackBufferDesc.Width;
+	_ViewPort.MinDepth = 0;
+	_ViewPort.MaxDepth = 1;
 
-	m_p3DDeviceContext->RSSetViewports(
+	_p3DDeviceContext->RSSetViewports(
 		1,
-		&m_ViewPort
+		&_ViewPort
 	);
 
 	return hr;
@@ -342,10 +342,10 @@ HRESULT DX11Render::CreateRaster()
 	solidRasterDesc.FrontCounterClockwise = false;	// 반시게를 false = 시계방향으로 그리겠다는 뜻이다.
 	solidRasterDesc.DepthClipEnable = true;			// 거리에 따라 클리핑을 할지
 
-	hr = m_p3DDevice->CreateRasterizerState
+	hr = _p3DDevice->CreateRasterizerState
 	(
 		&solidRasterDesc,
-		m_pSolidRasterState.GetAddressOf()
+		_pSolidRasterState.GetAddressOf()
 	);
 
 
@@ -358,10 +358,10 @@ HRESULT DX11Render::CreateRaster()
 	wireRasterDesc.FrontCounterClockwise = false;
 	wireRasterDesc.DepthClipEnable = true;
 
-	hr = m_p3DDevice->CreateRasterizerState
+	hr = _p3DDevice->CreateRasterizerState
 	(
 		&wireRasterDesc,
-		m_pWireRasterState.GetAddressOf()
+		_pWireRasterState.GetAddressOf()
 	);
 
 	//====================================================
@@ -372,6 +372,12 @@ HRESULT DX11Render::CreateRaster()
 HRESULT DX11Render::CreateObject()
 {
 	HRESULT hr = S_OK;
+
+	hr = CreateLoader();
+	if (FAILED(hr))
+	{
+		return hr;
+	}
 
 	hr = CreateCamera();
 	if (FAILED(hr))
@@ -400,22 +406,37 @@ HRESULT DX11Render::CreateObject()
 	return hr;
 }
 
+
+HRESULT DX11Render::CreateLoader()
+{
+	HRESULT hr = S_OK;
+
+	_pLoaderV2 = new FbxLoaderV2;
+
+	_pLoaderV2->InitializeLoader();
+
+	/// 원하는 fbx 파일을 로드해준다.
+	//_pLoaderV2->LoadFbx();
+
+	_pLoaderV2->
+}
+
 HRESULT DX11Render::CreateCamera()
 {
 	HRESULT hr = S_OK;
 
-	m_pCamera = new Camera();
+	_pCamera = new Camera();
 
 	// 카메라를 만들고
 	// 세팅을 해준다.
-	m_pCamera->SetLens(0.25f * 3.1415926535f, 1280.0f / 720.0f, 1.0f, 1000.0f);
+	_pCamera->SetLens(0.25f * 3.1415926535f, 1280.0f / 720.0f, 1.0f, 1000.0f);
 
 	// LH(Left Hand)방향으로
 	DirectX::XMMATRIX p = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
-	DirectX::XMStoreFloat4x4(&m_ProjectionMatrix, p);
+	DirectX::XMStoreFloat4x4(&_projectionMatrix, p);
 
 	// 맨처음에 보는 카메라의 포지션, 쳐다보는 방향,UP벡터 정하기
-	m_pCamera->LookAt(DirectX::XMFLOAT3(8.0f, 8.0f, -8.0f), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 1.0f, 0));
+	_pCamera->LookAt(DirectX::XMFLOAT3(8.0f, 8.0f, -8.0f), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 1.0f, 0));
 
 	return S_OK;
 }
@@ -424,7 +445,7 @@ HRESULT DX11Render::CreateCube()
 {
 	HRESULT hr = S_OK;
 
-	m_pCube = new Cube(m_p3DDevice, m_p3DDeviceContext, m_pSolidRasterState);
+	_pCube = new Cube(_p3DDevice, _p3DDeviceContext, _pSolidRasterState);
 
 	return S_OK;
 }
@@ -433,7 +454,7 @@ HRESULT DX11Render::CreateGrid()
 {
 	HRESULT hr = S_OK;
 
-	m_pGrid = new Grid(m_p3DDevice, m_p3DDeviceContext, m_pWireRasterState);
+	_pGrid = new Grid(_p3DDevice, _p3DDeviceContext, _pWireRasterState);
 
 	return S_OK;
 }
@@ -442,7 +463,7 @@ HRESULT DX11Render::CreateAxis()
 {
 	HRESULT hr = S_OK;
 
-	m_pAxis = new Axis(m_p3DDevice, m_p3DDeviceContext, m_pWireRasterState);
+	_pAxis = new Axis(_p3DDevice, _p3DDeviceContext, _pWireRasterState);
 
 	return S_OK;
 }

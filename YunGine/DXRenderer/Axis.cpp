@@ -5,9 +5,9 @@ Axis::Axis(
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>& pDeviceContext, 
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>& pRasterState)	// wireRaster로 받음
 {
-	pDevice.CopyTo(m_3DDevice.GetAddressOf());
-	pDeviceContext.CopyTo(m_3DDeviceContext.GetAddressOf());
-	pRasterState.CopyTo(m_RasterState.GetAddressOf());
+	pDevice.CopyTo(_3DDevice.GetAddressOf());
+	pDeviceContext.CopyTo(_3DDeviceContext.GetAddressOf());
+	pRasterState.CopyTo(_RasterState.GetAddressOf());
 
 	ObjectSetting();
 }
@@ -54,11 +54,11 @@ void Axis::ObjectSetting()
 	InitData.SysMemSlicePitch = 0;	// 한 깊이 수준의 시작부터 다음 수준까지의 거리(byte)
 
 	//D3D엔진에서 디바이스를 여기서 넘겨줘야하나?
-	hr = m_3DDevice->CreateBuffer
+	hr = _3DDevice->CreateBuffer
 	(
 		&bufferDesc,
 		&InitData,
-		m_VertexBuffer.GetAddressOf()
+		_VertexBuffer.GetAddressOf()
 	);
 
 
@@ -86,10 +86,10 @@ void Axis::ObjectSetting()
 	indexInit.SysMemPitch = 0;
 	indexInit.SysMemSlicePitch = 0;
 
-	hr = m_3DDevice->CreateBuffer(
+	hr = _3DDevice->CreateBuffer(
 		&indexBufferDesc,
 		&indexInit,
-		m_IndexBuffer.GetAddressOf()
+		_IndexBuffer.GetAddressOf()
 	);
 
 	BuildFX();
@@ -99,42 +99,42 @@ void Axis::ObjectSetting()
 
 void Axis::ObjectUpdate(const DirectX::XMMATRIX& world, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& projection)
 {
-	m_World = world;
-	m_View = view;
-	m_Proj = projection;
+	_world = world;
+	_view = view;
+	_proj = projection;
 }
 
 
 void Axis::Render()
 {
 	// 입력 배치 객체 셋팅
-	m_3DDeviceContext->IASetInputLayout(m_InputLayout.Get());
-	m_3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	_3DDeviceContext->IASetInputLayout(_InputLayout.Get());
+	_3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	// 인덱스버퍼와 버텍스 버퍼 셋팅
 	UINT stride = sizeof(ColorVertex);
 	UINT offset = 0;
-	m_3DDeviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), &stride, &offset);
-	// &m_axisVertexBuffer와 AddressOf차이가 뭐일까-> &는 초기화를 해버린다.
-	m_3DDeviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	_3DDeviceContext->IASetVertexBuffers(0, 1, _VertexBuffer.GetAddressOf(), &stride, &offset);
+	// &_axisVertexBuffer와 AddressOf차이가 뭐일까-> &는 초기화를 해버린다.
+	_3DDeviceContext->IASetIndexBuffer(_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
 	///WVP TM등을 셋팅
-	DirectX::XMMATRIX worldViewProj = m_World * m_View * m_Proj;
-	m_MatrixVariable->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
+	DirectX::XMMATRIX worldViewProj = _world * _view * _proj;
+	_MatrixVariable->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
 
 	//랜더스테이트
-	m_3DDeviceContext->RSSetState(m_RasterState.Get());
+	_3DDeviceContext->RSSetState(_RasterState.Get());
 
 	//테크닉
 	D3DX11_TECHNIQUE_DESC techDesc;
-	m_Technique->GetDesc(&techDesc);
+	_Technique->GetDesc(&techDesc);
 
 	//랜더패스
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		m_Technique->GetPassByIndex(p)->Apply(0, m_3DDeviceContext.Get());
+		_Technique->GetPassByIndex(p)->Apply(0, _3DDeviceContext.Get());
 
-		m_3DDeviceContext->DrawIndexed(6, 0, 0);
+		_3DDeviceContext->DrawIndexed(6, 0, 0);
 	}
 }
 
@@ -162,10 +162,10 @@ void Axis::BuildFX()
 
 	hr = D3DCompileFromFile(shaderFile, nullptr, nullptr, shaderEntryPoint, shaderTarget, shaderFlag, 0, &compiledShader, &compilationMsgs);
 
-	D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), 0, m_3DDevice.Get(), m_Effect.GetAddressOf());
+	D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), 0, _3DDevice.Get(), _Effect.GetAddressOf());
 
-	m_Technique = m_Effect->GetTechniqueByName("ColorTech");
-	m_MatrixVariable = m_Effect->GetVariableByName("gWorldViewProj")->AsMatrix();
+	_Technique = _Effect->GetTechniqueByName("ColorTech");
+	_MatrixVariable = _Effect->GetVariableByName("gWorldViewProj")->AsMatrix();
 }
 
 void Axis::BuildVertexLayout()
@@ -180,12 +180,12 @@ void Axis::BuildVertexLayout()
 
 	// Create the input layout
 	D3DX11_PASS_DESC passDesc;
-	m_Technique->GetPassByIndex(0)->GetDesc(&passDesc);
+	_Technique->GetPassByIndex(0)->GetDesc(&passDesc);
 
 	/// 그냥 숫자 적혀있는게 불편해서 ARRAYSIZE로 바꿈
 	/// 아무 의미 없긴 함
-	hr = (m_3DDevice->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), passDesc.pIAInputSignature,
-		passDesc.IAInputSignatureSize, m_InputLayout.GetAddressOf()));
+	hr = (_3DDevice->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), passDesc.pIAInputSignature,
+		passDesc.IAInputSignatureSize, _InputLayout.GetAddressOf()));
 
 	if (FAILED(hr))
 	{

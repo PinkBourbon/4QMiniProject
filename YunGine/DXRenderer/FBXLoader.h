@@ -23,24 +23,27 @@ public:
 	FbxLoader();
 	~FbxLoader();
 
+	bool FbxInit();
 	bool FbxLoad(std::wstring filename);
 
 private:
-	FbxManager* m_pFbxManager;
-	FbxImporter* m_pFbxImporter;
-	FbxScene* m_pFbxScene;
-	FbxNode* m_pFbxNode;
-	FbxCamera* m_pFbxCamera;
+	FbxManager* _pFbxManager;
+	FbxImporter* _pFbxImporter;
+	FbxScene* _pFbxScene;
+	FbxNode* _pFbxNode;
+	FbxCamera* _pFbxCamera;
 
 	DirectX::XMFLOAT3* position;
+	DirectX::XMFLOAT3* result;	// we need this variable for save normal information. perhaps?
 
-	bool FbxInit();
+
 
 	bool FbxRelease();
-	void NodeProcess(FbxNode* node);
+	void NodeProcessRecursive(FbxNode* node);
 	void ControlPointProcess(FbxMesh* mesh);
+	DirectX::XMFLOAT3 ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCounter);
 
-
+	void Something(FbxMesh* mesh);
 
 };
 

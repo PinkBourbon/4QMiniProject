@@ -39,6 +39,7 @@ class Axis;
 class Cube;
 class Grid;
 class Camera;
+class FbxLoaderV2;
 
 class DX11Render : public IDX11Render
 {
@@ -78,54 +79,56 @@ private:
 	// HRESULT CreateInputLayout();
 
 	// 오브젝트들 생성하기
-	 HRESULT CreateObject();	
-	 HRESULT CreateCamera();
-	 HRESULT CreateCube();
-	 HRESULT CreateGrid();
-	 HRESULT CreateAxis();
+	HRESULT CreateObject();
+	HRESULT CreateLoader();
+	HRESULT CreateCamera();
+	HRESULT CreateCube();
+	HRESULT CreateGrid();
+	HRESULT CreateAxis();
 
-	 // 시간 변수
-	 float m_deltaTime;
+	// 시간 변수
+	float _deltaTime;
 
 private:
 	//int mVideoCardMemory;	// 블로그에서는 있지만 어디다가 쓰는걸까?
 	//char mVideoCardDescription[128];
 	// 
-	// sm_SwapChain에서 Preset할 때 필요했던 변수 하지만 굳이?
+	// s_SwapChain에서 Preset할 때 필요했던 변수 하지만 굳이?
 	//bool bVsyncEnabled = false;
-	Microsoft::WRL::ComPtr<ID3D11Device> m_p3DDevice;
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_p3DDeviceContext;
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
+	Microsoft::WRL::ComPtr<ID3D11Device> _p3DDevice;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> _p3DDeviceContext;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _pRenderTargetView;
 
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pTexture2D;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> _pTexture2D;
 
 	// 뎁스 스탠실
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_pDepthStencilState;
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _pDepthStencilState;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _pDepthStencilView;
 
 	// 레스터 상태
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_pCurrRasterState;	// 현재 레스터
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_pSolidRasterState;	// 채우는 레스터
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_pWireRasterState;	// 와이어 레스터-> 선으로 나타낸다는뜻
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> _pCurrRasterState;	// 현재 레스터
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> _pSolidRasterState;	// 채우는 레스터
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> _pWireRasterState;	// 와이어 레스터-> 선으로 나타낸다는뜻
 
 	// 스왑체인을 만들기 위한 변수
-	Microsoft::WRL::ComPtr<IDXGISwapChain> sm_SwapChain;
-	Microsoft::WRL::ComPtr<IDXGIDevice3> sm_dxgiDevice;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D>m_pBackBuffer;
+	Microsoft::WRL::ComPtr<IDXGISwapChain> s_SwapChain;
+	Microsoft::WRL::ComPtr<IDXGIDevice3> s_dxgiDevice;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D>_pbackBuffer;
 
 	// Direct2D와 같은 다른 Factory에서 사용할 DXGI 장치 개체를 만듭니다.
 	Microsoft::WRL::ComPtr<IDXGIDevice3> dxgiDevice;
 
 	// 매트릭스
-	DirectX::XMFLOAT4X4 m_WorldMatrix;
-	DirectX::XMFLOAT4X4 m_ViewMatrix;
-	DirectX::XMFLOAT4X4 m_ProjectionMatrix;
+	DirectX::XMFLOAT4X4 _worldMatrix;
+	DirectX::XMFLOAT4X4 _viewMatrix;
+	DirectX::XMFLOAT4X4 _projectionMatrix;
 
 	// 오브젝트
-	 Axis* m_pAxis;
-	 Grid* m_pGrid;
-	 Cube* m_pCube;
-	 Camera* m_pCamera;
+	Axis* _pAxis;
+	Grid* _pGrid;
+	Cube* _pCube;
+	Camera* _pCamera;
+	FbxLoaderV2* _pLoaderV2;
 
 	// 버퍼
 	ID3D11Buffer* VertexBuffer;

@@ -1,10 +1,18 @@
 #include "Camera.h"
 
 Camera::Camera()
-	: m_Position(0.0f, 0.0f, 0.0f),	// 카메라의 위치
-	m_Right(1.0f, 0.0f, 0.0f),		// 오른쪽으로 돌기 위한 변수
-	m_Up(0.0f, 1.0f, 0.0f),			// 왼쪽으로 돌기 위한 변수
-	m_Look(0.0f, 0.0f, 1.0f)		// 카메라가 보는 방향을 위한 변수
+	: _Position(0.0f, 0.0f, 0.0f),	// 카메라의 위치
+	_Right(1.0f, 0.0f, 0.0f),		// 오른쪽으로 돌기 위한 변수
+	_Up(0.0f, 1.0f, 0.0f),			// 왼쪽으로 돌기 위한 변수
+	_Look(0.0f, 0.0f, 1.0f),		// 카메라가 보는 방향을 위한 변수
+	_Aspect(),
+	_FarWindowHeight(),
+	_FarZ(),
+	_FovY(),
+	_NearWindowHeight(),
+	_NearZ(),
+	_Proj(),
+	_View()
 {
 
 }
@@ -16,114 +24,114 @@ Camera::~Camera()
 
 DirectX::XMFLOAT3 Camera::GetPosition() const
 {
-	return m_Position;
+	return _Position;
 }
 
 DirectX::XMVECTOR Camera::GetPositionXM() const
 {
-	return DirectX::XMLoadFloat3(&m_Position);
+	return DirectX::XMLoadFloat3(&_Position);
 }
 
 void Camera::SetPosition(float x, float y, float z)
 {
-	m_Position = DirectX::XMFLOAT3(x, y, z);
+	_Position = DirectX::XMFLOAT3(x, y, z);
 }
 
 void Camera::SetPosition(const DirectX::XMFLOAT3& v)
 {
-	m_Position = v;
+	_Position = v;
 }
 
 DirectX::XMVECTOR Camera::GetRightXM() const
 {
-	return DirectX::XMLoadFloat3(&m_Right);
+	return DirectX::XMLoadFloat3(&_Right);
 }
 
 DirectX::XMFLOAT3 Camera::GetRight() const
 {
-	return m_Right;
+	return _Right;
 }
 
 DirectX::XMVECTOR Camera::GetUpXM() const
 {
-	return DirectX::XMLoadFloat3(&m_Up);
+	return DirectX::XMLoadFloat3(&_Up);
 }
 
 DirectX::XMFLOAT3 Camera::GetUp() const
 {
-	return m_Up;
+	return _Up;
 }
 
 DirectX::XMVECTOR Camera::GetLookXM() const
 {
-	return DirectX::XMLoadFloat3(&m_Look);
+	return DirectX::XMLoadFloat3(&_Look);
 }
 
 DirectX::XMFLOAT3 Camera::GetLook() const
 {
-	return m_Look;
+	return _Look;
 }
 
 float Camera::GetNearZ() const
 {
-	return m_NearZ;
+	return _NearZ;
 }
 
 float Camera::GetFarZ() const
 {
-	return m_FarZ;
+	return _FarZ;
 }
 
 float Camera::GetAspect() const
 {
-	return m_Aspect;
+	return _Aspect;
 }
 
 float Camera::GetFovY() const
 {
-	return m_FovY;
+	return _FovY;
 }
 
 float Camera::GetFovX() const
 {
 	#pragma warning(disable: 4244)
 	float halfWidth = 0.5f * GetNearWindowWidth();
-	return 2.0f * atan(halfWidth / m_NearZ);
+	return 2.0f * atan(halfWidth / _NearZ);
 }
 
 float Camera::GetNearWindowWidth() const
 {
-	return m_Aspect * m_NearWindowHeight;
+	return _Aspect * _NearWindowHeight;
 }
 
 float Camera::GetNearWindowHeight() const
 {
-	return m_NearWindowHeight;
+	return _NearWindowHeight;
 }
 
 float Camera::GetFarWindowWidth() const
 {
-	return m_Aspect * m_FarWindowHeight;
+	return _Aspect * _FarWindowHeight;
 }
 
 float Camera::GetFarWindowHeight() const
 {
-	return m_FarWindowHeight;
+	return _FarWindowHeight;
 }
 
 void Camera::SetLens(float fovY, float aspect, float zn, float zf)
 {
 	// cache properties
-	m_FovY = fovY;
-	m_Aspect = aspect;
-	m_NearZ = zn;
-	m_FarZ = zf;
+	_FovY = fovY;
+	_Aspect = aspect;
+	_NearZ = zn;
+	_FarZ = zf;
 
-	m_NearWindowHeight = 2.0f * m_NearZ * tanf(0.5f * m_FovY);
-	m_FarWindowHeight = 2.0f * m_FarZ * tanf(0.5f * m_FovY);
+	_NearWindowHeight = 2.0f * _NearZ * tanf(0.5f * _FovY);
+	_FarWindowHeight = 2.0f * _FarZ * tanf(0.5f * _FovY);
 
-	DirectX::XMMATRIX P = DirectX::XMMatrixPerspectiveFovLH(m_FovY, m_Aspect, m_NearZ, m_FarZ);
-	XMStoreFloat4x4(&m_Proj, P);
+	DirectX::XMMATRIX P = DirectX::XMMatrixPerspectiveFovLH(_FovY, _Aspect, _NearZ, _FarZ);
+	XMStoreFloat4x4(&_Proj, P);
 }
 
 void Camera::LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp)
@@ -134,10 +142,10 @@ void Camera::LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::
 	DirectX::XMVECTOR R = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(worldUp, L));
 	DirectX::XMVECTOR U = DirectX::XMVector3Cross(L, R);
 
-	DirectX::XMStoreFloat3(&m_Position, pos);
-	DirectX::XMStoreFloat3(&m_Look, L);
-	DirectX::XMStoreFloat3(&m_Right, R);
-	DirectX::XMStoreFloat3(&m_Up, U);
+	DirectX::XMStoreFloat3(&_Position, pos);
+	DirectX::XMStoreFloat3(&_Look, L);
+	DirectX::XMStoreFloat3(&_Right, R);
+	DirectX::XMStoreFloat3(&_Up, U);
 }
 
 void Camera::LookAt(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& target, const DirectX::XMFLOAT3& up)
@@ -151,54 +159,54 @@ void Camera::LookAt(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& targe
 
 DirectX::XMMATRIX Camera::View() const
 {
-	return DirectX::XMLoadFloat4x4(&m_View);
+	return DirectX::XMLoadFloat4x4(&_View);
 }
 
 DirectX::XMMATRIX Camera::Proj() const
 {
-	return DirectX::XMLoadFloat4x4(&m_Proj);
+	return DirectX::XMLoadFloat4x4(&_Proj);
 }
 
 DirectX::XMMATRIX Camera::ViewProj() const
 {
-	return DirectX::XMLoadFloat4x4(&m_Proj);
+	return DirectX::XMLoadFloat4x4(&_Proj);
 }
 
 void Camera::Strafe(float d)
 {
 	// mPosition += d*mRight
 	DirectX::XMVECTOR s = DirectX::XMVectorReplicate(d);
-	DirectX::XMVECTOR r = DirectX::XMLoadFloat3(&m_Right);
-	DirectX::XMVECTOR p = DirectX::XMLoadFloat3(&m_Position);
-	DirectX::XMStoreFloat3(&m_Position, DirectX::XMVectorMultiplyAdd(s, r, p));
+	DirectX::XMVECTOR r = DirectX::XMLoadFloat3(&_Right);
+	DirectX::XMVECTOR p = DirectX::XMLoadFloat3(&_Position);
+	DirectX::XMStoreFloat3(&_Position, DirectX::XMVectorMultiplyAdd(s, r, p));
 }
 
 void Camera::Walk(float d)
 {
 	// mPosition += d*mLook
 	DirectX::XMVECTOR s = DirectX::XMVectorReplicate(d);
-	DirectX::XMVECTOR l = DirectX::XMLoadFloat3(&m_Look);
-	DirectX::XMVECTOR p = DirectX::XMLoadFloat3(&m_Position);
-	DirectX::XMStoreFloat3(&m_Position, DirectX::XMVectorMultiplyAdd(s, l, p));
+	DirectX::XMVECTOR l = DirectX::XMLoadFloat3(&_Look);
+	DirectX::XMVECTOR p = DirectX::XMLoadFloat3(&_Position);
+	DirectX::XMStoreFloat3(&_Position, DirectX::XMVectorMultiplyAdd(s, l, p));
 }
 
 void Camera::WorldUpDown(float d)
 {
 	// mPosition += d * mUp
 	DirectX::XMVECTOR scale = DirectX::XMVectorReplicate(d);
-	DirectX::XMVECTOR up = DirectX::XMLoadFloat3(&m_Up);
-	DirectX::XMVECTOR position = DirectX::XMLoadFloat3(&m_Position);
-	DirectX::XMStoreFloat3(&m_Position, DirectX::XMVectorMultiplyAdd(scale, up, position));
+	DirectX::XMVECTOR up = DirectX::XMLoadFloat3(&_Up);
+	DirectX::XMVECTOR position = DirectX::XMLoadFloat3(&_Position);
+	DirectX::XMStoreFloat3(&_Position, DirectX::XMVectorMultiplyAdd(scale, up, position));
 }
 
 void Camera::Pitch(float angle)
 {
 	// Rotate up and look vector about the right vector.
 
-	DirectX::XMMATRIX R = DirectX::XMMatrixRotationAxis(DirectX::XMLoadFloat3(&m_Right), angle);
+	DirectX::XMMATRIX R = DirectX::XMMatrixRotationAxis(DirectX::XMLoadFloat3(&_Right), angle);
 
-	DirectX::XMStoreFloat3(&m_Up, XMVector3TransformNormal(XMLoadFloat3(&m_Up), R));
-	DirectX::XMStoreFloat3(&m_Look, XMVector3TransformNormal(XMLoadFloat3(&m_Look), R));
+	DirectX::XMStoreFloat3(&_Up, XMVector3TransformNormal(XMLoadFloat3(&_Up), R));
+	DirectX::XMStoreFloat3(&_Look, XMVector3TransformNormal(XMLoadFloat3(&_Look), R));
 }
 
 void Camera::RotateY(float angle)
@@ -207,18 +215,18 @@ void Camera::RotateY(float angle)
 
 	DirectX::XMMATRIX R = DirectX::XMMatrixRotationY(angle);
 
-	DirectX::XMStoreFloat3(&m_Right, XMVector3TransformNormal(XMLoadFloat3(&m_Right), R));
-	DirectX::XMStoreFloat3(&m_Up, XMVector3TransformNormal(XMLoadFloat3(&m_Up), R));
-	DirectX::XMStoreFloat3(&m_Look, XMVector3TransformNormal(XMLoadFloat3(&m_Look), R));
+	DirectX::XMStoreFloat3(&_Right, XMVector3TransformNormal(XMLoadFloat3(&_Right), R));
+	DirectX::XMStoreFloat3(&_Up, XMVector3TransformNormal(XMLoadFloat3(&_Up), R));
+	DirectX::XMStoreFloat3(&_Look, XMVector3TransformNormal(XMLoadFloat3(&_Look), R));
 
 }
 
 void Camera::UpdateViewMatrix()
 {
-	DirectX::XMVECTOR R = DirectX::XMLoadFloat3(&m_Right);
-	DirectX::XMVECTOR U = DirectX::XMLoadFloat3(&m_Up);
-	DirectX::XMVECTOR L = DirectX::XMLoadFloat3(&m_Look);
-	DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&m_Position);
+	DirectX::XMVECTOR R = DirectX::XMLoadFloat3(&_Right);
+	DirectX::XMVECTOR U = DirectX::XMLoadFloat3(&_Up);
+	DirectX::XMVECTOR L = DirectX::XMLoadFloat3(&_Look);
+	DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&_Position);
 
 	// Keep camera's axes orthogonal to each other and of unit length.
 	L = DirectX::XMVector3Normalize(L);
@@ -232,27 +240,27 @@ void Camera::UpdateViewMatrix()
 	float y = -DirectX::XMVectorGetX(DirectX::XMVector3Dot(P, U));
 	float z = -DirectX::XMVectorGetX(DirectX::XMVector3Dot(P, L));
 
-	DirectX::XMStoreFloat3(&m_Right, R);
-	DirectX::XMStoreFloat3(&m_Up, U);
-	DirectX::XMStoreFloat3(&m_Look, L);
+	DirectX::XMStoreFloat3(&_Right, R);
+	DirectX::XMStoreFloat3(&_Up, U);
+	DirectX::XMStoreFloat3(&_Look, L);
 
-	m_View(0, 0) = m_Right.x;
-	m_View(1, 0) = m_Right.y;
-	m_View(2, 0) = m_Right.z;
-	m_View(3, 0) = x;
+	_View(0, 0) = _Right.x;
+	_View(1, 0) = _Right.y;
+	_View(2, 0) = _Right.z;
+	_View(3, 0) = x;
 	 
-	m_View(0, 1) = m_Up.x;
-	m_View(1, 1) = m_Up.y;
-	m_View(2, 1) = m_Up.z;
-	m_View(3, 1) = y;
+	_View(0, 1) = _Up.x;
+	_View(1, 1) = _Up.y;
+	_View(2, 1) = _Up.z;
+	_View(3, 1) = y;
 	 
-	m_View(0, 2) = m_Look.x;
-	m_View(1, 2) = m_Look.y;
-	m_View(2, 2) = m_Look.z;
-	m_View(3, 2) = z;
+	_View(0, 2) = _Look.x;
+	_View(1, 2) = _Look.y;
+	_View(2, 2) = _Look.z;
+	_View(3, 2) = z;
 	 
-	m_View(0, 3) = 0.0f;
-	m_View(1, 3) = 0.0f;
-	m_View(2, 3) = 0.0f;
-	m_View(3, 3) = 1.0f;
+	_View(0, 3) = 0.0f;
+	_View(1, 3) = 0.0f;
+	_View(2, 3) = 0.0f;
+	_View(3, 3) = 1.0f;
 }

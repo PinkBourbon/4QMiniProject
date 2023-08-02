@@ -64,22 +64,22 @@ public:
 
 private:
 	// 세계 공간에 상대적인 좌표를 가진 카메라 좌표계.
-		DirectX::XMFLOAT3 m_Position;
-		DirectX::XMFLOAT3 m_Right;
-		DirectX::XMFLOAT3 m_Up;
-		DirectX::XMFLOAT3 m_Look;
+		DirectX::XMFLOAT3 _Position;
+		DirectX::XMFLOAT3 _Right;
+		DirectX::XMFLOAT3 _Up;
+		DirectX::XMFLOAT3 _Look;
 
 	// 캐시 프로스텀 프로퍼티
-		float m_NearZ;
-		float m_FarZ;
-		float m_Aspect;
-		float m_FovY;
-		float m_NearWindowHeight;
-		float m_FarWindowHeight;
+		float _NearZ;
+		float _FarZ;
+		float _Aspect;
+		float _FovY;
+		float _NearWindowHeight;
+		float _FarWindowHeight;
 
 	// Cache View/Proj matrices.
-	DirectX::XMFLOAT4X4 m_View;
-	DirectX::XMFLOAT4X4 m_Proj;
+	DirectX::XMFLOAT4X4 _View;
+	DirectX::XMFLOAT4X4 _Proj;
 
 };
 
