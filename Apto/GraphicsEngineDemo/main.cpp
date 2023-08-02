@@ -28,6 +28,8 @@ int main()
 
 	apto::Matrix4f mat2 = camera.GetViewMatrix4f();*/
 
+	std::cout << "테스트";
+
 	aptoCore::Graphics::Initialize();
 
 	if (!isResize)

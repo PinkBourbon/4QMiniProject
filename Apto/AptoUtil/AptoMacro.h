@@ -1,8 +1,8 @@
 #pragma once
 #include <windows.h>
 
-/// ´Ù¾çÇÑ °÷¿¡¼­ »ç¿ëÇÒ ¸ÅÅ©·Î¸¦ Á¤ÀÇÇØ ³õÀº Çì´õÆÄÀÏ
-/// static_assert¿Í assert¸¦ Á¤ÀÇÇØ ³õ¾ÒÀ½.
+/// ë‹¤ì–‘í•œ ê³³ì—ì„œ ì‚¬ìš©í•  ë§¤í¬ë¡œë¥¼ ì •ì˜í•´ ë†“ì€ í—¤ë”íŒŒì¼
+/// static_assertì™€ assertë¥¼ ì •ì˜í•´ ë†“ì•˜ìŒ.
 
 #ifdef _DEBUG
 //#include <string_view>

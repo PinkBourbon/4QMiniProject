@@ -37,7 +37,7 @@ namespace aptoCore
 			{
 				resources.erase(resource->key);
 				return true;
-				// ºô´õÀÇ Release ¸¦ È£ÃâÇØ¾ßÇÔ.
+				// ë¹Œë”ì˜ Release ë¥¼ í˜¸ì¶œí•´ì•¼í•¨.
 			}
 		}
 

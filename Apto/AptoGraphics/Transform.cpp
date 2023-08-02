@@ -11,12 +11,12 @@ namespace apto
 	{
 		//DirectX::XMMatrixDecompose(&_scale.m, &_rotation.m, &_position.m, worldMatrix);
 
-		//// ¿ì¼± ¹Ù·Î ¾Ë ¼ö ÀÖ´Â x, y, z À§Ä¡¸¦ »Ì¾Æ³½´Ù.
+		//// ìš°ì„  ë°”ë¡œ ì•Œ ìˆ˜ ìˆëŠ” x, y, z ìœ„ì¹˜ë¥¼ ë½‘ì•„ë‚¸ë‹¤.
 		//_position.x = worldMatrix.e[3][0];
 		//_position.y = worldMatrix.e[3][1];
 		//_position.z = worldMatrix.e[3][2];
 
-		//// scaleÀ» »Ì¾Æ³½´Ù.
+		//// scaleì„ ë½‘ì•„ë‚¸ë‹¤.
 		//Vector3f scaleXvec(worldMatrix.e[0][0], worldMatrix.e[0][1], worldMatrix.e[0][2]);
 		//Vector3f scaleYvec(worldMatrix.e[1][0], worldMatrix.e[1][1], worldMatrix.e[1][2]);
 		//Vector3f scaleZvec(worldMatrix.e[2][0], worldMatrix.e[2][1], worldMatrix.e[2][2]);
@@ -27,8 +27,8 @@ namespace apto
 
 		//if (_scale.x == 0.0f || _scale.y == 0.0f || _scale.z == 0.0f)
 		//{
-		//	// ½ºÄÉÀÏ Áß ÇÏ³ª¶óµµ 0ÀÏ °æ¿ì¿¡ rotationÀ» »Ì¾Æ³¾ ¼ö ¾ø´Ù.
-		//	// µû¶ó¼­ È¸ÀüÇÏÁö ¾ÊÀº »óÅÂ·Î ¸¸µé°í ±×³É ¸®ÅÏÇÏÀÚ.
+		//	// ìŠ¤ì¼€ì¼ ì¤‘ í•˜ë‚˜ë¼ë„ 0ì¼ ê²½ìš°ì— rotationì„ ë½‘ì•„ë‚¼ ìˆ˜ ì—†ë‹¤.
+		//	// ë”°ë¼ì„œ íšŒì „í•˜ì§€ ì•Šì€ ìƒíƒœë¡œ ë§Œë“¤ê³  ê·¸ëƒ¥ ë¦¬í„´í•˜ì.
 		//	_rotation.w = 1.0f;
 		//	_rotation.x = 0.0f;
 		//	_rotation.y = 0.0f;
@@ -36,13 +36,13 @@ namespace apto
 		//	return;
 		//}
 
-		//// scale Àû¿ë ÀüÀÇ matrix¸¦ ¸¸µç´Ù.
+		//// scale ì ìš© ì „ì˜ matrixë¥¼ ë§Œë“ ë‹¤.
 		//worldMatrix.v[0] /= _scale.x;
 		//worldMatrix.v[1] /= _scale.y;
 		//worldMatrix.v[2] /= _scale.z;
 
-		//// Çà·Ä½ÄÀÇ °ªÀÌ 0º¸´Ù ÀÛÀ» °æ¿ì¿¡ x, y, z Áß È¦¼ö °¹¼öÀÇ ÃàÀÌ ³×°ÅÆ¼ºê ½ºÄÉÀÏÀÌ±â ¶§¹®¿¡
-		//// ÀÓÀÇÀÇ ÇÏ³ªÀÇ ÃàÀ» ¹İÀü½ÃÄÑ¼­ Â¦¼ö°³ ÃàÀ» ³×°ÅÆ¼ºê ½ºÄÉÀÏ·Î ¸¸µé¾î È¸ÀüÇà·ÄÀ» ¸¸µé¾î³¾ ¼ö ÀÖµµ·Ï ÇÑ´Ù.
+		//// í–‰ë ¬ì‹ì˜ ê°’ì´ 0ë³´ë‹¤ ì‘ì„ ê²½ìš°ì— x, y, z ì¤‘ í™€ìˆ˜ ê°¯ìˆ˜ì˜ ì¶•ì´ ë„¤ê±°í‹°ë¸Œ ìŠ¤ì¼€ì¼ì´ê¸° ë•Œë¬¸ì—
+		//// ì„ì˜ì˜ í•˜ë‚˜ì˜ ì¶•ì„ ë°˜ì „ì‹œì¼œì„œ ì§ìˆ˜ê°œ ì¶•ì„ ë„¤ê±°í‹°ë¸Œ ìŠ¤ì¼€ì¼ë¡œ ë§Œë“¤ì–´ íšŒì „í–‰ë ¬ì„ ë§Œë“¤ì–´ë‚¼ ìˆ˜ ìˆë„ë¡ í•œë‹¤.
 		//float det = worldMatrix.Determinant();
 		//if (det < 0.0f)
 		//{
@@ -50,7 +50,7 @@ namespace apto
 		//	worldMatrix.v[0] *= -1.0f;
 		//}
 
-		//// rotationÀ» »Ì¾Æ³½´Ù.
+		//// rotationì„ ë½‘ì•„ë‚¸ë‹¤.
 		//_rotation.w = sqrtf(1.0f + worldMatrix.e[0][0] + worldMatrix.e[1][1] + worldMatrix.e[2][2]) / 2.0f;
 
 		//float w4 = (4.0f * _rotation.w);
@@ -276,7 +276,7 @@ namespace apto
 
 	void Transform::LookAt(Vector4f target)
 	{
-		// targetÀ» ¹Ù¶óº¸µµ·Ï È¸Àü
+		// targetì„ ë°”ë¼ë³´ë„ë¡ íšŒì „
 		Vector4f wantLook = target - _position;
 		wantLook.Vector3Normalize();
 		Vector4f currLook = Vector4f(0.f, 0.f, 1.f, 1.f) * GetMatrix4f() - _position;
@@ -289,8 +289,8 @@ namespace apto
 
 		float angle = 0.0f;
 
-		// ¾ÆÅ© ÄÚ»çÀÎÀÇ Á¤ÀÇ¿ªÀÌ -1 ~ 1ÀÌ¹Ç·Î ±× ÀÌ»óÀÏ °æ¿ì °¡Àå °¡±î¿î °¢À¸·Î º¸Á¤ÇØ ÁØ´Ù.
-		// ´Ü, 1ÀÌ¾Æ´Ñ 0.99999°°Àº °ªÀ¸·Î ¼³Á¤ÇßÀ» °æ¿ì¿¡ ¿¬¼ÓÀ¸·Î LookAtÀ» È£ÃâÇÒ °æ¿ì ¿ÀÂ÷°¡ ´©ÀûµÇ¾î ¶³¸² Áõ»óÀÌ ¹ß»ıÇÑ´Ù.
+		// ì•„í¬ ì½”ì‚¬ì¸ì˜ ì •ì˜ì—­ì´ -1 ~ 1ì´ë¯€ë¡œ ê·¸ ì´ìƒì¼ ê²½ìš° ê°€ì¥ ê°€ê¹Œìš´ ê°ìœ¼ë¡œ ë³´ì •í•´ ì¤€ë‹¤.
+		// ë‹¨, 1ì´ì•„ë‹Œ 0.99999ê°™ì€ ê°’ìœ¼ë¡œ ì„¤ì •í–ˆì„ ê²½ìš°ì— ì—°ì†ìœ¼ë¡œ LookAtì„ í˜¸ì¶œí•  ê²½ìš° ì˜¤ì°¨ê°€ ëˆ„ì ë˜ì–´ ë–¨ë¦¼ ì¦ìƒì´ ë°œìƒí•œë‹¤.
 		if (test > 1.f)
 		{
 			angle = 0.0f;

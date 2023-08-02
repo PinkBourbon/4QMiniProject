@@ -45,9 +45,9 @@ export namespace apto
 
 			auto a = _mm_dp_ps(temp.v[0].m, tmp[0].m, 0xFF);
 
-			//_mm_dp_ps ´Â SSE4.1 ÀÌ»ó¿¡¼­¸¸ »ç¿ë °¡´ÉÇÕ´Ï´Ù.
+			//_mm_dp_ps ëŠ” SSE4.1 ì´ìƒì—ì„œë§Œ ì‚¬ìš© ê°€ëŠ¥í•©ë‹ˆë‹¤.
 
-			// È¤Àº SSE ¸í·É¾î¸¦ ÀÌ¿ëÇØ
+			// í˜¹ì€ SSE ëª…ë ¹ì–´ë¥¼ ì´ìš©í•´
 			e[0][0] = _mm_cvtss_f32(_mm_dp_ps(temp.v[0].m, tmp[0].m, 0xFF));
 			e[0][1] = _mm_cvtss_f32(_mm_dp_ps(temp.v[0].m, tmp[1].m, 0xFF));
 			e[0][2] = _mm_cvtss_f32(_mm_dp_ps(temp.v[0].m, tmp[2].m, 0xFF));
@@ -159,8 +159,8 @@ export namespace apto
 		{
 			float det = this->Determinant();
 
-			// det°¡ ¿¦½Ç·Ğº¸´Ù ÀÛÀ» °æ¿ì¿¡´Â ¿ªÇà·ÄÀÌ Á¸ÀçÇÏÁö ¾Ê´Â´Ù.
-			// ´ÜÀ§Çà·ÄÀ» ¸®ÅÏÇÑ´Ù.
+			// detê°€ ì—¡ì‹¤ë¡ ë³´ë‹¤ ì‘ì„ ê²½ìš°ì—ëŠ” ì—­í–‰ë ¬ì´ ì¡´ì¬í•˜ì§€ ì•ŠëŠ”ë‹¤.
+			// ë‹¨ìœ„í–‰ë ¬ì„ ë¦¬í„´í•œë‹¤.
 			float epsilon = 0.00000001f;
 			if (det < epsilon && det > -epsilon)
 			{
@@ -197,7 +197,7 @@ export namespace apto
 			return metrix;
 		}
 
-		// °ö¼À ½Ã°£ ºñ±³¿ë ÇÔ¼ö
+		// ê³±ì…ˆ ì‹œê°„ ë¹„êµìš© í•¨ìˆ˜
 		Matrix4f& Mul(const Matrix4f rhs)
 		{
 			Matrix4f temp = *this;

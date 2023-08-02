@@ -13,7 +13,11 @@ export namespace aptoCore
 {
 	struct RawMesh
 	{
-		RawMesh();
+		RawMesh() :
+			albedoMap(L""), normalMap(L""), roughnessMap(L""),
+			metallicMap(L""), emissiveMap(L""), ambientOcclusionMap(L""),
+			rootNodes(), rootBone(),
+			minAnimFrame(0.0f), maxAnimFrame(0.0f) {}
 
 		std::wstring albedoMap;
 		std::wstring normalMap;
@@ -27,7 +31,4 @@ export namespace aptoCore
 		float minAnimFrame;
 		float maxAnimFrame;
 	};
-
-
-
 }
