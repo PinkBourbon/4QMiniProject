@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Vertex.h"
+#include "AptoMacro.h"
 
 
 import apto.math;
@@ -11,22 +12,21 @@ bool isResize = false;
 
 int main()
 {
-	/*constexpr apto::Vector4f v1(1.0f, 2.0f, 3.0f, 4.0f);
 
-	std::cout << v1.x << std::endl;
+#ifdef _WIN32
+	//SetConsoleOutputCP(CP_UTF8);
+	//std::locale loc = std::wcout.imbue(std::locale("korean"));
+	//setlocale(LC_ALL, "korean");
+	_wsetlocale(LC_ALL, L"korean");
+#endif
+	
+	std::string str = "테스트";
+	std::wstring wstr = L"wcout 테스트";
+	std::string str2;
 
-	apto::Camera camera;
-	camera.SetPosition(0.f, 0.f, -10.f);
-	camera.SetRotation(0.f, 0.f, 0.f);
-	camera.SetPropeties(1920.f, 1080.f, 60.f, 0.1f, 10000.f);
-	camera.SetPerspective();
-
-	apto::Matrix4f mat = camera.GetProjectionMatrix4f();
-
-	camera.AddPosition(1.0f, 2.0f, 3.0f);
-	camera.AddRotationAxis(apto::Vector3f(1.0f, 0.0f, 0.0f), 0.1f);
-
-	apto::Matrix4f mat2 = camera.GetViewMatrix4f();*/
+	std::cout << str << std::endl;
+	std::wcout << wstr << std::endl;
+	wprintf(L"%s", wstr.c_str());
 
 	aptoCore::Graphics::Initialize();
 

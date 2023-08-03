@@ -1,33 +1,33 @@
 #pragma once
 #include <windows.h>
 
-/// ´Ù¾çÇÑ °÷¿¡¼­ »ç¿ëÇÒ ¸ÅÅ©·Î¸¦ Á¤ÀÇÇØ ³õÀº Çì´õÆÄÀÏ
-/// static_assert¿Í assert¸¦ Á¤ÀÇÇØ ³õ¾ÒÀ½.
+/// ë‹¤ì–‘í•œ ê³³ì—ì„œ ì‚¬ìš©í•  ë§¤í¬ë¡œë¥¼ ì •ì˜í•´ ë†“ì€ í—¤ë”íŒŒì¼
+/// static_assertì™€ assertë¥¼ ì •ì˜í•´ ë†“ì•˜ìŒ.
 
 #ifdef _DEBUG
-//#include <string_view>
 
-#define STATIC_ASSERT(condition, message) \
+#define APTO_STATIC_ASSERT(condition, message) \
 do \
 { \
 	static_assert(condition, message); \
 } \
 while (false)
+
 #else
-#define STATIC_ASSERT(condition, message)
+
+#define APTO_STATIC_ASSERT(condition, message)
+
 #endif // _DEBUG
 
 
 
-#ifdef ASSERT
-#undef ASSERT
-#endif // ASSERT
+//#ifdef APTO_ASSERT
+//#undef APTO_ASSERT
+//#endif // APTO_ASSERT
 
 #ifdef _DEBUG
 
-#include <intrin.h>
-
-#define ASSERT(condition, message) \
+#define APTO_ASSERT(condition, message) \
 do \
 { \
 	if (!(condition)) \
@@ -40,6 +40,6 @@ while (false)
 
 #else
 
-#define ASSERT(condition, message)
+#define APTO_ASSERT(condition, message)
 
 #endif

@@ -28,18 +28,18 @@ namespace aptoCore::Graphics
 
 	__declspec(thread) HWND g_hwnd;
 
-	// ¿£Áø »óÅÂµî¿¡ °ü·ÃµÈ º¯¼öµé
+	// ì—”ì§„ ìƒíƒœë“±ì— ê´€ë ¨ëœ ë³€ìˆ˜ë“¤
 	__declspec(thread) bool g_isRunRenderEngine;
 	__declspec(thread) bool g_useVsync;
 	__declspec(thread) UINT g_monitorIndex = 0;
 	__declspec(thread) UINT g_refreshRatesIndex = 1;
 
-	// ¸ğ´ÏÅÍ °ü·Ã º¯¼öµé
+	// ëª¨ë‹ˆí„° ê´€ë ¨ ë³€ìˆ˜ë“¤
 	__declspec(thread) unsigned __int32 g_displayWidth = 1280;
 	__declspec(thread) unsigned __int32 g_displayHeight = 720;
 	__declspec(thread) std::vector<std::vector<DXGI_RATIONAL>> g_displayRefreshRates;
 
-	// D3D11 °ü·Ã ÇØÁ¦ÇØ¾ß ÇÏ´Â º¯¼öµé
+	// D3D11 ê´€ë ¨ í•´ì œí•´ì•¼ í•˜ëŠ” ë³€ìˆ˜ë“¤
 	__declspec(thread) comptr<ID3D11Device> g_device;
 	__declspec(thread) comptr<ID3D11DeviceContext> g_immediateContext;
 	__declspec(thread) comptr<IDXGIFactory2> g_dxgiFactory;
@@ -52,10 +52,10 @@ namespace aptoCore::Graphics
 	__declspec(thread) comptr<ID3D11DepthStencilView> g_depthStencilView;
 	__declspec(thread) comptr<ID3D11RasterizerState> g_rasterizerState;
 
-	// È­¸éÀ» ±×¸®±â À§ÇØ renderAbleObject¸¦ °ü¸®ÇÏ´Â	º¯¼ö
+	// í™”ë©´ì„ ê·¸ë¦¬ê¸° ìœ„í•´ renderAbleObjectë¥¼ ê´€ë¦¬í•˜ëŠ”	ë³€ìˆ˜
 	__declspec(thread) std::vector<RenderableObject> g_renderAbleObjects;
 
-	// Resource °ü·Ã º¯¼öµé
+	// Resource ê´€ë ¨ ë³€ìˆ˜ë“¤
 	// __declspec(thread) 
 
 	bool Initialize()
@@ -95,7 +95,7 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "Device »ı¼º ½ÇÆĞ");
+			APTO_ASSERT(false, "Device ìƒì„± ì‹¤íŒ¨");
 			return false;
 		}
 
@@ -104,7 +104,7 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "¸ÖÆ¼ »ùÇÃ Ç°Áú·¹º§ Ã¼Å© ½ÇÆĞ");
+			APTO_ASSERT(false, "ë©€í‹° ìƒ˜í”Œ í’ˆì§ˆë ˆë²¨ ì²´í¬ ì‹¤íŒ¨");
 			return false;
 		}
 
@@ -112,26 +112,26 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "DXGI Factory »ı¼º ½ÇÆĞ");
+			APTO_ASSERT(false, "DXGI Factory ìƒì„± ì‹¤íŒ¨");
 			return false;
 		}
 
 		if (!InitDisplayInfo())
 		{
-			ASSERT(false, "¸ğ´ÏÅÍ ¸ğµå ÃÊ±âÈ­ ½ÇÆĞ");
+			APTO_ASSERT(false, "ëª¨ë‹ˆí„° ëª¨ë“œ ì´ˆê¸°í™” ì‹¤íŒ¨");
 			return false;
 		}
 
 		if (!InitGPUInfo())
 		{
-			ASSERT(false, "GPU Á¤º¸ ÃÊ±âÈ­ ½ÇÆĞ");
+			APTO_ASSERT(false, "GPU ì •ë³´ ì´ˆê¸°í™” ì‹¤íŒ¨");
 			return false;
 		}
 
 		DXGI_SWAP_CHAIN_DESC1 desc = { 0, };
 
-		desc.Width = 0; // CreateSwapChainForHwnd ·Î È£Ãâ ½Ã 0À¸·Î ¼¼ÆÃÇÏ¸é ÇØ´ç hwnd¿¡¼­ ·±Å¸ÀÓ¿¡ Ãâ·ÂÃ¢¿¡¼­ ³Êºñ¸¦ °¡Á®¿É´Ï´Ù.
-		desc.Height = 0; // CreateSwapChainForHwnd ·Î È£Ãâ ½Ã 0À¸·Î ¼¼ÆÃÇÏ¸é ÇØ´ç hwnd¿¡¼­ ·±Å¸ÀÓ¿¡ Ãâ·ÂÃ¢¿¡¼­ ³ôÀÌ¸¦ °¡Á®¿É´Ï´Ù.
+		desc.Width = 0; // CreateSwapChainForHwnd ë¡œ í˜¸ì¶œ ì‹œ 0ìœ¼ë¡œ ì„¸íŒ…í•˜ë©´ í•´ë‹¹ hwndì—ì„œ ëŸ°íƒ€ì„ì— ì¶œë ¥ì°½ì—ì„œ ë„ˆë¹„ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
+		desc.Height = 0; // CreateSwapChainForHwnd ë¡œ í˜¸ì¶œ ì‹œ 0ìœ¼ë¡œ ì„¸íŒ…í•˜ë©´ í•´ë‹¹ hwndì—ì„œ ëŸ°íƒ€ì„ì— ì¶œë ¥ì°½ì—ì„œ ë†’ì´ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		desc.Stereo = FALSE;
 		desc.SampleDesc = { 1, 0 };
@@ -152,14 +152,14 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "½º¿ÒÃ¼ÀÎ »ı¼º ½ÇÆĞ");
+			APTO_ASSERT(false, "ìŠ¤ì™‘ì²´ì¸ ìƒì„± ì‹¤íŒ¨");
 			return false;
 		}
 
 		OnResize();
 		//if (!Resize(1280, 720))
 		//{
-		//	ASSERT(false, "È­¸é »çÀÌÁî º¯°æ ½ÇÆĞ");
+		//	ASSERT(false, "í™”ë©´ ì‚¬ì´ì¦ˆ ë³€ê²½ ì‹¤íŒ¨");
 		//	return false;
 		//}
 
@@ -178,7 +178,7 @@ namespace aptoCore::Graphics
 		result = g_device->CreateRasterizerState(&rasterizerDesc, &g_rasterizerState);
 		if (result != S_OK)
 		{
-			ASSERT(false, "RasterizerState »ı¼º ½ÇÆĞ");
+			APTO_ASSERT(false, "RasterizerState ìƒì„± ì‹¤íŒ¨");
 			return false;
 		}
 
@@ -217,7 +217,7 @@ namespace aptoCore::Graphics
 
 	void Render(float deltaTime)
 {
-		// ·»´õ¸µ ÇÏ±â Àü ¸ğµç À©µµ¿ì ¸Ş¼¼Áö¸¦ Ã³¸®ÇÏÀÚ.
+		// ë Œë”ë§ í•˜ê¸° ì „ ëª¨ë“  ìœˆë„ìš° ë©”ì„¸ì§€ë¥¼ ì²˜ë¦¬í•˜ì.
 		MSG msg;
 		msg.message = WM_NULL;
 
@@ -226,7 +226,7 @@ namespace aptoCore::Graphics
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 
-			// À©µµ¿ì Ã¢ÀÌ Á¾·áµÆ´Ù¸é ·»´õ¸µ ÇÒ ÇÊ¿ä°¡ ¾øÀ¸´Ï Áï½Ã return
+			// ìœˆë„ìš° ì°½ì´ ì¢…ë£Œëë‹¤ë©´ ë Œë”ë§ í•  í•„ìš”ê°€ ì—†ìœ¼ë‹ˆ ì¦‰ì‹œ return
 			if (msg.message == WM_QUIT)
 			{
 				g_isRunRenderEngine = false;
@@ -234,14 +234,14 @@ namespace aptoCore::Graphics
 			}
 		}
 
-		// ·»´õ¸µÀ» ½ÃÀÛÇÏ±â À§ÇØ ÃÊ±âÈ­
+		// ë Œë”ë§ì„ ì‹œì‘í•˜ê¸° ìœ„í•´ ì´ˆê¸°í™”
 		g_immediateContext->ClearRenderTargetView(g_renderTargetView.Get(), DirectX::Colors::Black);
 		g_immediateContext->ClearDepthStencilView(g_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		//g_immediateContext->OMSetRenderTargets(1, g_renderTargetView.GetAddressOf(), g_depthStencilView.Get());
 
 
 
-		// ¼öÁ÷µ¿±âÈ­ ¿©ºÎ¿¡ µû¶ó¼­ present
+		// ìˆ˜ì§ë™ê¸°í™” ì—¬ë¶€ì— ë”°ë¼ì„œ present
 		if (g_useVsync)
 		{
 			g_swapChain->Present(1, 0);
@@ -264,7 +264,7 @@ namespace aptoCore::Graphics
 		desc.Height = screenHeight;
 		if (g_useVsync)
 		{
-			// ÀÏ´ÜÀº ÀÓ½Ã·Î ¼¼ÆÃÇØ ³õÀÚ.
+			// ì¼ë‹¨ì€ ì„ì‹œë¡œ ì„¸íŒ…í•´ ë†“ì.
 			desc.RefreshRate.Numerator = g_displayRefreshRates[g_monitorIndex][g_refreshRatesIndex].Numerator;
 			desc.RefreshRate.Denominator = g_displayRefreshRates[g_monitorIndex][g_refreshRatesIndex].Denominator;
 		}
@@ -343,7 +343,7 @@ namespace aptoCore::Graphics
 
 		RegisterClassEx(&wc);
 
-		RECT windowRect = { 0, 0, windowWidth, windowHeight };    // À©µµ¿ì Ã¢ Å©±â
+		RECT windowRect = { 0, 0, windowWidth, windowHeight };    // ìœˆë„ìš° ì°½ í¬ê¸°
 		AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
 		HWND hwnd = CreateWindow
@@ -351,10 +351,10 @@ namespace aptoCore::Graphics
 			wc.lpszClassName,
 			L"GlassEngine",
 			WS_OVERLAPPEDWINDOW | WS_SIZEBOX,
-			100, // À©µµ¿ì ÁÂÃø »ó´ÜÀÇ x ÁÂÇ¥
-			100, // À©µµ¿ì ÁÂÃø »ó´ÜÀÇ y ÁÂÇ¥
-			windowRect.right - windowRect.left, // À©µµ¿ì °¡·Î ¹æÇâ ÇØ»óµµ
-			windowRect.bottom - windowRect.top, // À©µµ¿ì ¼¼·Î ¹æÇâ ÇØ»óµµ
+			100, // ìœˆë„ìš° ì¢Œì¸¡ ìƒë‹¨ì˜ x ì¢Œí‘œ
+			100, // ìœˆë„ìš° ì¢Œì¸¡ ìƒë‹¨ì˜ y ì¢Œí‘œ
+			windowRect.right - windowRect.left, // ìœˆë„ìš° ê°€ë¡œ ë°©í–¥ í•´ìƒë„
+			windowRect.bottom - windowRect.top, // ìœˆë„ìš° ì„¸ë¡œ ë°©í–¥ í•´ìƒë„
 			NULL,
 			NULL,
 			wc.hInstance,
@@ -371,7 +371,7 @@ namespace aptoCore::Graphics
 	{
 		if (g_dxgiFactory == nullptr)
 		{
-			ASSERT(false, "dxgiFactory ºÎÅÍ ¸¸µå¼¼¿ä");
+			APTO_ASSERT(false, "dxgiFactory ë¶€í„° ë§Œë“œì„¸ìš”");
 			return false;
 		}
 
@@ -397,7 +397,7 @@ namespace aptoCore::Graphics
 			HRESULT result = g_outputs[i]->GetDisplayModeList1(DXGI_FORMAT_R8G8B8A8_UNORM, 0, &displayModeNum, NULL);
 			if (result != S_OK)
 			{
-				ASSERT(false, "µğ½ºÇÃ·¹ÀÌ ¸ğµå ¸®½ºÆ® °¹¼ö °¡Á®¿À±â ½ÇÆĞ");
+				APTO_ASSERT(false, "ë””ìŠ¤í”Œë ˆì´ ëª¨ë“œ ë¦¬ìŠ¤íŠ¸ ê°¯ìˆ˜ ê°€ì ¸ì˜¤ê¸° ì‹¤íŒ¨");
 				return false;
 			}
 
@@ -405,7 +405,7 @@ namespace aptoCore::Graphics
 			
 			if(dxgiModeArr.get() == nullptr)
 			{
-				ASSERT(false, "µğ½ºÇÃ·¹ÀÌ ¸ğµå ¸®½ºÆ® ÇÒ´ç ½ÇÆĞ");
+				APTO_ASSERT(false, "ë””ìŠ¤í”Œë ˆì´ ëª¨ë“œ ë¦¬ìŠ¤íŠ¸ í• ë‹¹ ì‹¤íŒ¨");
 				return false;
 			}
 
@@ -432,7 +432,7 @@ namespace aptoCore::Graphics
 	{
 		if (g_adapters.empty())
 		{
-			ASSERT(false, "µğ½ºÇÃ·¹ÀÌ ¸ğµå¸¦ ¸ÕÀú ÃÊ±âÈ­ ÇØÁÖ¼¼¿ä");
+			APTO_ASSERT(false, "ë””ìŠ¤í”Œë ˆì´ ëª¨ë“œë¥¼ ë¨¼ì € ì´ˆê¸°í™” í•´ì£¼ì„¸ìš”");
 			return false;
 		}
 
@@ -465,7 +465,7 @@ namespace aptoCore::Graphics
 		HRESULT result = g_swapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH | DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING);
 		if (result != S_OK)
 		{
-			ASSERT(false, "½º¿ÒÃ¼ÀÎ ¸®»çÀÌÁî ½ÇÆĞ");
+			APTO_ASSERT(false, "ìŠ¤ì™‘ì²´ì¸ ë¦¬ì‚¬ì´ì¦ˆ ì‹¤íŒ¨");
 			return false;
 		}
 
@@ -473,7 +473,7 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "¹öÆÛ °¡Á®¿À±â ½ÇÆĞ");
+			APTO_ASSERT(false, "ë²„í¼ ê°€ì ¸ì˜¤ê¸° ì‹¤íŒ¨");
 			return false;
 		}
 
@@ -481,14 +481,14 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "·»´õ Å¸°Ù ºä »ı¼º ½ÇÆĞ");
+			APTO_ASSERT(false, "ë Œë” íƒ€ê²Ÿ ë·° ìƒì„± ì‹¤íŒ¨");
 			return false;
 		}
 
 		D3D11_TEXTURE2D_DESC backBufferDesc = { 0 };
 		g_backBuffer->GetDesc(&backBufferDesc);
 
-		// µª½º ½ºÅÙ½Ç ºä ¸¸µé±â
+		// ëìŠ¤ ìŠ¤í…ì‹¤ ë·° ë§Œë“¤ê¸°
 		CD3D11_TEXTURE2D_DESC depthStencilDesc;
 		depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		depthStencilDesc.Width = backBufferDesc.Width;
@@ -508,7 +508,7 @@ namespace aptoCore::Graphics
 
 		g_immediateContext->OMSetRenderTargets(1, g_renderTargetView.GetAddressOf(), g_depthStencilView.Get());
 
-		// ºäÆ÷Æ® »ı¼º
+		// ë·°í¬íŠ¸ ìƒì„±
 		D3D11_VIEWPORT viewPort[1];
 		viewPort[0].TopLeftX = 0.0f;
 		viewPort[0].TopLeftY = 0.0f;
@@ -522,7 +522,7 @@ namespace aptoCore::Graphics
 		g_displayWidth = backBufferDesc.Width;
 		g_displayHeight = backBufferDesc.Height;
 
-		// Å×½ºÆ®¸¦ À§ÇÑ ¹è°æ »ö»ó º¯°æ
+		// í…ŒìŠ¤íŠ¸ë¥¼ ìœ„í•œ ë°°ê²½ ìƒ‰ìƒ ë³€ê²½
 		float bgColor[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 		g_immediateContext->ClearRenderTargetView(g_renderTargetView.Get(), bgColor);
 
