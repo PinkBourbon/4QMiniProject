@@ -5,29 +5,29 @@
 /// static_assert와 assert를 정의해 놓았음.
 
 #ifdef _DEBUG
-//#include <string_view>
 
-#define STATIC_ASSERT(condition, message) \
+#define APTO_STATIC_ASSERT(condition, message) \
 do \
 { \
 	static_assert(condition, message); \
 } \
 while (false)
+
 #else
-#define STATIC_ASSERT(condition, message)
+
+#define APTO_STATIC_ASSERT(condition, message)
+
 #endif // _DEBUG
 
 
 
-#ifdef ASSERT
-#undef ASSERT
-#endif // ASSERT
+//#ifdef APTO_ASSERT
+//#undef APTO_ASSERT
+//#endif // APTO_ASSERT
 
 #ifdef _DEBUG
 
-#include <intrin.h>
-
-#define ASSERT(condition, message) \
+#define APTO_ASSERT(condition, message) \
 do \
 { \
 	if (!(condition)) \
@@ -40,6 +40,6 @@ while (false)
 
 #else
 
-#define ASSERT(condition, message)
+#define APTO_ASSERT(condition, message)
 
 #endif

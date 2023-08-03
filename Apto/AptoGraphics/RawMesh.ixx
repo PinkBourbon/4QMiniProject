@@ -6,7 +6,7 @@ export module aptoCore.rawData.RawMesh;
 
 namespace aptoCore
 {
-	struct RawDataNode;
+	struct RawNode;
 }
 
 export namespace aptoCore
@@ -26,8 +26,8 @@ export namespace aptoCore
 		std::wstring emissiveMap;
 		std::wstring ambientOcclusionMap;
 
-		std::vector<RawDataNode*> rootNodes;
-		std::vector<RawDataNode*> rootBone;
+		std::vector<RawNode*> rootNodes;
+		std::vector<RawNode*> rootBone;
 		float minAnimFrame;
 		float maxAnimFrame;
 	};
