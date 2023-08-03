@@ -21,9 +21,6 @@
     <ClInclude Include="GameProcess.h">
       <Filter>GameProcess</Filter>
     </ClInclude>
-    <ClInclude Include="IComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="ParentComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -32,9 +29,6 @@
     </ClInclude>
     <ClInclude Include="ParentScene.h">
       <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="IObject.h">
-      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>TestSpace</Filter>
@@ -47,6 +41,12 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent 1.h">
+      <Filter>TestSpace</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent 2.h">
+      <Filter>TestSpace</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +73,12 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent 1.cpp">
+      <Filter>TestSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent 2.cpp">
+      <Filter>TestSpace</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

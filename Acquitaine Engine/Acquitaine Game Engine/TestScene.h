@@ -8,6 +8,5 @@ class TestScene : public ParentScene
 public:
 	TestScene(string SceneName);
 	virtual ~TestScene();
-	virtual void Initialize() override;
 };
 

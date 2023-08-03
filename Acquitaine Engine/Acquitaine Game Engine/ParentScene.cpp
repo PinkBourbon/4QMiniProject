@@ -2,7 +2,7 @@
 #include "GameProcess.h"
 
 ParentScene::ParentScene()
-	:gameProcess(GameProcess::gameEnginePointer)
+	:_gameProcess(GameProcess::s_gameEnginePointer)
 {
 	Initialize();
 }
@@ -13,7 +13,7 @@ ParentScene::~ParentScene()
 
 void ParentScene::Initialize()
 {
-	gameProcess->AddScene(this);
+	_gameProcess->AddScene(this);
 	cout << "scene create sucessed" << endl;
 }
 

@@ -1,10 +1,10 @@
-﻿#include "ParentComponent.h"
-#include "IObject.h"
+#include "ParentComponent.h"
+#include "ParentObject.h";
 
 ParentComponent::ParentComponent()
+	: _gameObject(nullptr), _isEnabled(true)
 {
-	componentIDs++;
-	componentID = componentIDs;
+
 }
 
 ParentComponent::~ParentComponent()
@@ -12,9 +12,9 @@ ParentComponent::~ParentComponent()
 
 }
 
-void ParentComponent::SetGameObject(IObject* parentObject)
+void ParentComponent::SetGameObject(ParentObject* parentObject)
 {
-	gameObject = parentObject;
+	_gameObject = parentObject;
 }
 
 void ParentComponent::Initialize()
@@ -50,6 +50,10 @@ void ParentComponent::Update()
 }
 
 void ParentComponent::Render()
+{
+}
+
+void ParentComponent::Phsics()
 {
 }
 

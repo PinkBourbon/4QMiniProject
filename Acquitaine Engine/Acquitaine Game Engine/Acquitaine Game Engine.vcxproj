@@ -136,12 +136,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GameProcess.h" />
-    <ClInclude Include="IComponent.h" />
-    <ClInclude Include="IObject.h" />
     <ClInclude Include="ParentComponent.h" />
     <ClInclude Include="ParentObject.h" />
     <ClInclude Include="ParentScene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="TestComponent 1.h" />
+    <ClInclude Include="TestComponent 2.h" />
     <ClInclude Include="TestComponent.h" />
     <ClInclude Include="TestObject.h" />
     <ClInclude Include="TestScene.h" />
@@ -152,6 +152,8 @@
     <ClCompile Include="ParentObject.cpp" />
     <ClCompile Include="ParentScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="TestComponent 1.cpp" />
+    <ClCompile Include="TestComponent 2.cpp" />
     <ClCompile Include="TestComponent.cpp" />
     <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="TestScene.cpp" />

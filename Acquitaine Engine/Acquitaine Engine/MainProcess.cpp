@@ -31,29 +31,29 @@ HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 	RegisterClass(&wndclass);
 
 	// 윈도 생성
-	m_hWnd = CreateWindow(
+	_hWnd = CreateWindow(
 		szAppName,
 		szAppName,
 		WS_OVERLAPPEDWINDOW,
 		windowPositionX, windowPositionY, windowLength, windowHeight,
 		NULL, NULL, hInstance, NULL);
 
-	if (!m_hWnd) return S_FALSE;
+	if (!_hWnd) return S_FALSE;
 
 	// 생성된 윈도를 화면에 표시
-	ShowWindow(m_hWnd, SW_SHOWNORMAL);
-	UpdateWindow(m_hWnd);
+	ShowWindow(_hWnd, SW_SHOWNORMAL);
+	UpdateWindow(_hWnd);
 
 	// 디버깅, 테스트용 콘솔을 생성
  	AllocConsole();
 	FILE* _tempFile;
 	freopen_s(&_tempFile, "CONOUT$", "w", stdout);
 		
-	deltatime = 0;
-	timer = new Timer();
+	_deltatime = 0;
+	_timer = new Timer();
 	
-	gameprocess = new GameProcess();
-	gameprocess->Initialize();
+	_gameprocess = new GameProcess();
+	_gameprocess->Initialize();
 
 	///
  	return S_OK;
@@ -63,26 +63,26 @@ void MainProcess::Loop()
 {
 	while (true)
 	{
-		if (PeekMessage(&m_msg, NULL, 0, 0, PM_REMOVE))
+		if (PeekMessage(&_msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if (m_msg.message == WM_QUIT) break;
-			DispatchMessage(&m_msg);
+			if (_msg.message == WM_QUIT) break;
+			DispatchMessage(&_msg);
 		}
 		else
 		{
 			// 델타 타임을 얻어오는 부분
-			timer->Update();
-			deltatime = timer->GetDeltaTime();
+			_timer->Update();
+			_deltatime = _timer->GetDeltaTime();
 
 			// 게임 엔진이 위치할 내용
-			gameprocess->RunningGameProcess(deltatime);
+			_gameprocess->RunningGameProcess(_deltatime);
 		}
 	}
 }
 
 void MainProcess::Finalize()
 {
-	gameprocess->Finalize();
+	_gameprocess->Finalize();
 }
 
 LRESULT CALLBACK MainProcess::WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

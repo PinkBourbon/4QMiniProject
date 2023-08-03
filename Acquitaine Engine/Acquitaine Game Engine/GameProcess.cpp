@@ -1,11 +1,9 @@
 #include "GameProcess.h"
 #include "TestScene.h"
 #include "SceneManager.h"
-#include "IObject.h"
+#include "ParentObject.h"
 
 import aptoCore.Graphics;
-
-
 
 GameProcess::GameProcess()
 {
@@ -17,10 +15,10 @@ GameProcess::~GameProcess()
 
 void GameProcess::Initialize()
 {
-	gameEnginePointer = this;
+	s_gameEnginePointer = this;
 
-	sceneManager = new SceneManager();
-	sceneManager->Initialize();
+	_sceneManager = new SceneManager();
+	_sceneManager->Initialize();
 
 	bool ret = aptoCore::Graphics::Initialize();
 
@@ -34,13 +32,13 @@ void GameProcess::Finalize()
 
 void GameProcess::RunningGameProcess(double deltaTime)
 {
-	cout << "Engine is working" << endl;
+	cout << endl<< "Engine is working" << endl<< endl;
 
 	float fixedupdateTimeRate = 0;
 
 	/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 	ObjectStateChange();
-	
+
 	/// 스크립팅 할때 보이는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 	// 초기화,추가, 시작
 	Awake();
@@ -66,49 +64,49 @@ void GameProcess::RunningGameProcess(double deltaTime)
 
 void GameProcess::AddScene(ParentScene* pscene)
 {
-	SceneList.push_back(pscene);
+	_SceneList.push_back(pscene);
 }
 
 void GameProcess::InitializeObjects()
 {
-	for (auto pObject : waitingObjectList)
+	for (auto pObject : _waitingObjectList)
 	{
 		pObject->Initialize();
-		PutStateChangeBuffer(ObjectState::START, pObject);
+		PutStateChangeBuffer(eObjectState::WAITING, eObjectState::START, pObject);
 	}
-	waitingObjectList.clear();
+	_waitingObjectList.clear();
 }
 
 void GameProcess::Awake()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _awakeObjectList)
 	{
 		pObject->Awake();
-		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
+		PutStateChangeBuffer( eObjectState::AWAKE, eObjectState::UPDATE, pObject);
 	}
 }
 
 void GameProcess::Enable()
 {
-	for (auto pObject : enableObjectList)
+	for (auto pObject : _enableObjectList)
 	{
 		pObject->Enable();
-		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
+		PutStateChangeBuffer(eObjectState::ENABLE, eObjectState::UPDATE, pObject);
 	}
 }
 
 void GameProcess::Start()
 {
-	for (auto pObject : startObjectList)
+	for (auto pObject : _startObjectList)
 	{
 		pObject->Start();
-		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
+		PutStateChangeBuffer(eObjectState::START, eObjectState::UPDATE, pObject);
 	}
 }
 
 void GameProcess::InputEvent()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _objectList)
 	{
 		pObject->InputEvent();
 	}
@@ -117,7 +115,7 @@ void GameProcess::InputEvent()
 float GameProcess::FixedUpdate()
 {
 	///물리연산이 실행되는 부분이고, 실행 시간을 초단위로 반환하도록 구성
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _fixedUpdateObjectList)
 	{
 		pObject->FixedUpdate();
 		pObject->Phsics();
@@ -128,7 +126,7 @@ float GameProcess::FixedUpdate()
 
 void GameProcess::Update()
 {
-	for (auto pObject : updateObjectList)
+	for (auto pObject : _updateObjectList)
 	{
 		pObject->Update();
 	}
@@ -136,7 +134,7 @@ void GameProcess::Update()
 
 void GameProcess::Render()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _objectList)
 	{
 		pObject->Render();
 	}
@@ -144,7 +142,7 @@ void GameProcess::Render()
 
 void GameProcess::Disable()
 {
-	for (auto pObject : disableObjectList)
+	for (auto pObject : _disableObjectList)
 	{
 		pObject->Disable();
 	}
@@ -152,7 +150,7 @@ void GameProcess::Disable()
 
 void GameProcess::Release()
 {
-	for (auto pObject : releaseObjectList)
+	for (auto pObject : _releaseObjectList)
 	{
 		pObject->Release();
 	}
@@ -160,46 +158,84 @@ void GameProcess::Release()
 
 void GameProcess::ObjectStateChange()
 {
-	for (auto buff : stateChangeBuffer)
+	for (auto buff : _stateChangeBuffer)
 	{
-		switch (buff.first)
+		switch (get<1>(buff))
 		{
-			case ObjectState::AWAKE:
+			case eObjectState::AWAKE:
 			{
-				awakeObjectList.push_back(buff.second);
+				_awakeObjectList.insert(get<2>(buff));
 			}break;
-			case ObjectState::ENABLE:
+			case eObjectState::ENABLE:
 			{
-				enableObjectList.push_back(buff.second);
+				_enableObjectList.insert(get<2>(buff));
 			}break;
-			case ObjectState::START:
+			case eObjectState::START:
 			{
-				startObjectList.push_back(buff.second);
+				_startObjectList.insert(get<2>(buff));
 			}break;
-			case ObjectState::UPDATE:
+			case eObjectState::UPDATE:
 			{
-				updateObjectList.push_back(buff.second);
+				_updateObjectList.insert(get<2>(buff));
 			}break;
-			case ObjectState::DISABLE:
+			case eObjectState::DISABLE:
 			{
-				disableObjectList.push_back(buff.second);
+				_disableObjectList.insert(get<2>(buff));
 			}break;
-			case ObjectState::RELEASE:
+			case eObjectState::RELEASE:
 			{
-				releaseObjectList.push_back(buff.second);
+				_releaseObjectList.insert(get<2>(buff));
 			}break;
 			default:
 			{
-			
+
+			}break;
+		}
+		switch (get<0>(buff))
+		{
+			case eObjectState::AWAKE:
+			{
+				_awakeObjectList.erase(
+					_awakeObjectList.find(get<2>(buff)));
+			}break;
+			case eObjectState::ENABLE:
+			{
+				_enableObjectList.erase(
+					_enableObjectList.find(get<2>(buff)));
+			}break;
+			case eObjectState::START:
+			{
+				_startObjectList.erase(
+					_startObjectList.find(get<2>(buff)));
+			}break;
+			case eObjectState::UPDATE:
+			{
+				_updateObjectList.erase(
+					_updateObjectList.find(get<2>(buff)));
+			}break;
+			case eObjectState::DISABLE:
+			{
+				_disableObjectList.erase(
+					_disableObjectList.find(get<2>(buff)));
+			}break;
+			case eObjectState::RELEASE:
+			{
+				_releaseObjectList.erase(
+					_releaseObjectList.find(get<2>(buff)));
+			}break;
+			default:
+			{
+
 			}break;
 		}
 	}
-	stateChangeBuffer.clear();
+
+	_stateChangeBuffer.clear();
 }
 
-void GameProcess::PutStateChangeBuffer(ObjectState state, IObject* pObject)
+void GameProcess::PutStateChangeBuffer(eObjectState nowstate, eObjectState newstate, ParentObject* pObject)
 {
-	stateChangeBuffer.push_back(make_pair(state, pObject));
+	_stateChangeBuffer.push_back(make_tuple(nowstate, newstate ,pObject));
 }
 
-GameProcess* GameProcess::gameEnginePointer;
+GameProcess* GameProcess::s_gameEnginePointer;

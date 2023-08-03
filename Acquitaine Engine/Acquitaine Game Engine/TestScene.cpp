@@ -3,16 +3,13 @@
 
 TestScene::TestScene(string SceneName)
 {
-	this->SceneName = SceneName;
+	this->_SceneName = SceneName;
+
+	AddObject<TestObject>("test0");
+	AddObject<TestObject>("test1");
+	AddObject<TestObject>("test2");
 }
 
 TestScene::~TestScene()
 {
-}
-
-void TestScene::Initialize()
-{
-	AddObject<TestObject>("test0");
-	AddObject<TestObject>("test1");
-	AddObject<TestObject>("test2");
 }

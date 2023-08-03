@@ -4,18 +4,21 @@
 #include <iostream>
 #include <windows.h>
 #include <vector>
+#include <unordered_set>
 
 using namespace std;
 
 class SceneManager;
 class ParentScene;
-struct IObject;
+class ParentObject;
 
-enum class ObjectState
+enum class eObjectState
 {
+	WAITING,
 	AWAKE,
 	ENABLE,
 	START,
+	FIXEDUPDATE,
 	UPDATE,
 	DISABLE,
 	RELEASE
@@ -36,9 +39,9 @@ public:
 	template<typename T>
 	void CreateObjects(string objectName) // 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
 	{
-		IObject* temp = new T(objectName);
-		objectList.push_back(temp);
-		waitingObjectList.push_back(temp);
+		ParentObject* temp = new T(objectName);
+		_objectList.insert(temp);
+		_waitingObjectList.insert(temp);
 		cout << "Sucessed object add list" << endl;
 	}
 
@@ -66,36 +69,37 @@ private:
 								// 이건 언젠가 리소스 매니저를 넘겨줘야 하지 않을까?
 
 	/// 이건 일단 보조로 두자
-	void PutStateChangeBuffer(ObjectState state, IObject* pObject);
+	void PutStateChangeBuffer(eObjectState nowstate, eObjectState newstate, ParentObject* pObject);
 	// 관리 중인 오브젝트들의 상태를 바꿔주려고 할때
 	// 바로 바꿔주는것은 안되므로 이 함수를 통해 풀에 넣어두고 나중에 바꾼다.
 	// 리소스 매니저가 추가된다면 리소스 매니저로 넣어주라는 명령함수만 가지고 있는 놈이 될지도
 
 
 public:
-	static GameProcess* gameEnginePointer;
+	static GameProcess* s_gameEnginePointer;
 private:
 
-	float deltatime;		// 프레임당 시간
-	float fixedupdatetime;	// fixedUpdate를 위한 고정 실행주기
+	float _deltatime;		// 프레임당 시간
+	float _fixedupdatetime;	// fixedUpdate를 위한 고정 실행주기
 
 
-	vector<IObject*> objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
+	unordered_set<ParentObject*> _objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
 
-	vector<IObject*> awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
-	vector<IObject*> enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
-	vector<IObject*> startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
-	vector<IObject*> updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
-	vector<IObject*> disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
-	vector<IObject*> releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
+	unordered_set<ParentObject*> _awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
+	unordered_set<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
+	unordered_set<ParentObject*> _startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
+	unordered_set<ParentObject*> _updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
+	unordered_set<ParentObject*> _fixedUpdateObjectList;	// FixedUpdate State의 오브젝트를 가지고 있는 리스트
+	unordered_set<ParentObject*> _disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
+	unordered_set<ParentObject*> _releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
 
-	vector<IObject*> waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
+	unordered_set<ParentObject*> _waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
 
-	vector < pair<ObjectState, IObject*>> stateChangeBuffer;
+	vector < tuple<eObjectState, eObjectState, ParentObject*>> _stateChangeBuffer;
 
-	vector <ParentScene*> SceneList;
+	vector <ParentScene*> _SceneList;
 
-	SceneManager* sceneManager;
+	SceneManager* _sceneManager;
 };
 
 /// 이번의 달성 목표에 대해서 정리 해보자면
@@ -201,3 +205,30 @@ private:
 // 오브젝트를 추가하려고 할때 new로 불러오는데, 이때 어떤 타입이 올지 모른다.
 // 즉 타입에 대해 알아야 하는데.. 어떻게 할 수 있지?????
 // 템플레이트를 쓰기로 했다.
+
+/// 순수 인터페이스 삭제
+//	레이어가 많아지니까 개발에 어려움을 겪었다.
+//  인터페이스에 있는데 자식에서 구현 안한 함수가 있었는데 난 아예 못찾았고 반장님도 해맸다.
+//	C++에서 지원하는 기능인데도 굳이 순수 인터페이스를 사용할 이유가 없다는 내용에 동의해서 제거함.
+
+/// 또 다른 최대 고민거리
+//	지금은 오브젝트 리스트가 상태 마다 하나씩 있는 상태
+//	이 상태에서 상태가 바뀌면 본인이 있던 리스트에서 빠지고 다음 리스트로 옮겨져야 하는데
+//	그렇다면 그냥 검색하면서 빼면 되는거 아닌가? 싶지만 모든 리스트 모든 오브젝트를 순회하게?
+//  지금 상태에선 바뀔 상태만 알고 있고 오브젝트가 자신의 상태를 모르기 때문에 모든 리스트를 돌아야 한다.
+//  맵, 셋을 쓰면 속도는 줄 수 있겠지만... 여전히 비효율적인건 마찬가지
+//	어디서 빼야 할지 모르는것도 문제고, 지금 코드에선 검색해서 빼내는 코드를 넣을 부분도 감이 오지 않는다.
+//  무언가 구조적인 변화가 필요한 상황
+
+//	그냥 _stateChangeBuffer가 기존 상태, 바뀔 상태, 오브젝트*를 들고 있는 거면 어떨까?
+//	구조적인 변동은 없고 제거되어야 할 리스트도 알고 있다. 여기에 맵, 셋을 쓸 수 도 있을것 같은데.
+//	하지만 묘하게 맘에 안드는 부분이 존재. 깔끔하지 않다고 할까.
+
+//	개인적으로 중간에 뭔가(vector)를 하나 거쳐서 정리된 후 넘어가는 형태면 좋을것 같은데 감이 안온다.
+//	일단 위의 방법을 사용하기로 했다.
+
+//	하지만 문제가 하나 있는데.. 상태를 바꿔달라는 요청을 외부에서 받았을때,
+//  이건 this의 상태 변화 함수가 래핑된 함수를 쓰게 될거란 말이지. 바꾸고자 하는 상태를 알겠지만.(그거로 바꿔야 하니까.)
+//	얘는 바꾸려고 하는 오브젝트의 상태를 전혀 모를것 이라는게 문제다.
+//	start 안에 작성 될지 update 안에 작성 될지는 알겠지만 그래서 그걸 어떻게 연결 지을 수 있나?
+//  언젠가 구조를 또 바꿔야 하겠지만 일단 두고 봐야 할것 같다.
