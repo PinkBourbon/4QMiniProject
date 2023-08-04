@@ -1,5 +1,6 @@
 #pragma once
 #include <fbxsdk.h>
+#include <unordered_map>
 
 #ifdef _DEBUG
 #pragma comment(lib, "..\\Lib\\debug\\libfbxsdk-md.lib")
@@ -9,7 +10,7 @@
 #pragma comment(lib, "..\\Lib\\release\\libfbxsdk-md.lib")
 #pragma comment(lib, "..\\Lib\\release\\libxml2-md")
 #pragma comment(lib, "..\\Lib\\release\\zlib-md")
-#endif
+#endif 
 
 struct vec3
 {
@@ -33,10 +34,10 @@ struct Vertex
 	vec3 tangent;
 
 	// 뭐하는 부분인지 모르겠음
-	// bool operator==(const Vertex& other) const
-	// {
-	// 	return position == other.position && normal == other.normal && uv == other.uv && binormal == other.binormal && tangent == other.tangent;
-	// }
+	/*bool operator==(const Vertex& other) const
+	{
+		return position == other.position && normal == other.normal && uv == other.uv && binormal == other.binormal && tangent == other.tangent;
+	}*/
 };
 
 class FbxLoaderV2
@@ -59,6 +60,7 @@ private:
 	FbxCamera* camera;
 	FbxImporter* importer;
 	FbxNode* rootNode;
+	FbxIOSettings* ioset;
 
 	void LoadNodeRecursive(FbxNode* node);
 	void ControlPointProcess(FbxMesh* mesh);

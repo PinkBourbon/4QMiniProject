@@ -43,3 +43,7 @@ struct ConstantBuffer
 	DirectX::XMMATRIX Proj;
 };
 
+struct Vertex3
+{
+	float pos[3];
+};

@@ -5,11 +5,15 @@
 #include <d3dcompiler.h>
 #include <d3dcommon.h>
 
+#include "Vertex.h"
+
 #include "Axis.h"
 #include "Cube.h"
 #include "Grid.h"
 #include "Camera.h"
-#include "FbxLoaderV2.h"
+#include "FbxLoaderV3.h"
+
+#include "SpaceShip.h"
 
 // dll로 부를때 랜더러를 만드는 함수의 주소를 가지고 있는다.
 // return을 포인터로 받아줄 수 있다.
@@ -39,7 +43,8 @@ DX11Render::DX11Render()
 	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f },
 	_viewMatrix(),
-	_projectionMatrix()
+	_projectionMatrix(),
+	_pLoader(nullptr)	/// 제작중
 {
 
 }
@@ -167,6 +172,9 @@ void DX11Render::DrawObject()
 	_pAxis->Render();
 	_pGrid->Render();
 	_pCube->Render();
+
+	// fbx에있는 버텍스를받아서 그려야함
+	// _pSpaceShip->Render();
 
 	// 레스터라이저 상태 설정 
 	_p3DDeviceContext->RSSetState(0);
@@ -373,12 +381,6 @@ HRESULT DX11Render::CreateObject()
 {
 	HRESULT hr = S_OK;
 
-	hr = CreateLoader();
-	if (FAILED(hr))
-	{
-		return hr;
-	}
-
 	hr = CreateCamera();
 	if (FAILED(hr))
 	{
@@ -403,22 +405,13 @@ HRESULT DX11Render::CreateObject()
 		return hr;
 	}
 
+	hr = CreateShip();
+	if (FAILED(hr))
+	{
+		return hr;
+	}
+
 	return hr;
-}
-
-
-HRESULT DX11Render::CreateLoader()
-{
-	HRESULT hr = S_OK;
-
-	_pLoaderV2 = new FbxLoaderV2;
-
-	_pLoaderV2->InitializeLoader();
-
-	/// 원하는 fbx 파일을 로드해준다.
-	//_pLoaderV2->LoadFbx();
-
-	_pLoaderV2->
 }
 
 HRESULT DX11Render::CreateCamera()
@@ -464,6 +457,20 @@ HRESULT DX11Render::CreateAxis()
 	HRESULT hr = S_OK;
 
 	_pAxis = new Axis(_p3DDevice, _p3DDeviceContext, _pWireRasterState);
+
+	return S_OK;
+}
+
+HRESULT DX11Render::CreateShip()
+{
+	HRESULT hr = S_OK;
+
+	std::vector<Vertex3> testvertex;
+	std::vector<Vertex3>* pvector = &testvertex;
+
+	LoadFbx2(pvector, "..//Resource//spaceship.fbx");
+	_pSpaceShip = new SpaceShip(_p3DDevice, _p3DDeviceContext, _pWireRasterState);
+
 
 	return S_OK;
 }

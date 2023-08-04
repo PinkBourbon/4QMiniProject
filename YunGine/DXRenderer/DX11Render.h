@@ -39,7 +39,9 @@ class Axis;
 class Cube;
 class Grid;
 class Camera;
-class FbxLoaderV2;
+class FbxLoaderV3;
+
+class SpaceShip;
 
 class DX11Render : public IDX11Render
 {
@@ -80,11 +82,13 @@ private:
 
 	// 오브젝트들 생성하기
 	HRESULT CreateObject();
-	HRESULT CreateLoader();
 	HRESULT CreateCamera();
 	HRESULT CreateCube();
 	HRESULT CreateGrid();
 	HRESULT CreateAxis();
+
+	// 테스트용
+	HRESULT CreateShip();
 
 	// 시간 변수
 	float _deltaTime;
@@ -128,7 +132,10 @@ private:
 	Grid* _pGrid;
 	Cube* _pCube;
 	Camera* _pCamera;
-	FbxLoaderV2* _pLoaderV2;
+	FbxLoaderV3* _pLoader;
+
+	// 테스트용 fbx 오브젝트
+	SpaceShip* _pSpaceShip;
 
 	// 버퍼
 	ID3D11Buffer* VertexBuffer;

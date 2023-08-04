@@ -1,12 +1,13 @@
 #include "FbxLoaderV2.h"
 #include <iostream>
 #include <vector>
-#include <unordered_map>
 
 std::vector<Vertex> vertices;
 std::vector<unsigned int> indices;
 
-std::unordered_map<Vertex, unsigned int> indexMapping;
+// 커스텀으로 만든 자료형을 key값으로 넘겨주려고 하면
+// key를 해쉬화 할 수 있도록 해줘야 한다.
+//std::unordered_map<Vertex, unsigned int> indexMapping;
 
 FbxLoaderV2::FbxLoaderV2() :
 	positions(nullptr),
@@ -16,7 +17,8 @@ FbxLoaderV2::FbxLoaderV2() :
 	mesh(nullptr),
 	camera(nullptr),
 	importer(nullptr),
-	rootNode(nullptr)
+	rootNode(nullptr),
+	ioset(nullptr)
 {
 	InitializeLoader();
 }
@@ -37,51 +39,8 @@ void FbxLoaderV2::InitializeLoader()
 	FbxCameraManipulator* cameraManipulator = FbxCameraManipulator::Create(manager, "");
 
 	/// 중간 세팅
-	FbxIOSettings* ioset = FbxIOSettings::Create(manager, IOSROOT);
+	ioset = FbxIOSettings::Create(manager, IOSROOT);
 	manager->SetIOSettings(ioset);
-
-	/// 노드 세팅
-	rootNode = scene->GetRootNode();
-
-	/// 루트노드에서 자식노드를 가져옴
-	LoadNodeRecursive(rootNode);
-
-	/// 좌표축 가져오기
-	FbxAxisSystem sceneAxisSystem = scene->GetGlobalSettings().GetAxisSystem();
-
-	/// 씬 내의 좌표축 변경
-	FbxAxisSystem::MayaYUp.ConvertScene(scene);
-
-	FbxGeometryConverter geometryConverter(manager);
-	geometryConverter.Triangulate(scene, true);
-
-
-
-	/// 메쉬정보 가져오기
-	mesh = node->GetMesh();
-	ControlPointProcess(mesh);
-	unsigned int triangleCount = mesh->GetPolygonCount();	// 메쉬의 삼각형 개수 가져오기
-	unsigned int vertexCount = 0;
-
-	for (unsigned int i = 0; i < triangleCount; ++i)	// 삼각형의 개수
-	{
-		for (unsigned int j = 0; j < 3; ++j)		//삼각형은 세개의 점을가지고있음
-		{
-			int controlPointIndex = mesh->GetPolygonVertex(i, j);	// 제어점 인덱스를 가져옴
-
-			vec3& position = positions[controlPointIndex];	// 현재 정점에 대한 위치
-
-			vec3 normal = ReadNormal(mesh,controlPointIndex, vertexCount);	//노말벡터
-			vec3 binormal = ReadBinormal(mesh, controlPointIndex, vertexCount);
-			vec3 tangent = ReadTangent(mesh, controlPointIndex, vertexCount);
-
-			vec2 uv = ReadUV(mesh, controlPointIndex, mesh->GetTextureUVIndex(i, j));
-
-			InsertVertex(position, normal, uv, binormal, tangent);
-
-			vertexCount++;	// 정점의 개수
-		}
-	}
 
 }
 
@@ -100,14 +59,60 @@ void FbxLoaderV2::LoadFbx(const char* filename)
 
 	importer->Import(scene);
 
+	/// 노드 세팅
+	rootNode = scene->GetRootNode();
+
+	/// 루트노드에서 자식노드를 가져옴
+	LoadNodeRecursive(rootNode);
+
+	/// 좌표축 가져오기
+	FbxAxisSystem sceneAxisSystem = scene->GetGlobalSettings().GetAxisSystem();
+
+	/// 씬 내의 좌표축 변경
+	FbxAxisSystem::MayaYUp.ConvertScene(scene);
+
+	FbxGeometryConverter geometryConverter(manager);
+	geometryConverter.Triangulate(scene, true);
+
+	/// 메쉬정보 가져오기
+	mesh = node->GetMesh();
+	ControlPointProcess(mesh);
+	unsigned int triangleCount = mesh->GetPolygonCount();	// 메쉬의 삼각형 개수 가져오기
+	unsigned int vertexCount = 0;
+
+	for (unsigned int i = 0; i < triangleCount; ++i)	// 삼각형의 개수
+	{
+		for (unsigned int j = 0; j < 3; ++j)		//삼각형은 세개의 점을가지고있음
+		{
+			int controlPointIndex = mesh->GetPolygonVertex(i, j);	// 제어점 인덱스를 가져옴
+
+			vec3& position = positions[controlPointIndex];	// 현재 정점에 대한 위치
+
+			vec3 normal = ReadNormal(mesh, controlPointIndex, vertexCount);	//노말벡터
+			vec3 binormal = ReadBinormal(mesh, controlPointIndex, vertexCount);
+			vec3 tangent = ReadTangent(mesh, controlPointIndex, vertexCount);
+
+			vec2 uv = ReadUV(mesh, controlPointIndex, mesh->GetTextureUVIndex(i, j));
+
+			InsertVertex(position, normal, uv, binormal, tangent);
+
+			vertexCount++;	// 정점의 개수
+		}
+	}
 }
 
 void FbxLoaderV2::ReleaseLoader()
 {
 	// Destroy these objects
+	ioset->Destroy();
+	rootNode->Destroy();
+	importer->Destroy();
+	camera->Destroy();	//세세한 것도 해제해줘야할까? 아니면 매니저를 없애면 모두 없어질까?
+
 	mesh->Destroy();      // Destroy the mesh
 	node->Destroy();      // Destroy the node
 	scene->Destroy();     // Destroy the scene and its objects
+	
 	manager->Destroy(); // Destroy SDK Manager and its objects
 
 	if (manager)
@@ -153,26 +158,24 @@ void FbxLoaderV2::ControlPointProcess(FbxMesh* mesh)
 		position.x = static_cast<float>(mesh->GetControlPointAt(i).mData[0]); // x좌표
 		position.y = static_cast<float>(mesh->GetControlPointAt(i).mData[1]); // y좌표
 		position.z = static_cast<float>(mesh->GetControlPointAt(i).mData[2]); // z좌표
-
 	}
-
 }
 
 void FbxLoaderV2::InsertVertex(const vec3& position, const vec3& normal, const vec2& uv, const vec3& binormal, const vec3& tangent)
 {
 	Vertex vertex = { position, normal, uv, binormal, tangent };
-	auto lookup = indexMapping.find(vertex);
-	if (lookup != indexMapping.end())
-	{
-		indices.push_back(lookup->second);
-	}
-	else
-	{
-		unsigned int index = vertices.size();
-		indexMapping[vertex] = index;
-		indices.push_back(index);
-		vertices.push_back(vertex);
-	}
+	//auto lookup = indexMapping.find(vertex);
+	//if (lookup != indexMapping.end())
+	//{
+	//	indices.push_back(lookup->second);
+	//}
+	//else
+	//{
+	//	unsigned int index = vertices.size();
+	//	indexMapping[vertex] = index;
+	//	indices.push_back(index);
+	//	vertices.push_back(vertex);
+	//}
 }
 
 vec3 FbxLoaderV2::ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCount)

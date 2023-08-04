@@ -42,6 +42,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source File\Object\SpaceShip">
+      <UniqueIdentifier>{9866d06d-db43-49e1-af0d-e48384182627}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX11Render.h">
@@ -86,6 +89,12 @@
     <ClInclude Include="FbxLoaderV2.h">
       <Filter>Source File\FBXLoader</Filter>
     </ClInclude>
+    <ClInclude Include="FbxLoaderV3.h">
+      <Filter>Source File\FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceShip.h">
+      <Filter>Source File\Object\SpaceShip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11Render.cpp">
@@ -114,6 +123,12 @@
     </ClCompile>
     <ClCompile Include="FbxLoaderV2.cpp">
       <Filter>Source File\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxLoaderV3.cpp">
+      <Filter>Source File\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceShip.cpp">
+      <Filter>Source File\Object\SpaceShip</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
