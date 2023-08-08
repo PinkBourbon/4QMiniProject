@@ -1,3 +1,5 @@
+#include <windows.h>
+
 #include "GameProcess.h"
 #include "TestScene.h"
 #include "SceneManager.h"
@@ -67,12 +69,38 @@ void GameProcess::AddScene(ParentScene* pscene)
 	_SceneList.push_back(pscene);
 }
 
+void GameProcess::ChangeObjectState(ParentObject* pobject, bool state)
+{
+	if (state && _objectList.find(pobject)->second != eObjectState::ENABLE)
+	{
+		PutStateChangeBuffer(eObjectState::ENABLE, pobject);
+		std::cout << "Object is activated" << std::endl;
+	}
+	else if (!state && _objectList.find(pobject)->second != eObjectState::DISABLE)
+	{
+		PutStateChangeBuffer(eObjectState::DISABLE, pobject);
+		std::cout << "Object is unactivated" << std::endl;
+	}
+}
+
+ParentObject& GameProcess::FindObject(std::string objectname)
+{
+	for (auto object : _objectList)
+	{
+		if (object.first->objectName.compare(objectname))
+		{
+			ParentObject& temp = *object.first;
+			return temp;
+		}
+	}
+}
+
 void GameProcess::InitializeObjects()
 {
 	for (auto pObject : _waitingObjectList)
 	{
 		pObject->Initialize();
-		PutStateChangeBuffer(eObjectState::WAITING, eObjectState::START, pObject);
+		PutStateChangeBuffer(eObjectState::START, pObject);
 	}
 	_waitingObjectList.clear();
 }
@@ -82,7 +110,7 @@ void GameProcess::Awake()
 	for (auto pObject : _awakeObjectList)
 	{
 		pObject->Awake();
-		PutStateChangeBuffer( eObjectState::AWAKE, eObjectState::UPDATE, pObject);
+		PutStateChangeBuffer( eObjectState::UPDATE, pObject);
 	}
 }
 
@@ -91,7 +119,7 @@ void GameProcess::Enable()
 	for (auto pObject : _enableObjectList)
 	{
 		pObject->Enable();
-		PutStateChangeBuffer(eObjectState::ENABLE, eObjectState::UPDATE, pObject);
+		PutStateChangeBuffer(eObjectState::UPDATE, pObject);
 	}
 }
 
@@ -100,7 +128,7 @@ void GameProcess::Start()
 	for (auto pObject : _startObjectList)
 	{
 		pObject->Start();
-		PutStateChangeBuffer(eObjectState::START, eObjectState::UPDATE, pObject);
+		PutStateChangeBuffer(eObjectState::UPDATE, pObject);
 	}
 }
 
@@ -108,7 +136,7 @@ void GameProcess::InputEvent()
 {
 	for (auto pObject : _objectList)
 	{
-		pObject->InputEvent();
+		pObject.first->InputEvent();
 	}
 }
 
@@ -136,7 +164,7 @@ void GameProcess::Render()
 {
 	for (auto pObject : _objectList)
 	{
-		pObject->Render();
+		pObject.first->Render();
 	}
 }
 
@@ -160,68 +188,38 @@ void GameProcess::ObjectStateChange()
 {
 	for (auto buff : _stateChangeBuffer)
 	{
-		switch (get<1>(buff))
+		EraseObjectStateList(buff.second);
+		switch (buff.first)
 		{
 			case eObjectState::AWAKE:
 			{
-				_awakeObjectList.insert(get<2>(buff));
+				_awakeObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::AWAKE;
 			}break;
 			case eObjectState::ENABLE:
 			{
-				_enableObjectList.insert(get<2>(buff));
+				_enableObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::ENABLE;
 			}break;
 			case eObjectState::START:
 			{
-				_startObjectList.insert(get<2>(buff));
+				_startObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::START;
 			}break;
 			case eObjectState::UPDATE:
 			{
-				_updateObjectList.insert(get<2>(buff));
+				_updateObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::UPDATE;
 			}break;
 			case eObjectState::DISABLE:
 			{
-				_disableObjectList.insert(get<2>(buff));
+				_disableObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::DISABLE;
 			}break;
 			case eObjectState::RELEASE:
 			{
-				_releaseObjectList.insert(get<2>(buff));
-			}break;
-			default:
-			{
-
-			}break;
-		}
-		switch (get<0>(buff))
-		{
-			case eObjectState::AWAKE:
-			{
-				_awakeObjectList.erase(
-					_awakeObjectList.find(get<2>(buff)));
-			}break;
-			case eObjectState::ENABLE:
-			{
-				_enableObjectList.erase(
-					_enableObjectList.find(get<2>(buff)));
-			}break;
-			case eObjectState::START:
-			{
-				_startObjectList.erase(
-					_startObjectList.find(get<2>(buff)));
-			}break;
-			case eObjectState::UPDATE:
-			{
-				_updateObjectList.erase(
-					_updateObjectList.find(get<2>(buff)));
-			}break;
-			case eObjectState::DISABLE:
-			{
-				_disableObjectList.erase(
-					_disableObjectList.find(get<2>(buff)));
-			}break;
-			case eObjectState::RELEASE:
-			{
-				_releaseObjectList.erase(
-					_releaseObjectList.find(get<2>(buff)));
+				_releaseObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::RELEASE;
 			}break;
 			default:
 			{
@@ -233,9 +231,45 @@ void GameProcess::ObjectStateChange()
 	_stateChangeBuffer.clear();
 }
 
-void GameProcess::PutStateChangeBuffer(eObjectState nowstate, eObjectState newstate, ParentObject* pObject)
+void GameProcess::PutStateChangeBuffer(eObjectState newstate, ParentObject* pObject)
 {
-	_stateChangeBuffer.push_back(make_tuple(nowstate, newstate ,pObject));
+	_stateChangeBuffer.push_back(make_pair(newstate ,pObject));
+}
+
+void GameProcess::EraseObjectStateList(ParentObject* pObject)
+{
+	std::unordered_map<ParentObject*, eObjectState>::iterator temp = _objectList.find(pObject);
+	switch (temp->second)
+	{
+		case eObjectState::AWAKE:
+		{
+			_awakeObjectList.erase(_awakeObjectList.find(temp->first));
+		}break;
+		case eObjectState::ENABLE:
+		{
+			_enableObjectList.erase(_enableObjectList.find(temp->first));
+		}break;
+		case eObjectState::START:
+		{
+			_startObjectList.erase(_startObjectList.find(temp->first));
+		}break;
+		case eObjectState::UPDATE:
+		{
+			_updateObjectList.erase(_updateObjectList.find(temp->first));
+		}break;
+		case eObjectState::DISABLE:
+		{
+			_disableObjectList.erase(_disableObjectList.find(temp->first));
+		}break;
+		case eObjectState::RELEASE:
+		{
+			_releaseObjectList.erase(_releaseObjectList.find(temp->first));
+		}break;
+		default:
+		{
+
+		}break;
+	}
 }
 
 GameProcess* GameProcess::s_gameEnginePointer;

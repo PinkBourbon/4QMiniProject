@@ -19,18 +19,22 @@ void TestComponent::Initialize()
 
 void TestComponent::Finalize()
 {
+
 }
 
 void TestComponent::InputEvent()
 {
+
 }
 
 void TestComponent::Render()
 {
+
 }
 
 void TestComponent::Phsics()
 {
+
 }
 
 void TestComponent::Awake()
@@ -39,6 +43,7 @@ void TestComponent::Awake()
 
 void TestComponent::Enable()
 {
+	cout << _gameObject->objectName << " : component1 Enable is sucessed." << endl;
 }
 
 void TestComponent::Start()
@@ -57,6 +62,7 @@ void TestComponent::Update()
 
 void TestComponent::Disable()
 {
+	cout << _gameObject->objectName << " : component2 Disable is sucessed." << endl;
 }
 
 void TestComponent::Release()

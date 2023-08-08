@@ -37,8 +37,10 @@ public:
 
 	vector<ParentComponent*> GetComponentlist();
 	void RemoveComponent();
+	void SetActive(bool state);
+	ParentObject& FindObject(std::string objectname);
 
-	//private:
+//private:
 public:
 	virtual void Initialize();
 	virtual void Finalize();

@@ -12,7 +12,7 @@ class TestComponent2;
 class TestObject :public ParentObject
 {
 public:
-	TestObject(string objectName);
+	TestObject(string objectName, ParentScene* parentScene);
 	virtual ~TestObject();
 };
 

@@ -1,5 +1,6 @@
 #include "TestScene.h"
 #include "TestObject.h"
+#include "TestObject_Find.h"
 
 TestScene::TestScene(string SceneName)
 {
@@ -7,7 +8,7 @@ TestScene::TestScene(string SceneName)
 
 	AddObject<TestObject>("test0");
 	AddObject<TestObject>("test1");
-	AddObject<TestObject>("test2");
+	AddObject<TestObject_Find>("test_find");
 }
 
 TestScene::~TestScene()

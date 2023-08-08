@@ -24,7 +24,12 @@ void ParentScene::Finalize()
 	// 어차피 스크립트 짤 때 못보게 할거니까 알아서 잘짜..
 }
 
-void ParentScene::FindObject()
+void ParentScene::ChangeObjectState(ParentObject* pObject, bool state)
 {
-	
+	_gameProcess->ChangeObjectState(pObject, state);
+}
+
+ParentObject& ParentScene::FindObject(std::string objectname)
+{
+	return _gameProcess->FindObject(objectname);
 }

@@ -22,10 +22,12 @@ public:
 	void AddObject(string objectName)
 	{
 		cout << "Sucessed object create." << endl;
-		_gameProcess->CreateObjects<T>(objectName);
+		_gameProcess->CreateObjects<T>(objectName, this);
 	}
 
-	void FindObject();
+	void ChangeObjectState(ParentObject* pObject, bool state);
+
+	ParentObject& FindObject(std::string objectname);
 
 protected:
 	string _SceneName;

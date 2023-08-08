@@ -11,39 +11,6 @@ constexpr int windowPositionY = 100;
 
 HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 {
-	/// Win32 관련
-	// 윈도 클래스
-	LPCWSTR szAppName = L"Acquitain Project";
-	WNDCLASS wndclass;
-
-	wndclass.style = CS_HREDRAW | CS_VREDRAW;
-	wndclass.lpfnWndProc = this->WindowProc;
-	wndclass.cbClsExtra = 0;
-	wndclass.cbWndExtra = 0;
-	wndclass.hInstance = hInstance;
-	wndclass.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
-	wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-	wndclass.lpszMenuName = NULL;
-	wndclass.lpszClassName = szAppName;
-
-	// 윈도 클래스 등록
-	RegisterClass(&wndclass);
-
-	// 윈도 생성
-	_hWnd = CreateWindow(
-		szAppName,
-		szAppName,
-		WS_OVERLAPPEDWINDOW,
-		windowPositionX, windowPositionY, windowLength, windowHeight,
-		NULL, NULL, hInstance, NULL);
-
-	if (!_hWnd) return S_FALSE;
-
-	// 생성된 윈도를 화면에 표시
-	ShowWindow(_hWnd, SW_SHOWNORMAL);
-	UpdateWindow(_hWnd);
-
 	// 디버깅, 테스트용 콘솔을 생성
  	AllocConsole();
 	FILE* _tempFile;

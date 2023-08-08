@@ -1,5 +1,6 @@
 #include "ParentObject.h"
 #include "ParentComponent.h"
+#include "ParentScene.h"
 
 int ParentObject::_objectIDs;
 
@@ -42,6 +43,11 @@ void ParentObject::Finalize()
 	}
 }
 
+ParentObject& ParentObject::FindObject(std::string objectname)
+{
+	return _includedScene->FindObject(objectname);
+}
+
 void ParentObject::Awake()
 {
 	for (auto pComponent : _componentList)
@@ -52,9 +58,13 @@ void ParentObject::Awake()
 
 void ParentObject::Enable()
 {
-	for (auto pComponent : _componentList)
+	if (!isEnabled)
 	{
-		pComponent->Enable();
+		for (auto pComponent : _componentList)
+		{
+			pComponent->Enable();
+			isEnabled = true;
+		}
 	}
 }
 
@@ -105,11 +115,20 @@ void ParentObject::Render()
 	}
 }
 
+void ParentObject::SetActive(bool state)
+{
+	_includedScene->ChangeObjectState(this, state);
+}
+
 void ParentObject::Disable()
 {
-	for (auto pComponent : _componentList)
+	if (isEnabled)
 	{
-		pComponent->Disable();
+		for (auto pComponent : _componentList)
+		{
+			pComponent->Disable();
+		}
+		isEnabled = false;
 	}
 }
 

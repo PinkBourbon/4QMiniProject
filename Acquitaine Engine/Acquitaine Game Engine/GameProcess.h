@@ -2,11 +2,9 @@
 /// 2023.07.20 작성 시작
 #pragma once
 #include <iostream>
-#include <windows.h>
-#include <vector>
 #include <unordered_set>
-
-using namespace std;
+#include <unordered_map>
+#include <vector>
 
 class SceneManager;
 class ParentScene;
@@ -37,13 +35,17 @@ public:
 	void AddScene(ParentScene* pscene);
 
 	template<typename T>
-	void CreateObjects(string objectName) // 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
+	void CreateObjects(std::string objectName, ParentScene* parentscene) // 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
 	{
-		ParentObject* temp = new T(objectName);
-		_objectList.insert(temp);
+		ParentObject* temp = new T(objectName, parentscene);
+		_objectList.insert(std::make_pair(temp, eObjectState::WAITING));
 		_waitingObjectList.insert(temp);
-		cout << "Sucessed object add list" << endl;
+		std::cout << "Sucessed object add list" << std::endl;
 	}
+
+	void ChangeObjectState(ParentObject* pobject, bool state);
+
+	ParentObject& FindObject(std::string objectname);
 
 private:
 	/// 함수들의 실행 주기에 맞춰 함수들을 나열
@@ -69,11 +71,11 @@ private:
 								// 이건 언젠가 리소스 매니저를 넘겨줘야 하지 않을까?
 
 	/// 이건 일단 보조로 두자
-	void PutStateChangeBuffer(eObjectState nowstate, eObjectState newstate, ParentObject* pObject);
+	void PutStateChangeBuffer(eObjectState newstate, ParentObject* pObject);
+	void EraseObjectStateList(ParentObject* pObject);
 	// 관리 중인 오브젝트들의 상태를 바꿔주려고 할때
 	// 바로 바꿔주는것은 안되므로 이 함수를 통해 풀에 넣어두고 나중에 바꾼다.
 	// 리소스 매니저가 추가된다면 리소스 매니저로 넣어주라는 명령함수만 가지고 있는 놈이 될지도
-
 
 public:
 	static GameProcess* s_gameEnginePointer;
@@ -83,21 +85,21 @@ private:
 	float _fixedupdatetime;	// fixedUpdate를 위한 고정 실행주기
 
 
-	unordered_set<ParentObject*> _objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
+	std::unordered_map<ParentObject*, eObjectState > _objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
 
-	unordered_set<ParentObject*> _awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
-	unordered_set<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
-	unordered_set<ParentObject*> _startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
-	unordered_set<ParentObject*> _updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
-	unordered_set<ParentObject*> _fixedUpdateObjectList;	// FixedUpdate State의 오브젝트를 가지고 있는 리스트
-	unordered_set<ParentObject*> _disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
-	unordered_set<ParentObject*> _releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
+	std::unordered_set<ParentObject*> _awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
+	std::unordered_set<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
+	std::unordered_set<ParentObject*> _startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
+	std::unordered_set<ParentObject*> _updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
+	std::unordered_set<ParentObject*> _fixedUpdateObjectList;	// FixedUpdate State의 오브젝트를 가지고 있는 리스트
+	std::unordered_set<ParentObject*> _disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
+	std::unordered_set<ParentObject*> _releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
 
-	unordered_set<ParentObject*> _waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
+	std::unordered_set<ParentObject*> _waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
 
-	vector < tuple<eObjectState, eObjectState, ParentObject*>> _stateChangeBuffer;
+	std::vector < std::pair<eObjectState, ParentObject*>> _stateChangeBuffer;
 
-	vector <ParentScene*> _SceneList;
+	std::vector <ParentScene*> _SceneList;
 
 	SceneManager* _sceneManager;
 };
@@ -232,3 +234,10 @@ private:
 //	얘는 바꾸려고 하는 오브젝트의 상태를 전혀 모를것 이라는게 문제다.
 //	start 안에 작성 될지 update 안에 작성 될지는 알겠지만 그래서 그걸 어떻게 연결 지을 수 있나?
 //  언젠가 구조를 또 바꿔야 하겠지만 일단 두고 봐야 할것 같다.
+
+/// 바로 다음날 그 상황에 직면함!!!!
+//	오브젝트의 상태를 바꾸고 싶어!!!!
+//	근데 그러려면 오브젝	트가 자기가 어떤 상태인지 알아야 해
+//	근데 난 오브젝트에게 자기가 어떤 상태인지 모르게 하고 싶어
+//	그러면 어떻게 해야 하지? start에서 update가 아니라 disable로 가게 하려면 어떻게 해야 하지???
+//	어떻게 짜야 엔진에서 부탁받은 오브젝트가 들어있는 위치를 찾아서 거기서 뺄 수 있는거지?    
