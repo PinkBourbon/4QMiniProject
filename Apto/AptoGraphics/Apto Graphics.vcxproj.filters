@@ -29,9 +29,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceMgr.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -135,6 +132,15 @@
     </ClCompile>
     <ClCompile Include="KeyFrameData.cpp">
       <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="RawMaterial.ixx">
+      <Filter>Resource\RawData</Filter>
+    </ClCompile>
+    <ClCompile Include="RawTextrue.ixx">
+      <Filter>Resource\RawData</Filter>
+    </ClCompile>
+    <ClCompile Include="RawSampler.ixx">
+      <Filter>Resource\RawData</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
