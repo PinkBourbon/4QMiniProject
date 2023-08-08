@@ -1,4 +1,5 @@
 #include <fstream>
+#include <vector>
 #include "SpaceShip.h"
 #include "TextureLoader.h"
 

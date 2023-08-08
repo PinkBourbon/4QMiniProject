@@ -2,8 +2,7 @@
 #include <wrl/client.h>
 #include <d3d11.h>
 #include "d3dx11effect.h"
-#include "FbxLoaderV3.h"
-
+#include "FbxLoaderV4.h"
 // 이펙트 라이브러리
 //#pragma comment(lib, "..\\Lib\\Effects11d.lib")
 //#include "..\\DXEffect\D3dx11effect.h"

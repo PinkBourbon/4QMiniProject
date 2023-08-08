@@ -47,3 +47,31 @@ struct Vertex3
 {
 	float pos[3];
 };
+
+struct vec3
+{
+	float x;
+	float y;
+	float z;
+};
+
+struct vec2
+{
+	float x;
+	float y;
+};
+
+struct Vertex
+{
+	vec3 position;
+	vec3 normal;
+	vec2 uv;
+	vec3 binormal;
+	vec3 tangent;
+
+	// 뭐하는 부분인지 모르겠음
+	/*bool operator==(const Vertex& other) const
+	{
+		return position == other.position && normal == other.normal && uv == other.uv && binormal == other.binormal && tangent == other.tangent;
+	}*/
+};

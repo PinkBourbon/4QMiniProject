@@ -11,9 +11,8 @@
 #include "Cube.h"
 #include "Grid.h"
 #include "Camera.h"
-#include "FbxLoaderV3.h"
 
-#include "SpaceShip.h"
+#include "FbxLoaderV4.h"
 
 // dll로 부를때 랜더러를 만드는 함수의 주소를 가지고 있는다.
 // return을 포인터로 받아줄 수 있다.
@@ -43,8 +42,7 @@ DX11Render::DX11Render()
 	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f },
 	_viewMatrix(),
-	_projectionMatrix(),
-	_pLoader(nullptr)	/// 제작중
+	_projectionMatrix()
 {
 
 }
@@ -80,6 +78,12 @@ long DX11Render::Initialize(void* hwnd)
 	}
 
 	hr = CreateRaster();
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	hr = CreateLoader();
 	if (FAILED(hr))
 	{
 		return false;
@@ -461,15 +465,21 @@ HRESULT DX11Render::CreateAxis()
 	return S_OK;
 }
 
+
+HRESULT DX11Render::CreateLoader()
+{
+	HRESULT hr = S_OK;
+	
+	_pLoader = new FbxLoaderV4;
+
+	return S_OK;
+}
+
 HRESULT DX11Render::CreateShip()
 {
 	HRESULT hr = S_OK;
 
-	std::vector<Vertex3> testvertex;
-	std::vector<Vertex3>* pvector = &testvertex;
-
-	LoadFbx2(pvector, "..//Resource//spaceship.fbx");
-	_pSpaceShip = new SpaceShip(_p3DDevice, _p3DDeviceContext, _pWireRasterState);
+	_pLoader->Load(L"..//Resource//spaceship.fbx");
 
 
 	return S_OK;

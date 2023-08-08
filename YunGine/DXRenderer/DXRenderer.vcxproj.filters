@@ -42,8 +42,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source File\Object\SpaceShip">
-      <UniqueIdentifier>{9866d06d-db43-49e1-af0d-e48384182627}</UniqueIdentifier>
+    <Filter Include="Source File\FBXLoader\SDK">
+      <UniqueIdentifier>{90b3906a-77d4-4863-ae58-1f4e11a15f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source File\Util">
+      <UniqueIdentifier>{3b4803be-e03f-4f59-95f3-283d8563ee3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,17 +86,14 @@
     <ClInclude Include="Renderable.h">
       <Filter>Source File\DllInterface</Filter>
     </ClInclude>
-    <ClInclude Include="FBXLoader.h">
-      <Filter>Source File\FBXLoader</Filter>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source File\Shader&amp;Vertex</Filter>
     </ClInclude>
-    <ClInclude Include="FbxLoaderV2.h">
-      <Filter>Source File\FBXLoader</Filter>
+    <ClInclude Include="FbxLoaderV4.h">
+      <Filter>Source File\FBXLoader\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="FbxLoaderV3.h">
-      <Filter>Source File\FBXLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceShip.h">
-      <Filter>Source File\Object\SpaceShip</Filter>
+    <ClInclude Include="Utility.h">
+      <Filter>Source File\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -118,17 +118,8 @@
     <ClCompile Include="aptoDllInterface.cpp">
       <Filter>Source File\DllInterface</Filter>
     </ClCompile>
-    <ClCompile Include="FBXLoader.cpp">
-      <Filter>Source File\FBXLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="FbxLoaderV2.cpp">
-      <Filter>Source File\FBXLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="FbxLoaderV3.cpp">
-      <Filter>Source File\FBXLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="SpaceShip.cpp">
-      <Filter>Source File\Object\SpaceShip</Filter>
+    <ClCompile Include="FbxLoaderV4.cpp">
+      <Filter>Source File\FBXLoader\SDK</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
