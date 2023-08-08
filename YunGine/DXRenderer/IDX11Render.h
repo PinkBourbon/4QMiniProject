@@ -1,10 +1,13 @@
 #pragma once
+//#include <string>
+
+struct Renderable;
 
 class IDX11Render abstract
 {
 public:
 	IDX11Render() {}
-	virtual ~IDX11Render() {};	// ÀÎÅÍÆäÀÌ½º ¼Ò¸êÀÚ´Â virtual·Î
+	virtual ~IDX11Render() {};	// ì¸í„°í˜ì´ìŠ¤ ì†Œë©¸ìëŠ” virtualë¡œ
 
 	virtual long Initialize(void* hwnd) abstract;
 
@@ -17,7 +20,15 @@ public:
 	virtual void Finalize() abstract;
 };
 
-// dll¿ÜºÎ¿¡¼­ »ç¿ë°¡´ÉÇÑ ÇÔ¼ö¶ó°í ¾Ë·ÁÁÖ´Â °Í
+// dllì™¸ë¶€ì—ì„œ ì‚¬ìš©ê°€ëŠ¥í•œ í•¨ìˆ˜ë¼ê³  ì•Œë ¤ì£¼ëŠ” ê²ƒ
 extern "C" __declspec(dllexport) IDX11Render * CreateRenderer();
 extern "C" __declspec(dllexport) void DeleteRenderer(IDX11Render * renderer);
+
+// ìš©í›ˆì´í˜•ì˜ ì¸í„°í˜ì´ìŠ¤ì— ë§ì·„ìŒ
+extern "C" __declspec(dllexport) bool Initialize();
+extern "C" __declspec(dllexport) void Finalize();
+extern "C" __declspec(dllexport) void Render(float deltaTime);
+extern "C" __declspec(dllexport) bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight);
+extern "C" __declspec(dllexport) void RegisterObject(Renderable & object);
+extern "C" __declspec(dllexport) void DeregisterObject(Renderable & object);
 

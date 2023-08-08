@@ -1,5 +1,7 @@
 #include "GameProcess.h"
 
+import aptoCore.Graphics;
+
 GameProcess::~GameProcess()
 {
 
@@ -7,11 +9,11 @@ GameProcess::~GameProcess()
 
 HRESULT GameProcess::Initialize(HINSTANCE hInstance)
 {
-	/// Win32 °ü·Ã
-	// À©µµ Å¬·¡½º
+	/// Win32 ê´€ë ¨
+	// ìœˆë„ í´ë˜ìŠ¤
 	// 
-	// ¸ÖÆ¼¹ÙÀÌÆ®¿¡¼­ À¯´ÏÄÚµå·Î ³Ñ¾î¿À¸é¼­ char* ¿¡·¯°¡ ³µ´Âµ¥
-	// ÀÌ·±½ÄÀ¸·Î Çüº¯È¯À» ÇØµµ µÉ±î?
+	// ë©€í‹°ë°”ì´íŠ¸ì—ì„œ ìœ ë‹ˆì½”ë“œë¡œ ë„˜ì–´ì˜¤ë©´ì„œ char* ì—ëŸ¬ê°€ ë‚¬ëŠ”ë°
+	// ì´ëŸ°ì‹ìœ¼ë¡œ í˜•ë³€í™˜ì„ í•´ë„ ë ê¹Œ?
 	wchar_t szAppName[] = L"YJD3Ddemo Engine";
 	WNDCLASS wndclass;
 
@@ -26,13 +28,13 @@ HRESULT GameProcess::Initialize(HINSTANCE hInstance)
 	wndclass.lpszMenuName = NULL;
 	wndclass.lpszClassName = szAppName;
 
-	// À©µµ Å¬·¡½º µî·Ï
+	// ìœˆë„ í´ë˜ìŠ¤ ë“±ë¡
 	RegisterClass(&wndclass);
 
-	// À©µµ »ı¼º
+	// ìœˆë„ ìƒì„±
 	hWnd = CreateWindow(
-		// ¸ÖÆ¼¹ÙÀÌÆ®¿¡¼­ À¯´ÏÄÚµå·Î ³Ñ¾î¿À¸é¼­ char* ¿¡·¯°¡ ³µ´Âµ¥
-		// ÀÌ·±½ÄÀ¸·Î Çüº¯È¯À» ÇØµµ µÉ±î?
+		// ë©€í‹°ë°”ì´íŠ¸ì—ì„œ ìœ ë‹ˆì½”ë“œë¡œ ë„˜ì–´ì˜¤ë©´ì„œ char* ì—ëŸ¬ê°€ ë‚¬ëŠ”ë°
+		// ì´ëŸ°ì‹ìœ¼ë¡œ í˜•ë³€í™˜ì„ í•´ë„ ë ê¹Œ?
 		szAppName,
 		szAppName,
 		WS_OVERLAPPEDWINDOW,
@@ -41,7 +43,7 @@ HRESULT GameProcess::Initialize(HINSTANCE hInstance)
 
 	if (!hWnd) return S_FALSE;
 
-	// »ı¼ºµÈ À©µµ¸¦ È­¸é¿¡ Ç¥½Ã
+	// ìƒì„±ëœ ìœˆë„ë¥¼ í™”ë©´ì— í‘œì‹œ
 	ShowWindow(hWnd, SW_SHOWNORMAL);
 	UpdateWindow(hWnd);
 
@@ -74,19 +76,19 @@ void GameProcess::Loop()
 		}
 
 	}
-	}
+}
 
 
 void GameProcess::Update()
 {
 
-	// ¸Å ÇÁ·¹ÀÓ ½Ã°£À» °è»êÇÑ´Ù.
+	// ë§¤ í”„ë ˆì„ ì‹œê°„ì„ ê³„ì‚°í•œë‹¤.
 	m_pTimer->Tick();
 
-	// ¸Å ÇÁ·¹ÀÓÀÇ deltaTime
+	// ë§¤ í”„ë ˆì„ì˜ deltaTime
 	m_pTimer->DeltaTime();
 
-	// Å° ÀÔ·Â
+	// í‚¤ ì…ë ¥
 	if (GetAsyncKeyState(VK_RETURN))
 	{
 
@@ -97,7 +99,7 @@ void GameProcess::Update()
 		PostQuitMessage(0);
 	}
 
-	/// Å¸ÀÌ¸Ó¸¦ ±â¹İÀ¸·Î FPS, millisecond per frame (1ÇÁ·¹ÀÓ´ç elapsedTime = deltaTime)À» °è»ê ÇØ ÁØ´Ù.
+	/// íƒ€ì´ë¨¸ë¥¼ ê¸°ë°˜ìœ¼ë¡œ FPS, millisecond per frame (1í”„ë ˆì„ë‹¹ elapsedTime = deltaTime)ì„ ê³„ì‚° í•´ ì¤€ë‹¤.
 
 	// Code computes the average frames per second, and also the 
 	// average time it takes to render one frame.  These stats 
@@ -111,40 +113,42 @@ void GameProcess::Update()
 
 	if ((m_pTimer->TotalTime() - timeElapsed) >= 1.0f)
 	{
-		// FPS °è»ê: ÇöÀç±îÁö ´©ÀûµÈ ÇÁ·¹ÀÓ ¼ö¸¦ 1ÃÊ µ¿¾ÈÀÇ ½Ã°£À¸·Î ³ª´©¾î °è»êÇÕ´Ï´Ù.
+		// FPS ê³„ì‚°: í˜„ì¬ê¹Œì§€ ëˆ„ì ëœ í”„ë ˆì„ ìˆ˜ë¥¼ 1ì´ˆ ë™ì•ˆì˜ ì‹œê°„ìœ¼ë¡œ ë‚˜ëˆ„ì–´ ê³„ì‚°í•©ë‹ˆë‹¤.
 		float fps = (float)frameCnt; // fps = frameCnt / 1
 
-		// MSPF °è»ê: FPS¸¦ ÀÌ¿ëÇÏ¿© 1ÃÊ´ç Æò±Õ ÇÁ·¹ÀÓ ½Ã°£(Milliseconds per Frame)À» °è»êÇÕ´Ï´Ù.
+		// MSPF ê³„ì‚°: FPSë¥¼ ì´ìš©í•˜ì—¬ 1ì´ˆë‹¹ í‰ê·  í”„ë ˆì„ ì‹œê°„(Milliseconds per Frame)ì„ ê³„ì‚°í•©ë‹ˆë‹¤.
 		float mspf = 1000.0f / fps;
 
 		// Reset for next average.
-		// 1ÃÊ µ¿¾ÈÀÇ Æò±Õ °è»êÀÌ ¿Ï·áµÇ¸é, ´ÙÀ½ 1ÃÊ°£ÀÇ °è»êÀ» À§ÇØ ´©ÀûµÈ ÇÁ·¹ÀÓ ¼ö¿Í ½Ã°£À» ÃÊ±âÈ­ÇÕ´Ï´Ù.
+		// 1ì´ˆ ë™ì•ˆì˜ í‰ê·  ê³„ì‚°ì´ ì™„ë£Œë˜ë©´, ë‹¤ìŒ 1ì´ˆê°„ì˜ ê³„ì‚°ì„ ìœ„í•´ ëˆ„ì ëœ í”„ë ˆì„ ìˆ˜ì™€ ì‹œê°„ì„ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
 		frameCnt = 0;
 		timeElapsed += 1.0f;
 	}
 
-	// ÀÏ´Ü ´ëÃæ ÇØ³õÀ½->·£´õ update¿¡ float deltatimeÀ» ³ÖÀ½
+	// ì¼ë‹¨ ëŒ€ì¶© í•´ë†“ìŒ->ëœë” updateì— float deltatimeì„ ë„£ìŒ
 	renderer->Update(m_pTimer->DeltaTime());
 }
 
 void GameProcess::Render()
 {
-	/// ±×¸®±â¸¦ ÁØºñÇÑ´Ù.
-	// ±×·¡ÇÈ¿£ÁøÀ» ¾ÆÁ÷ ºÙÀÌÁö ¾Ê¾Ò´Ù.
-	renderer->BeginRender(0, 0, 0, 1);
+	/// ê·¸ë¦¬ê¸°ë¥¼ ì¤€ë¹„í•œë‹¤.
+	// ê·¸ë˜í”½ì—”ì§„ì„ ì•„ì§ ë¶™ì´ì§€ ì•Šì•˜ë‹¤.
+	//renderer->BeginRender(0, 0, 0, 1);
+	//
+	//renderer->DrawObject();
+	//
+	///// ê·¸ë¦¬ê¸°ë¥¼ ëë‚¸ë‹¤.
+	//renderer->EndRender();
 
-	renderer->DrawObject();
-
-	/// ±×¸®±â¸¦ ³¡³½´Ù.
-	renderer->EndRender();
+	renderer->Render();
 }
 
 HRESULT GameProcess::CreateGraphicEngine()
 {
-	// dllÀ» Á÷Á¢ÀûÀ¸·Î °¡Á®¿À±â·Î °áÁ¤
+	// dllì„ ì§ì ‘ì ìœ¼ë¡œ ê°€ì ¸ì˜¤ê¸°ë¡œ ê²°ì •
 	HMODULE Module = LoadLibrary(RENDER_PATH);
 	m_hModule = Module;
-	if (m_hModule == nullptr)	// dll ·Îµå ½ÇÆĞ
+	if (m_hModule == nullptr)	// dll ë¡œë“œ ì‹¤íŒ¨
 	{
 		return S_FALSE;
 	}
@@ -156,13 +160,13 @@ HRESULT GameProcess::CreateGraphicEngine()
 	// CreateRenderer createRenderer = reinterpret_cast<CreateRenderer>(GetProcAddress(m_hModule, "CreateRenderer"));
 	if (renderer == nullptr)
 	{
-		// ÇÔ¼ö °¡Á®¿À±â ½ÇÆĞ Ã³¸®
+		// í•¨ìˆ˜ ê°€ì ¸ì˜¤ê¸° ì‹¤íŒ¨ ì²˜ë¦¬
 		FreeLibrary(m_hModule);
 		return S_FALSE;
 	}
 	else
 	{
-		// ±¸Ã¼ÀûÀÎ ³»ºÎ ±¸ÇöÀÌ ¾øÀ¸¹Ç·Î »ç¿ëÇÒ ¼ö ¾ø´Â °ÍÀÌ´Ù.
+		// êµ¬ì²´ì ì¸ ë‚´ë¶€ êµ¬í˜„ì´ ì—†ìœ¼ë¯€ë¡œ ì‚¬ìš©í•  ìˆ˜ ì—†ëŠ” ê²ƒì´ë‹¤.
 		renderer->Initialize((void*)hWnd);
 	}
 
@@ -171,20 +175,20 @@ HRESULT GameProcess::CreateGraphicEngine()
 
 HRESULT GameProcess::DeleteGraphicEngine()
 {
-	// unique_ptrÀÌ¶ó¼­ ±»ÀÌ ¸í½ÃÀûÀ¸·Î ÇØÁ¦ÇÏÁö ¾Ê¾Æµµ µÉ²¨°°¾Æ
+	// unique_ptrì´ë¼ì„œ êµ³ì´ ëª…ì‹œì ìœ¼ë¡œ í•´ì œí•˜ì§€ ì•Šì•„ë„ ë êº¼ê°™ì•„
 	renderer->Finalize();
 	// typedef void (*DeleteRendererFunc)(IDX11Render*);
 	// DeleteRendererFunc deleteRenderer = reinterpret_cast<DeleteRendererFunc>(GetProcAddress(m_hModule, "DeleteRenderer"));
 	renderer.release();
 
 	FreeLibrary(m_hModule);
-	
+
 	return S_OK;
 }
 
 void GameProcess::Finalize()
 {
-	// ±×·¡ÇÈ¿£ÁøÀ» ÆÄÀÌ³Î¶óÀÌÁî¿¡¼­ ÇØÁ¦ÇÑ´Ù.
+	// ê·¸ë˜í”½ì—”ì§„ì„ íŒŒì´ë„ë¼ì´ì¦ˆì—ì„œ í•´ì œí•œë‹¤.
 	DeleteGraphicEngine();
 }
 

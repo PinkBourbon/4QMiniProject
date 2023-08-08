@@ -1,10 +1,9 @@
 #pragma once
 #include <wrl/client.h>
 #include <d3d11.h>
-#include "Vertex.h"
 #include "d3dx11effect.h"
-
-// ÀÌÆåÆ® ¶óÀÌºê·¯¸®
+#include "FbxLoaderV4.h"
+// ì´í™íŠ¸ ë¼ì´ë¸ŒëŸ¬ë¦¬
 //#pragma comment(lib, "..\\Lib\\Effects11d.lib")
 //#include "..\\DXEffect\D3dx11effect.h"
 
@@ -16,7 +15,7 @@
 
 class RenderableBase
 {
-	// ¾÷µ¥ÀÌÆ®¿Í ·£´õ´Â ÇÊ¿ä
+	// ì—…ë°ì´íŠ¸ì™€ ëœë”ëŠ” í•„ìš”
 protected:
 	virtual void ObjectSetting() abstract;
 
@@ -24,24 +23,25 @@ protected:
 	virtual void ObjectUpdate(const DirectX::XMMATRIX& world, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& projection) abstract;
 	virtual void Render() abstract;
 
-	Microsoft::WRL::ComPtr<ID3D11Device>				m_3DDevice;
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext>			m_3DDeviceContext;
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		m_RasterState;
+	Microsoft::WRL::ComPtr<ID3D11Device>				_3DDevice;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext>			_3DDeviceContext;
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState>		_RasterState;
 
-	Microsoft::WRL::ComPtr<ID3D11Buffer>				m_VertexBuffer;		// Á¤Á¡ ¹öÆÛ		(Á¤Á¡µéÀÇ ¹öÆÛ?)
-	Microsoft::WRL::ComPtr<ID3D11Buffer>				m_IndexBuffer;		// ÀÎµ¦½º ¹öÆÛ	(Á¤Á¡µéÀÇ ÀÎµ¦½º?)
+	Microsoft::WRL::ComPtr<ID3D11Buffer>				_VertexBuffer;		// ì •ì  ë²„í¼		(ì •ì ë“¤ì˜ ë²„í¼?)
+	Microsoft::WRL::ComPtr<ID3D11Buffer>				_IndexBuffer;		// ì¸ë±ìŠ¤ ë²„í¼	(ì •ì ë“¤ì˜ ì¸ë±ìŠ¤?)
 
-	Microsoft::WRL::ComPtr<ID3D11InputLayout>			m_InputLayout;		// ¿£Áø¿¡¼­ ÀÌ°É ¾Ë¾Æ¾ß ÇÒ±î?->¿©±â¼­ ÇØÁÖ¸éµÈ´Ù.
+	Microsoft::WRL::ComPtr<ID3D11InputLayout>			_InputLayout;		// ì—”ì§„ì—ì„œ ì´ê±¸ ì•Œì•„ì•¼ í• ê¹Œ?->ì—¬ê¸°ì„œ í•´ì£¼ë©´ëœë‹¤.
 
-	Microsoft::WRL::ComPtr<ID3DX11Effect>				m_Effect;			// ¹öÅØ½º ¼ÎÀÌ´õ ÇÈ¼¿ ¼ÎÀÌ´õ¸¦ ´ëÃ¼ÇÒ ¹«¾ğ°¡
-	Microsoft::WRL::ComPtr<ID3DX11EffectTechnique>		m_Technique;		// Å×Å©
-	Microsoft::WRL::ComPtr<ID3DX11EffectMatrixVariable>	m_MatrixVariable;	// »ó¼ö¹öÆÛ¸¦ ´ë½ÅÇÒ ¹«¾ğ°¡?
+	Microsoft::WRL::ComPtr<ID3DX11Effect>				_Effect;			// ë²„í…ìŠ¤ ì…°ì´ë” í”½ì…€ ì…°ì´ë”ë¥¼ ëŒ€ì²´í•  ë¬´ì–¸ê°€
+	Microsoft::WRL::ComPtr<ID3DX11EffectTechnique>		_Technique;		// í…Œí¬
+	Microsoft::WRL::ComPtr<ID3DX11EffectMatrixVariable>	_MatrixVariable;	// ìƒìˆ˜ë²„í¼ë¥¼ ëŒ€ì‹ í•  ë¬´ì–¸ê°€?
 
-	DirectX::XMMATRIX m_World;	// ¿ùµå º¯È¯ Çà·Ä (·ÎÄÃ -> ¿ùµå)
-	DirectX::XMMATRIX m_View;	// ½Ã¾ß º¯È¯ Çà·Ä (Ä«¸Ş¶ó ºä)
-	DirectX::XMMATRIX m_Proj;	// Åõ¿µ º¯È¯ Çà·Ä (¿ø±Ù / Á÷±³)
+	DirectX::XMMATRIX _world;	// ì›”ë“œ ë³€í™˜ í–‰ë ¬ (ë¡œì»¬ -> ì›”ë“œ)
+	DirectX::XMMATRIX _view;	// ì‹œì•¼ ë³€í™˜ í–‰ë ¬ (ì¹´ë©”ë¼ ë·°)
+	DirectX::XMMATRIX _proj;	// íˆ¬ì˜ ë³€í™˜ í–‰ë ¬ (ì›ê·¼ / ì§êµ)
 
 	ID3D10Blob* compiledShader = 0;
 	ID3D10Blob* compilationMsgs = 0;
+
 
 };

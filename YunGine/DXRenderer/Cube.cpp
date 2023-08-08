@@ -8,9 +8,9 @@ Cube::Cube(
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>& pDeviceContext, 
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>& pRasterState)
 {
-	pDevice.CopyTo(m_3DDevice.GetAddressOf());
-	pDeviceContext.CopyTo(m_3DDeviceContext.GetAddressOf());
-	pRasterState.CopyTo(m_RasterState.GetAddressOf());
+	pDevice.CopyTo(_3DDevice.GetAddressOf());
+	pDeviceContext.CopyTo(_3DDeviceContext.GetAddressOf());
+	pRasterState.CopyTo(_RasterState.GetAddressOf());
 
 	ObjectSetting();
 }
@@ -27,53 +27,53 @@ void Cube::Update()
 
 void Cube::ObjectUpdate(const DirectX::XMMATRIX& world, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& projection)
 {
-	m_World = world;
-	m_View = view;
-	m_Proj = projection;
+	_world = world;
+	_view = view;
+	_proj = projection;
 }
 
 void Cube::Render()
 {
-	// ÀÔ·Â ¹èÄ¡ °´Ã¼ ¼ÂÆÃ
-	m_3DDeviceContext->IASetInputLayout(m_InputLayout.Get());
-	m_3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// ì…ë ¥ ë°°ì¹˜ ê°ì²´ ì…‹íŒ…
+	_3DDeviceContext->IASetInputLayout(_InputLayout.Get());
+	_3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// ÀÎµ¦½º¹öÆÛ¿Í ¹öÅØ½º ¹öÆÛ ¼ÂÆÃ
+	// ì¸ë±ìŠ¤ë²„í¼ì™€ ë²„í…ìŠ¤ ë²„í¼ ì…‹íŒ…
 	UINT stride = sizeof(TexVertex);
 	UINT offset = 0;
 
-	m_3DDeviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), &stride, &offset);
-	// &m_cubVertexBuffer¿Í AddressOfÂ÷ÀÌ°¡ ¹¹ÀÏ±î-> &´Â ÃÊ±âÈ­¸¦ ÇØ¹ö¸°´Ù.
-	m_3DDeviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	_3DDeviceContext->IASetVertexBuffers(0, 1, _VertexBuffer.GetAddressOf(), &stride, &offset);
+	// &_cubVertexBufferì™€ AddressOfì°¨ì´ê°€ ë­ì¼ê¹Œ-> &ëŠ” ì´ˆê¸°í™”ë¥¼ í•´ë²„ë¦°ë‹¤.
+	_3DDeviceContext->IASetIndexBuffer(_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-	///[TW] ÅØ½ºÃÄ ÀÓ½Ã È®ÀÎ¿ë È¸Àü.
+	///[TW] í…ìŠ¤ì³ ì„ì‹œ í™•ì¸ìš© íšŒì „.
 	// DirectX::XMMATRIX tw_local = DirectX::XMMatrixRotationX(remainderf(tw_rot1, 360.0f));
-	// m_World = DirectX::XMMatrixMultiply(tw_local, m_World);
+	// _World = DirectX::XMMatrixMultiply(tw_local, _World);
 	// 
 	// tw_local = DirectX::XMMatrixRotationY(remainderf(tw_rot2, 360.0f));
-	// m_World = DirectX::XMMatrixMultiply(tw_local, m_World);
+	// _World = DirectX::XMMatrixMultiply(tw_local, _World);
 
 
-	///WVP TMµîÀ» ¼ÂÆÃ
-	DirectX::XMMATRIX worldViewProj = m_World * m_View * m_Proj;
-	m_textureboxMatrixVariable->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
-	m_GworldMatrixVariable->SetMatrix(reinterpret_cast<float*>(&m_World));
+	///WVP TMë“±ì„ ì…‹íŒ…
+	DirectX::XMMATRIX worldViewProj = _world * _view * _proj;
+	_textureboxMatrixVariable->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
+	_gworldMatrixVariable->SetMatrix(reinterpret_cast<float*>(&_world));
 
-	m_DiffuseMap->SetResource(m_DiffuseMapSRV.Get());
+	_diffuseMap->SetResource(_diffuseMapSRV.Get());
 
-	//·£´õ½ºÅ×ÀÌÆ®
-	m_3DDeviceContext->RSSetState(m_RasterState.Get());
+	//ëœë”ìŠ¤í…Œì´íŠ¸
+	_3DDeviceContext->RSSetState(_RasterState.Get());
 
-	//Å×Å©´Ğ
+	//í…Œí¬ë‹‰
 	D3DX11_TECHNIQUE_DESC techDesc;
-	m_textureboxTechnique->GetDesc(&techDesc);
+	_textureboxTechnique->GetDesc(&techDesc);
 
-	//·£´õÆĞ½º
+	//ëœë”íŒ¨ìŠ¤
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		m_textureboxTechnique->GetPassByIndex(p)->Apply(0, m_3DDeviceContext.Get());
+		_textureboxTechnique->GetPassByIndex(p)->Apply(0, _3DDeviceContext.Get());
 
-		m_3DDeviceContext->DrawIndexed(indexcount, 0, 0);
+		_3DDeviceContext->DrawIndexed(indexcount, 0, 0);
 	}
 }
 
@@ -83,14 +83,14 @@ void Cube::ObjectSetting()
 
 	TexVertex boxVertex[] =
 	{
-		// Æ÷Áö¼Ç, ÅØ½ºÄÚµå
-		// ¾Õ¸é
-		{DirectX::XMFLOAT3(1.f,1.f,-4.f),DirectX::XMFLOAT2(0.0f, 1.0f)},	// 0	// ´Ü¼øÈ÷ ±Ü¾î¿À¸é ¾È´ï-> µé¾î°¡´Â °ªÀº ¿©ÀüÈ÷ ÄÃ·¯°ª
-		{DirectX::XMFLOAT3(1.f,2.f,-4.f),DirectX::XMFLOAT2(0.0f, 0.0f)},	// 1	// ±×·¸´Ù¸é µé¾î°¥¶§ ÀÌ ¼ıÀÚ°¡ ÄÃ·¯°¡ ¾Æ´Ï¶ó´Â °ÍÀ»
-		{DirectX::XMFLOAT3(2.f,2.f,-4.f),DirectX::XMFLOAT2(1.0f, 0.0f)},	// 2	// ¾Ë·ÁÁà¾ß ÇÑ´Ù.
+		// í¬ì§€ì…˜, í…ìŠ¤ì½”ë“œ
+		// ì•ë©´
+		{DirectX::XMFLOAT3(1.f,1.f,-4.f),DirectX::XMFLOAT2(0.0f, 1.0f)},	// 0	// ë‹¨ìˆœíˆ ê¸ì–´ì˜¤ë©´ ì•ˆëŒ-> ë“¤ì–´ê°€ëŠ” ê°’ì€ ì—¬ì „íˆ ì»¬ëŸ¬ê°’
+		{DirectX::XMFLOAT3(1.f,2.f,-4.f),DirectX::XMFLOAT2(0.0f, 0.0f)},	// 1	// ê·¸ë ‡ë‹¤ë©´ ë“¤ì–´ê°ˆë•Œ ì´ ìˆ«ìê°€ ì»¬ëŸ¬ê°€ ì•„ë‹ˆë¼ëŠ” ê²ƒì„
+		{DirectX::XMFLOAT3(2.f,2.f,-4.f),DirectX::XMFLOAT2(1.0f, 0.0f)},	// 2	// ì•Œë ¤ì¤˜ì•¼ í•œë‹¤.
 		{DirectX::XMFLOAT3(2.f,1.f,-4.f),DirectX::XMFLOAT2(1.0f, 1.0f)},	// 3
 
-		// µŞ¸é							
+		// ë’·ë©´							
 		{DirectX::XMFLOAT3(1.f,1.f,-3.f),DirectX::XMFLOAT2(1.0f, 1.0f)},	// 4
 		{DirectX::XMFLOAT3(1.f,2.f,-3.f),DirectX::XMFLOAT2(0.0f, 1.0f)},	// 5
 		{DirectX::XMFLOAT3(2.f,2.f,-3.f),DirectX::XMFLOAT2(0.0f, 0.0f)},	// 6
@@ -124,24 +124,24 @@ void Cube::ObjectSetting()
 	D3D11_BUFFER_DESC bufferDesc;
 	bufferDesc.ByteWidth = 24 * sizeof(TexVertex);
 	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;	// ¹öÆÛ°¡ ÆÄÀÌÇÁ¶óÀÎ¿¡ ¹ÙÀÎµùµÇ´Â ¹æ¹ı½Äº°
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;	// ë²„í¼ê°€ íŒŒì´í”„ë¼ì¸ì— ë°”ì¸ë”©ë˜ëŠ” ë°©ë²•ì‹ë³„
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 	bufferDesc.StructureByteStride = 0;
 
-	// ¹öÆÛ ÃÊ±âÈ­´Â ¿£Áø¿¡¼­->D3Dµğ¹ÙÀÌ½º¸¦ ¿£Áø¿¡¼­ µé°íÀÖ±â ¶§¹®¿¡ Á¤º¸¸¸ ³Ñ°ÜÁØ´Ù.
-	// ÅØ½ºÃ³ ÇÒ¶§ »ç¿ëÇÑ´Ù.
+	// ë²„í¼ ì´ˆê¸°í™”ëŠ” ì—”ì§„ì—ì„œ->D3Dë””ë°”ì´ìŠ¤ë¥¼ ì—”ì§„ì—ì„œ ë“¤ê³ ìˆê¸° ë•Œë¬¸ì— ì •ë³´ë§Œ ë„˜ê²¨ì¤€ë‹¤.
+	// í…ìŠ¤ì²˜ í• ë•Œ ì‚¬ìš©í•œë‹¤.
 	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = boxVertex;	// const ¹«È¿-> ÃÊ±âÈ­ µ¥ÀÌÅÍ¿¡ ´ëÇÑ Æ÷ÀÎÅÍÀÌ´Ù.
-	InitData.SysMemPitch = 0;		// ÅØ½ºÃ³ ÇÑ ÁÙ ½ÃÀÛ ºÎºĞ¿¡¼­ ´ÙÀ½ÁÙ ±îÁöÀÇ °Å¸®(byte)
-	InitData.SysMemSlicePitch = 0;	// ÇÑ ±íÀÌ ¼öÁØÀÇ ½ÃÀÛºÎÅÍ ´ÙÀ½ ¼öÁØ±îÁöÀÇ °Å¸®(byte)
+	InitData.pSysMem = boxVertex;	// const ë¬´íš¨-> ì´ˆê¸°í™” ë°ì´í„°ì— ëŒ€í•œ í¬ì¸í„°ì´ë‹¤.
+	InitData.SysMemPitch = 0;		// í…ìŠ¤ì²˜ í•œ ì¤„ ì‹œì‘ ë¶€ë¶„ì—ì„œ ë‹¤ìŒì¤„ ê¹Œì§€ì˜ ê±°ë¦¬(byte)
+	InitData.SysMemSlicePitch = 0;	// í•œ ê¹Šì´ ìˆ˜ì¤€ì˜ ì‹œì‘ë¶€í„° ë‹¤ìŒ ìˆ˜ì¤€ê¹Œì§€ì˜ ê±°ë¦¬(byte)
 
-	//D3D¿£Áø¿¡¼­ µğ¹ÙÀÌ½º¸¦ ¿©±â¼­ ³Ñ°ÜÁà¾ßÇÏ³ª?
-	hr = m_3DDevice->CreateBuffer
+	//D3Dì—”ì§„ì—ì„œ ë””ë°”ì´ìŠ¤ë¥¼ ì—¬ê¸°ì„œ ë„˜ê²¨ì¤˜ì•¼í•˜ë‚˜?
+	hr = _3DDevice->CreateBuffer
 	(
 		&bufferDesc,
 		&InitData,
-		&m_VertexBuffer
+		&_VertexBuffer
 	);
 
 	UINT indices[] =
@@ -177,7 +177,7 @@ void Cube::ObjectSetting()
 	D3D11_BUFFER_DESC indexBufferDesc;
 	indexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 	indexBufferDesc.ByteWidth = boxindexcount * sizeof(UINT);
-	//indexBufferDesc.ByteWidth = sizeof(indices); // Â÷ÀÌ°¡ ¾ø´Ù
+	//indexBufferDesc.ByteWidth = sizeof(indices); // ì°¨ì´ê°€ ì—†ë‹¤
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
@@ -188,29 +188,29 @@ void Cube::ObjectSetting()
 	indexInit.SysMemPitch = 0;
 	indexInit.SysMemSlicePitch = 0;
 
-	hr = m_3DDevice->CreateBuffer(
+	hr = _3DDevice->CreateBuffer(
 		&indexBufferDesc,
 		&indexInit,
-		&m_IndexBuffer
+		&_IndexBuffer
 	);
 
 	GetTextureFile();
-	BuildFxFromCso(m_3DDevice.Get(), L"../fx/Basic.cso");
+	BuildFxFromCso(_3DDevice.Get(), L"../fx/Basic.cso");
 	BuildVertexLayout();
 }
 
 void Cube::BuildFX()
 {
 	HRESULT hr = S_OK;
-	//ÀÌÆåÆ®¸¦ ¾²´ÂºÎºĞÀº Â÷Â÷ ÇØº¸ÀÚ
+	//ì´í™íŠ¸ë¥¼ ì“°ëŠ”ë¶€ë¶„ì€ ì°¨ì°¨ í•´ë³´ì
 
-	/// ÄÄÆÄÀÏµÈ ÆÄÀÏµµ ±¦Âú°í
-	/// ÄÄÆÄÀÏ ÇÏ´Â °Íµµ ¹®Á¦¾øÀÌ µ¹¾Æ°¨.
+	/// ì»´íŒŒì¼ëœ íŒŒì¼ë„ ê´œì°®ê³ 
+	/// ì»´íŒŒì¼ í•˜ëŠ” ê²ƒë„ ë¬¸ì œì—†ì´ ëŒì•„ê°.
 
-	UINT shaderFlag = D3DCOMPILE_ENABLE_STRICTNESS;	// ½¦ÀÌ´õ ÄÄÆÄÀÏ½Ã ¾ö°İÇÑ ¹®¹ı °Ë»ç¸¦ ¼öÇàÇÏµµ·Ï ÇÏ´Â ÄÄÆÄÀÏ ÇÃ·¡±×
+	UINT shaderFlag = D3DCOMPILE_ENABLE_STRICTNESS;	// ì‰ì´ë” ì»´íŒŒì¼ì‹œ ì—„ê²©í•œ ë¬¸ë²• ê²€ì‚¬ë¥¼ ìˆ˜í–‰í•˜ë„ë¡ í•˜ëŠ” ì»´íŒŒì¼ í”Œë˜ê·¸
 
-#if defined( DEBUG ) || defined( _DEBUG )	// µğ¹ö±× ¸ğµå¿¡¼­ ½¦ÀÌ´õ ÄÄÆÄÀÏ½Ã µğ¹ö±ë¿¡ ÇÊ¿äÇÑ Á¤º¸¸¦ Ãß°¡
-	shaderFlag |= D3D10_SHADER_DEBUG;		// ÃÖÀûÈ­ °úÁ¤À» °Ç³Ê¶Ùµµ·Ï ¼³Á¤ÇÏ´Â ¿ªÇÒÀÌ´Ù.
+#if defined( DEBUG ) || defined( _DEBUG )	// ë””ë²„ê·¸ ëª¨ë“œì—ì„œ ì‰ì´ë” ì»´íŒŒì¼ì‹œ ë””ë²„ê¹…ì— í•„ìš”í•œ ì •ë³´ë¥¼ ì¶”ê°€
+	shaderFlag |= D3D10_SHADER_DEBUG;		// ìµœì í™” ê³¼ì •ì„ ê±´ë„ˆë›°ë„ë¡ ì„¤ì •í•˜ëŠ” ì—­í• ì´ë‹¤.
 	shaderFlag |= D3D10_SHADER_SKIP_OPTIMIZATION;
 #endif
 	ID3DBlob* compiledShader;
@@ -222,10 +222,10 @@ void Cube::BuildFX()
 
 	hr = D3DCompileFromFile(shaderFile, nullptr, nullptr, shaderEntryPoint, shaderTarget, shaderFlag, 0, &compiledShader, &compilationMsgs);
 
-	//D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), 0, m_3DDevice.Get(), m_textureboxEffect.GetAddressOf());
+	//D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), 0, _3DDevice.Get(), _textureboxEffect.GetAddressOf());
 
-	m_Technique = m_textureboxEffect->GetTechniqueByName("TextureTech");
-	m_textureboxMatrixVariable = m_textureboxEffect->GetVariableByName("gWorldViewProj")->AsMatrix();
+	_Technique = _textureboxEffect->GetTechniqueByName("TextureTech");
+	_textureboxMatrixVariable = _textureboxEffect->GetVariableByName("gWorldViewProj")->AsMatrix();
 }
 
 void Cube::BuildVertexLayout()
@@ -241,10 +241,10 @@ void Cube::BuildVertexLayout()
 	};
 
 	D3DX11_PASS_DESC passDesc;
-	m_textureboxTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
+	_textureboxTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
 
-	hr = (m_3DDevice->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), passDesc.pIAInputSignature,
-		passDesc.IAInputSignatureSize, m_InputLayout.GetAddressOf()
+	hr = (_3DDevice->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), passDesc.pIAInputSignature,
+		passDesc.IAInputSignatureSize, _InputLayout.GetAddressOf()
 	));
 
 	if (FAILED(hr))
@@ -266,19 +266,19 @@ void Cube::BuildFxFromCso(ID3D11Device* device, const std::wstring& filename)
 	fin.close();
 
 	HRESULT hr = D3DX11CreateEffectFromMemory(&compiledShader[0], size,
-		0, device, &m_textureboxEffect);
+		0, device, &_textureboxEffect);
 
-	m_textureboxTechnique = m_textureboxEffect->GetTechniqueByName("TextureTech");
-	m_textureboxMatrixVariable = m_textureboxEffect->GetVariableByName("gWorldViewProj")->AsMatrix();	// Çà·Ä·Î ¾µ²¨¾ß
-	m_GworldMatrixVariable = m_textureboxEffect->GetVariableByName("gWorld")->AsMatrix();	// Çà·Ä·Î ¾µ²¨¾ß
+	_textureboxTechnique = _textureboxEffect->GetTechniqueByName("TextureTech");
+	_textureboxMatrixVariable = _textureboxEffect->GetVariableByName("gWorldViewProj")->AsMatrix();	// í–‰ë ¬ë¡œ ì“¸êº¼ì•¼
+	_gworldMatrixVariable = _textureboxEffect->GetVariableByName("gWorld")->AsMatrix();	// í–‰ë ¬ë¡œ ì“¸êº¼ì•¼
 
-	m_DiffuseMap = m_textureboxEffect->GetVariableByName("gDiffuseMap")->AsShaderResource();
+	_diffuseMap = _textureboxEffect->GetVariableByName("gDiffuseMap")->AsShaderResource();
 
-	BOOL res = m_textureboxEffect->IsValid();	// ¸Ş¸ğ¸®°¡ ¾²·¹±â°ªÀÌ ¾Æ´ÑÁö¸¦ È®ÀÎÇÏ´Â ÇÔ¼ö
-	res = m_textureboxTechnique->IsValid();
-	res = m_textureboxMatrixVariable->IsValid();
-	res = m_GworldMatrixVariable->IsValid();
-	res = m_DiffuseMap->IsValid();
+	BOOL res = _textureboxEffect->IsValid();	// ë©”ëª¨ë¦¬ê°€ ì“°ë ˆê¸°ê°’ì´ ì•„ë‹Œì§€ë¥¼ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
+	res = _textureboxTechnique->IsValid();
+	res = _textureboxMatrixVariable->IsValid();
+	res = _gworldMatrixVariable->IsValid();
+	res = _diffuseMap->IsValid();
 
 	if (FAILED(hr))
 	{
@@ -290,10 +290,10 @@ void Cube::GetTextureFile()
 {
 	HRESULT hr = S_OK;
 
-	Microsoft::WRL::ComPtr<ID3D11Resource> texResource = nullptr;	// Release¸¦ Á¦´ë·Î ÇÒ ¼ö ÀÖÀ»±î?
-	DirectX::CreateDDSTextureFromFile(m_3DDevice.Get(), L"../Textures/WoodCrate01.dds", &texResource, &m_DiffuseMapSRV);
-	// effect ¶óÀÌºê·¯¸® ¸¦ Ãß°¡ÇØ¾ßÇÔ
-	// ¶óÀÌºê·¯¸® Ãß°¡ÈÄ ³»¿ëÀ» ÀĞ¾î ¿ÀÁö ¸øÇØ¼­ ¿£ÁøÀÖ´Â °÷¿¡ TextureLoader¸¦ °¡Á®¿ÔÀ½
+	Microsoft::WRL::ComPtr<ID3D11Resource> texResource = nullptr;	// Releaseë¥¼ ì œëŒ€ë¡œ í•  ìˆ˜ ìˆì„ê¹Œ?
+	DirectX::CreateDDSTextureFromFile(_3DDevice.Get(), L"..//Textures//WoodCrate01.dds", &texResource, &_diffuseMapSRV);
+	// effect ë¼ì´ë¸ŒëŸ¬ë¦¬ ë¥¼ ì¶”ê°€í•´ì•¼í•¨
+	// ë¼ì´ë¸ŒëŸ¬ë¦¬ ì¶”ê°€í›„ ë‚´ìš©ì„ ì½ì–´ ì˜¤ì§€ ëª»í•´ì„œ ì—”ì§„ìˆëŠ” ê³³ì— TextureLoaderë¥¼ ê°€ì ¸ì™”ìŒ
 
 	if (FAILED(hr))
 	{

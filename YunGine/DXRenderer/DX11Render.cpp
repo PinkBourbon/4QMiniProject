@@ -5,20 +5,24 @@
 #include <d3dcompiler.h>
 #include <d3dcommon.h>
 
+#include "Vertex.h"
+
 #include "Axis.h"
 #include "Cube.h"
 #include "Grid.h"
 #include "Camera.h"
 
-// dll·Î ºÎ¸¦¶§ ·£´õ·¯¸¦ ¸¸µå´Â ÇÔ¼öÀÇ ÁÖ¼Ò¸¦ °¡Áö°í ÀÖ´Â´Ù.
-// returnÀ» Æ÷ÀÎÅÍ·Î ¹Ş¾ÆÁÙ ¼ö ÀÖ´Ù.
+#include "FbxLoaderV4.h"
+
+// dllë¡œ ë¶€ë¥¼ë•Œ ëœë”ëŸ¬ë¥¼ ë§Œë“œëŠ” í•¨ìˆ˜ì˜ ì£¼ì†Œë¥¼ ê°€ì§€ê³  ìˆëŠ”ë‹¤.
+// returnì„ í¬ì¸í„°ë¡œ ë°›ì•„ì¤„ ìˆ˜ ìˆë‹¤.
 IDX11Render* CreateRenderer()
 {
 	return new DX11Render();
 }
 
-// dll·Î ·£´õ·¯¸¦ Áö¿ì´Â ÇÔ¼ö
-// ÇÔ¼öÀÇ ÁÖ¼Ò¸¸ »èÁ¦ÇÏ¸é µÈ´Ù.
+// dllë¡œ ëœë”ëŸ¬ë¥¼ ì§€ìš°ëŠ” í•¨ìˆ˜
+// í•¨ìˆ˜ì˜ ì£¼ì†Œë§Œ ì‚­ì œí•˜ë©´ ëœë‹¤.
 void DeleteRenderer(IDX11Render* instance)
 {
 	delete instance;
@@ -27,14 +31,18 @@ void DeleteRenderer(IDX11Render* instance)
 DX11Render::DX11Render()
 	: VertexBuffer(nullptr),
 	IndexBuffer(nullptr),
-	m_pAxis(nullptr),
-	m_WorldMatrix
+	_deltaTime(0.0f),
+	_pAxis(nullptr),
+	_pCube(nullptr),
+	_pGrid(nullptr),
+	_pCamera(nullptr),
+	_worldMatrix
 	{ 1.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f },
-	m_ViewMatrix(),
-	m_ProjectionMatrix()
+	_viewMatrix(),
+	_projectionMatrix()
 {
 
 }
@@ -52,12 +60,12 @@ long DX11Render::Initialize(void* hwnd)
 	if (FAILED(hr))
 	{
 		return false;
-		// ÀåÄ¡ ÀÎÅÍÆäÀÌ½º »ı¼º ½ÇÆĞ°¡ ¹ß»ıÇÒ °æ¿ì ÀÌ¸¦ Ã³¸®ÇÕ´Ï´Ù.
-		// ¿¹¸¦ µé¾î, ±â´É ¼öÁØ ¿ä±¸ »çÇ×À» ÁÙÀÌ°Å³ª ÆäÀÏ¿À¹ö 
-		// ¿öÇÁ ·»´õ¸µ.
+		// ì¥ì¹˜ ì¸í„°í˜ì´ìŠ¤ ìƒì„± ì‹¤íŒ¨ê°€ ë°œìƒí•  ê²½ìš° ì´ë¥¼ ì²˜ë¦¬í•©ë‹ˆë‹¤.
+		// ì˜ˆë¥¼ ë“¤ì–´, ê¸°ëŠ¥ ìˆ˜ì¤€ ìš”êµ¬ ì‚¬í•­ì„ ì¤„ì´ê±°ë‚˜ í˜ì¼ì˜¤ë²„ 
+		// ì›Œí”„ ë Œë”ë§.
 	}
 
-	hr = CreateSwapChain((HWND)hwnd);	// ½º¿ÒÃ¼ÀÎ »ı¼º
+	hr = CreateSwapChain((HWND)hwnd);	// ìŠ¤ì™‘ì²´ì¸ ìƒì„±
 	if (FAILED(hr))
 	{
 		return false;
@@ -75,7 +83,13 @@ long DX11Render::Initialize(void* hwnd)
 		return false;
 	}
 
-	hr = CreateObject();	// ¿ÀºêÁ§Æ®µéÀ» ¸ğµÎ ¿©±â¼­ ¸¸µç´Ù.
+	hr = CreateLoader();
+	if (FAILED(hr))
+	{
+		return false;
+	}
+
+	hr = CreateObject();	// ì˜¤ë¸Œì íŠ¸ë“¤ì„ ëª¨ë‘ ì—¬ê¸°ì„œ ë§Œë“ ë‹¤.
 	if (FAILED(hr))
 	{
 		return false;
@@ -86,45 +100,45 @@ long DX11Render::Initialize(void* hwnd)
 
 void DX11Render::Update(float deltaTime)
 {
-	 m_deltaTime = deltaTime;
-	 
-	 // Ä«¸Ş¶ó
-	 if (GetAsyncKeyState('W') & 0x8000)
-	 	m_pCamera->Walk(10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('S') & 0x8000)
-	 	m_pCamera->Walk(-10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('A') & 0x8000)
-	 	m_pCamera->Strafe(-10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('D') & 0x8000)
-	 	m_pCamera->Strafe(10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('Q') & 0x8000)
-	 	m_pCamera->WorldUpDown(-10.0f * deltaTime);
-	 
-	 if (GetAsyncKeyState('E') & 0x8000)
-	 	m_pCamera->WorldUpDown(10.0f * deltaTime);
-	 
-	 m_pCamera->UpdateViewMatrix();
+	_deltaTime = deltaTime;
 
-	 m_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
-	 m_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
-	 m_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
+	// ì¹´ë©”ë¼
+	if (GetAsyncKeyState('W') & 0x8000)
+		_pCamera->Walk(10.0f * deltaTime);
 
-// 	m_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), view,proj);
-// 	m_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), view,proj);
-// 	m_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), view,proj);
+	if (GetAsyncKeyState('S') & 0x8000)
+		_pCamera->Walk(-10.0f * deltaTime);
 
+	if (GetAsyncKeyState('A') & 0x8000)
+		_pCamera->Strafe(-10.0f * deltaTime);
 
+	if (GetAsyncKeyState('D') & 0x8000)
+		_pCamera->Strafe(10.0f * deltaTime);
+
+	if (GetAsyncKeyState('Q') & 0x8000)
+		_pCamera->WorldUpDown(-10.0f * deltaTime);
+
+	if (GetAsyncKeyState('E') & 0x8000)
+		_pCamera->WorldUpDown(10.0f * deltaTime);
+
+	_pCamera->UpdateViewMatrix();
+
+	_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
 
 }
 
 void DX11Render::Render()
 {
-	// ÀÌ ¾È¿¡´Ù°¡ ºñ±ä·»´õ, µå·Î¿ì¿ÀºêÁ§Æ®, ¿£µå·»´õ¸¦ ³Ö´Â°Ô È¿À²ÀûÀÎ°¡?
-	// 
+	// ì´ ì•ˆì—ë‹¤ê°€ ë¹„ê¸´ë Œë”, ë“œë¡œìš°ì˜¤ë¸Œì íŠ¸, ì—”ë“œë Œë”ë¥¼ ë„£ëŠ”ê²Œ íš¨ìœ¨ì ì¸ê°€?
+
+	BeginRender(0, 0, 0, 1);
+
+	DrawObject();
+
+	EndRender();
+
 }
 
 void DX11Render::BeginRender(float red, float green, float blue, float alpha)
@@ -137,39 +151,42 @@ void DX11Render::BeginRender(float red, float green, float blue, float alpha)
 	color[2] = blue;	// b
 	color[3] = alpha;	// a
 
-	m_p3DDeviceContext->OMSetRenderTargets(
+	_p3DDeviceContext->OMSetRenderTargets(
 		1,
-		m_pRenderTargetView.GetAddressOf(),
-		m_pDepthStencilView.Get()
+		_pRenderTargetView.GetAddressOf(),
+		_pDepthStencilView.Get()
 	);
 
 	// Clear the back buffer.
-	m_p3DDeviceContext->ClearRenderTargetView(m_pRenderTargetView.Get(), color);
+	_p3DDeviceContext->ClearRenderTargetView(_pRenderTargetView.Get(), color);
 	// Clear the depth buffer.
-	m_p3DDeviceContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	_p3DDeviceContext->ClearDepthStencilView(_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 	//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
 
 }
 
 void DX11Render::DrawObject()
 {
-	DirectX::XMMATRIX worldMatrix = XMLoadFloat4x4(&m_WorldMatrix);
-	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&m_ViewMatrix);
-	DirectX::XMMATRIX projMatrix = XMLoadFloat4x4(&m_ProjectionMatrix);
+	DirectX::XMMATRIX worldMatrix = XMLoadFloat4x4(&_worldMatrix);
+	DirectX::XMMATRIX viewMatrix = XMLoadFloat4x4(&_viewMatrix);
+	DirectX::XMMATRIX projMatrix = XMLoadFloat4x4(&_projectionMatrix);
 
-	m_p3DDeviceContext->OMSetDepthStencilState(m_pDepthStencilState.Get(), 0);
+	_p3DDeviceContext->OMSetDepthStencilState(_pDepthStencilState.Get(), 0);
 
-	m_pAxis->Render();
-	m_pGrid->Render();
-	m_pCube->Render();
+	_pAxis->Render();
+	_pGrid->Render();
+	_pCube->Render();
 
-	// ·¹½ºÅÍ¶óÀÌÀú »óÅÂ ¼³Á¤ 
-	m_p3DDeviceContext->RSSetState(0);
+	// fbxì—ìˆëŠ” ë²„í…ìŠ¤ë¥¼ë°›ì•„ì„œ ê·¸ë ¤ì•¼í•¨
+	// _pSpaceShip->Render();
+
+	// ë ˆìŠ¤í„°ë¼ì´ì € ìƒíƒœ ì„¤ì • 
+	_p3DDeviceContext->RSSetState(0);
 }
 
 void DX11Render::EndRender()
 {
-	sm_SwapChain->Present(1, 0);
+	s_SwapChain->Present(1, 0);
 
 	return;
 }
@@ -181,7 +198,7 @@ HRESULT DX11Render::InitVB()
 
 void DX11Render::Finalize()
 {
-	
+
 }
 
 HRESULT DX11Render::CreateDevice()
@@ -206,16 +223,16 @@ HRESULT DX11Render::CreateDevice()
 #endif
 
 	HRESULT hr = D3D11CreateDevice(
-		nullptr,                    // ±âº» ¾î´ğÅÍ¸¦ »ç¿ëÇÏ·Á¸é nullptrÀ» ÁöÁ¤ÇÏ½Ê½Ã¿À.
-		D3D_DRIVER_TYPE_HARDWARE,   // ÇÏµå¿ş¾î ±×·¡ÇÈ µå¶óÀÌ¹ö¸¦ »ç¿ëÇÏ¿© ÀåÄ¡¸¦ »ı¼ºÇÕ´Ï´Ù.
-		nullptr,                       // µå¶óÀÌ¹ö°¡ D3D_DRIVER_TYPE_SOFTWARE°¡ ¾Æ´Ñ ÇÑ 0ÀÌ¾î¾ß ÇÕ´Ï´Ù.
-		deviceFlags,                // µğ¹ö±× ¹× Direct2D È£È¯¼º ÇÃ·¡±×¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-		levels,                     // ÀÌ ¾ÛÀÌ Áö¿øÇÒ ¼ö ÀÖ´Â ±â´É ¼öÁØ ¸ñ·ÏÀÔ´Ï´Ù.
-		ARRAYSIZE(levels),          // À§ ¸ñ·ÏÀÇ Å©±âÀÔ´Ï´Ù.
-		D3D11_SDK_VERSION,          // Windows Store ¾ÛÀÇ °æ¿ì Ç×»ó D3D11_SDK_VERSIONÀ¸·Î ¼³Á¤ÇÏ½Ê½Ã¿À.
-		&m_p3DDevice,   // »ı¼ºµÈ Direct3D ÀåÄ¡¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
-		&FeatureLevels,             // »ı¼ºµÈ µğ¹ÙÀÌ½ºÀÇ ÇÇÃÄ ¼öÁØÀ» ¹İÈ¯ÇÕ´Ï´Ù.
-		&m_p3DDeviceContext			        // ÀåÄ¡ Áï½Ã ÄÁÅØ½ºÆ®¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+		nullptr,                    // ê¸°ë³¸ ì–´ëŒ‘í„°ë¥¼ ì‚¬ìš©í•˜ë ¤ë©´ nullptrì„ ì§€ì •í•˜ì‹­ì‹œì˜¤.
+		D3D_DRIVER_TYPE_HARDWARE,   // í•˜ë“œì›¨ì–´ ê·¸ë˜í”½ ë“œë¼ì´ë²„ë¥¼ ì‚¬ìš©í•˜ì—¬ ì¥ì¹˜ë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
+		nullptr,                       // ë“œë¼ì´ë²„ê°€ D3D_DRIVER_TYPE_SOFTWAREê°€ ì•„ë‹Œ í•œ 0ì´ì–´ì•¼ í•©ë‹ˆë‹¤.
+		deviceFlags,                // ë””ë²„ê·¸ ë° Direct2D í˜¸í™˜ì„± í”Œë˜ê·¸ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+		levels,                     // ì´ ì•±ì´ ì§€ì›í•  ìˆ˜ ìˆëŠ” ê¸°ëŠ¥ ìˆ˜ì¤€ ëª©ë¡ì…ë‹ˆë‹¤.
+		ARRAYSIZE(levels),          // ìœ„ ëª©ë¡ì˜ í¬ê¸°ì…ë‹ˆë‹¤.
+		D3D11_SDK_VERSION,          // Windows Store ì•±ì˜ ê²½ìš° í•­ìƒ D3D11_SDK_VERSIONìœ¼ë¡œ ì„¤ì •í•˜ì‹­ì‹œì˜¤.
+		&_p3DDevice,   // ìƒì„±ëœ Direct3D ì¥ì¹˜ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+		&FeatureLevels,             // ìƒì„±ëœ ë””ë°”ì´ìŠ¤ì˜ í”¼ì³ ìˆ˜ì¤€ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
+		&_p3DDeviceContext			        // ì¥ì¹˜ ì¦‰ì‹œ ì»¨í…ìŠ¤íŠ¸ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	);
 
 	return hr;
@@ -239,7 +256,7 @@ HRESULT DX11Render::CreateSwapChain(HWND hWnd)
 	desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 	desc.OutputWindow = hWnd;
 
-	m_p3DDevice.As(&dxgiDevice);
+	_p3DDevice.As(&dxgiDevice);
 
 	hr = dxgiDevice->GetAdapter(&adapter);
 
@@ -248,9 +265,9 @@ HRESULT DX11Render::CreateSwapChain(HWND hWnd)
 		adapter->GetParent(IID_PPV_ARGS(&factory));
 
 		hr = factory->CreateSwapChain(
-			m_p3DDevice.Get(),
+			_p3DDevice.Get(),
 			&desc,
-			&sm_SwapChain
+			&s_SwapChain
 		);
 	}
 
@@ -261,64 +278,63 @@ HRESULT DX11Render::CreateBackBuffer()
 {
 	HRESULT hr;
 
-	// ¹é¹öÆÛ ¸¸µé±â
+	// ë°±ë²„í¼ ë§Œë“¤ê¸°
 	//====================================
-	D3D11_TEXTURE2D_DESC m_BackBufferDesc;
+	D3D11_TEXTURE2D_DESC _BackBufferDesc;
 
-	hr = sm_SwapChain->GetBuffer(
+	hr = s_SwapChain->GetBuffer(
 		0,
 		__uuidof(ID3D11Texture2D),
-		(void**)(m_pBackBuffer.GetAddressOf()));
+		(void**)(_pbackBuffer.GetAddressOf()));
 
-	hr = m_p3DDevice->CreateRenderTargetView(
-		m_pBackBuffer.Get(),
+	hr = _p3DDevice->CreateRenderTargetView(
+		_pbackBuffer.Get(),
 		nullptr,
-		m_pRenderTargetView.GetAddressOf()
+		_pRenderTargetView.GetAddressOf()
 	);
 
-	m_pBackBuffer->GetDesc(&m_BackBufferDesc);	// Desc ¼­¼úÀÚ? -> ¹é¹öÆÛ¿¡´ëÇÑ ¼³Á¤°ªÀÌ µé¾îÀÖ´Â ±¸Á¶Ã¼
+	_pbackBuffer->GetDesc(&_BackBufferDesc);	// Desc ì„œìˆ ì? -> ë°±ë²„í¼ì—ëŒ€í•œ ì„¤ì •ê°’ì´ ë“¤ì–´ìˆëŠ” êµ¬ì¡°ì²´
 
-
-	// µª½º ½ºÅÄ½Ç
-	// 3D¸¦ ¶ç¿ì±â ½ÃÀÛÇÒ¶§ ÇÊ¿äÇÔ
+	// ëìŠ¤ ìŠ¤íƒ ì‹¤
+	// 3Dë¥¼ ë„ìš°ê¸° ì‹œì‘í• ë•Œ í•„ìš”í•¨
 	//======================================
 
 	CD3D11_TEXTURE2D_DESC depthStencilDesc(
 		DXGI_FORMAT_D24_UNORM_S8_UINT,
-		static_cast<UINT> (m_BackBufferDesc.Width),
-		static_cast<UINT> (m_BackBufferDesc.Height),
+		static_cast<UINT> (_BackBufferDesc.Width),
+		static_cast<UINT> (_BackBufferDesc.Height),
 		1, // This depth stencil view has only one texture.
 		1, // Use a single mipmap level.
 		D3D11_BIND_DEPTH_STENCIL
 	);
 
-	m_p3DDevice->CreateTexture2D(
+	_p3DDevice->CreateTexture2D(
 		&depthStencilDesc,
 		nullptr,
-		&m_pTexture2D
+		&_pTexture2D
 	);
 
 	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
 
-	m_p3DDevice->CreateDepthStencilView(
-		m_pTexture2D.Get(),
+	_p3DDevice->CreateDepthStencilView(
+		_pTexture2D.Get(),
 		&depthStencilViewDesc,
-		&m_pDepthStencilView
+		&_pDepthStencilView
 	);
 
-	//ºäÆ÷Æ®
+	//ë·°í¬íŠ¸
 	//=================================================
 
-	D3D11_VIEWPORT m_ViewPort;
-	ZeroMemory(&m_ViewPort, sizeof(D3D11_VIEWPORT));
-	m_ViewPort.Height = (float)m_BackBufferDesc.Height;
-	m_ViewPort.Width = (float)m_BackBufferDesc.Width;
-	m_ViewPort.MinDepth = 0;
-	m_ViewPort.MaxDepth = 1;
+	D3D11_VIEWPORT _ViewPort;
+	ZeroMemory(&_ViewPort, sizeof(D3D11_VIEWPORT));
+	_ViewPort.Height = (float)_BackBufferDesc.Height;
+	_ViewPort.Width = (float)_BackBufferDesc.Width;
+	_ViewPort.MinDepth = 0;
+	_ViewPort.MaxDepth = 1;
 
-	m_p3DDeviceContext->RSSetViewports(
+	_p3DDeviceContext->RSSetViewports(
 		1,
-		&m_ViewPort
+		&_ViewPort
 	);
 
 	return hr;
@@ -328,36 +344,36 @@ HRESULT DX11Render::CreateRaster()
 {
 	HRESULT hr = S_OK;
 
-	// ·¹½ºÅÍ
+	// ë ˆìŠ¤í„°
 	//=================================================
 
-	D3D11_RASTERIZER_DESC solidRasterDesc;	// Ã¤¿ì´Â ¸ğµå
+	D3D11_RASTERIZER_DESC solidRasterDesc;	// ì±„ìš°ëŠ” ëª¨ë“œ
 	ZeroMemory(&solidRasterDesc, sizeof(D3D11_RASTERIZER_DESC));
-	solidRasterDesc.FillMode = D3D11_FILL_SOLID;	// Ã¤¿ì±â ¸ğµå
-	solidRasterDesc.CullMode = D3D11_CULL_BACK;		// BackÀº ±×¸®Áö ¾ÊÀ½
-	solidRasterDesc.FrontCounterClockwise = false;	// ¹İ½Ã°Ô¸¦ false = ½Ã°è¹æÇâÀ¸·Î ±×¸®°Ú´Ù´Â ¶æÀÌ´Ù.
-	solidRasterDesc.DepthClipEnable = true;			// °Å¸®¿¡ µû¶ó Å¬¸®ÇÎÀ» ÇÒÁö
+	solidRasterDesc.FillMode = D3D11_FILL_SOLID;	// ì±„ìš°ê¸° ëª¨ë“œ
+	solidRasterDesc.CullMode = D3D11_CULL_BACK;		// Backì€ ê·¸ë¦¬ì§€ ì•ŠìŒ
+	solidRasterDesc.FrontCounterClockwise = false;	// ë°˜ì‹œê²Œë¥¼ false = ì‹œê³„ë°©í–¥ìœ¼ë¡œ ê·¸ë¦¬ê² ë‹¤ëŠ” ëœ»ì´ë‹¤.
+	solidRasterDesc.DepthClipEnable = true;			// ê±°ë¦¬ì— ë”°ë¼ í´ë¦¬í•‘ì„ í• ì§€
 
-	hr = m_p3DDevice->CreateRasterizerState
+	hr = _p3DDevice->CreateRasterizerState
 	(
 		&solidRasterDesc,
-		m_pSolidRasterState.GetAddressOf()
+		_pSolidRasterState.GetAddressOf()
 	);
 
 
 	//=================================================
 
-	D3D11_RASTERIZER_DESC wireRasterDesc;	// Ã¤¿ìÁö¾ÊÀ½-> ¼±À»±×¸²
+	D3D11_RASTERIZER_DESC wireRasterDesc;	// ì±„ìš°ì§€ì•ŠìŒ-> ì„ ì„ê·¸ë¦¼
 	ZeroMemory(&wireRasterDesc, sizeof(D3D11_RASTERIZER_DESC));
 	wireRasterDesc.FillMode = D3D11_FILL_WIREFRAME;
 	wireRasterDesc.CullMode = D3D11_CULL_NONE;
 	wireRasterDesc.FrontCounterClockwise = false;
 	wireRasterDesc.DepthClipEnable = true;
 
-	hr = m_p3DDevice->CreateRasterizerState
+	hr = _p3DDevice->CreateRasterizerState
 	(
 		&wireRasterDesc,
-		m_pWireRasterState.GetAddressOf()
+		_pWireRasterState.GetAddressOf()
 	);
 
 	//====================================================
@@ -393,6 +409,12 @@ HRESULT DX11Render::CreateObject()
 		return hr;
 	}
 
+	hr = CreateShip();
+	if (FAILED(hr))
+	{
+		return hr;
+	}
+
 	return hr;
 }
 
@@ -400,18 +422,18 @@ HRESULT DX11Render::CreateCamera()
 {
 	HRESULT hr = S_OK;
 
-	m_pCamera = new Camera();
- 
-	// Ä«¸Ş¶ó¸¦ ¸¸µé°í
-	// ¼¼ÆÃÀ» ÇØÁØ´Ù.
-	 m_pCamera->SetLens(0.25f * 3.1415926535f, 1280.0f / 720.0f, 1.0f,1000.0f);
+	_pCamera = new Camera();
 
-	 // LH(Left Hand)¹æÇâÀ¸·Î
-	 DirectX::XMMATRIX p = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
-	 DirectX::XMStoreFloat4x4(&m_ProjectionMatrix, p);
+	// ì¹´ë©”ë¼ë¥¼ ë§Œë“¤ê³ 
+	// ì„¸íŒ…ì„ í•´ì¤€ë‹¤.
+	_pCamera->SetLens(0.25f * 3.1415926535f, 1280.0f / 720.0f, 1.0f, 1000.0f);
 
-	 // ¸ÇÃ³À½¿¡ º¸´Â Ä«¸Ş¶óÀÇ Æ÷Áö¼Ç, ÃÄ´Ùº¸´Â ¹æÇâ,UPº¤ÅÍ Á¤ÇÏ±â
-	 m_pCamera->LookAt(DirectX::XMFLOAT3(8.0f, 8.0f, -8.0f), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 1.0f, 0));
+	// LH(Left Hand)ë°©í–¥ìœ¼ë¡œ
+	DirectX::XMMATRIX p = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(60.0f), 1280.0f / 720.0f, 1.0f, 1000.0f);
+	DirectX::XMStoreFloat4x4(&_projectionMatrix, p);
+
+	// ë§¨ì²˜ìŒì— ë³´ëŠ” ì¹´ë©”ë¼ì˜ í¬ì§€ì…˜, ì³ë‹¤ë³´ëŠ” ë°©í–¥,UPë²¡í„° ì •í•˜ê¸°
+	_pCamera->LookAt(DirectX::XMFLOAT3(8.0f, 8.0f, -8.0f), DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(0, 1.0f, 0));
 
 	return S_OK;
 }
@@ -420,7 +442,7 @@ HRESULT DX11Render::CreateCube()
 {
 	HRESULT hr = S_OK;
 
-	m_pCube = new Cube(m_p3DDevice, m_p3DDeviceContext, m_pWireRasterState);
+	_pCube = new Cube(_p3DDevice, _p3DDeviceContext, _pSolidRasterState);
 
 	return S_OK;
 }
@@ -429,7 +451,7 @@ HRESULT DX11Render::CreateGrid()
 {
 	HRESULT hr = S_OK;
 
-	m_pGrid = new Grid(m_p3DDevice, m_p3DDeviceContext, m_pWireRasterState);
+	_pGrid = new Grid(_p3DDevice, _p3DDeviceContext, _pWireRasterState);
 
 	return S_OK;
 }
@@ -438,7 +460,27 @@ HRESULT DX11Render::CreateAxis()
 {
 	HRESULT hr = S_OK;
 
-	m_pAxis = new Axis(m_p3DDevice, m_p3DDeviceContext, m_pWireRasterState);
+	_pAxis = new Axis(_p3DDevice, _p3DDeviceContext, _pWireRasterState);
+
+	return S_OK;
+}
+
+
+HRESULT DX11Render::CreateLoader()
+{
+	HRESULT hr = S_OK;
+	
+	_pLoader = new FbxLoaderV4;
+
+	return S_OK;
+}
+
+HRESULT DX11Render::CreateShip()
+{
+	HRESULT hr = S_OK;
+
+	_pLoader->Load(L"..//Resource//spaceship.fbx");
+
 
 	return S_OK;
 }

@@ -54,7 +54,7 @@ void DllLoad::DllFree(HWND hwnd)
 // 		Initialize InitFunc = reinterpret_cast<Initialize>(GetProcAddress(hModule, "Initialize"));
 // 		if (InitFunc != nullptr)
 // 		{
-// 			// DLL ÃÊ±âÈ­ ÇÔ¼ö È£Ãâ
+// 			// DLL ì´ˆê¸°í™” í•¨ìˆ˜ í˜¸ì¶œ
 // 			InitFunc(hwnd);
 // 		}
 // 		else

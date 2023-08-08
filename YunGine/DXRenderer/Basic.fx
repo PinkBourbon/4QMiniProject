@@ -39,7 +39,7 @@ VertexOut VS(VertexIn vin)
 	vout.PosW = mul(float4(vin.PosL, 1.0f), gWorld).xyz;
 	// Transform to homogeneous clip space.
 	vout.PosH = mul(float4(vin.PosL, 1.0f), gWorldViewProj);
-	// ÅØ½ºÃÄÀÇ ÁÂÇ¥ (texcoord¸¦ ±×´ë·Î ÇÈ¼¿½¦ÀÌ´õ·Î ³Ñ°Ü ÁØ´Ù)
+	// í…ìŠ¤ì³ì˜ ì¢Œí‘œ (texcoordë¥¼ ê·¸ëŒ€ë¡œ í”½ì…€ì‰ì´ë”ë¡œ ë„˜ê²¨ ì¤€ë‹¤)
 		vout.Tex = vin.Tex;
 	return vout;
 }
@@ -52,7 +52,7 @@ float4 PS(VertexOut pin, uniform bool gUseTexure) : SV_Target
 		// Sample texture.
 		texColor = gDiffuseMap.Sample(samAnisotropic, pin.Tex);
 		}
-	// ¾ËÆÄ¸¦ °­Á¦·Î 1·Î, ÅØ½ºÃÄÀÇ ³»¿ë¸¸ ÂïÀÚ.
+	// ì•ŒíŒŒë¥¼ ê°•ì œë¡œ 1ë¡œ, í…ìŠ¤ì³ì˜ ë‚´ìš©ë§Œ ì°ì.
 	texColor.a = 1.0f;
 	return texColor;
 }

@@ -3,35 +3,35 @@
 
 using namespace std;
 /// <summary>
-/// Â÷±ÙÂ÷±Ù ÃµÃµÈ÷ dllÈ­ ½ÃÄÑº¸ÀÚ
+/// ì°¨ê·¼ì°¨ê·¼ ì²œì²œíˆ dllí™” ì‹œì¼œë³´ì
 /// 23.06.20
 /// </summary>
 
-// DirectX 11¿¡¼­ 3D±×·¡ÇÈÀ» ¼³Á¤ÇÏ°í ±×¸®±â À§ÇÑ ¸ğµç D3D±â´ÉÀÌ Æ÷ÇÔµÇ¾î ÀÖ´Ù.
+// DirectX 11ì—ì„œ 3Dê·¸ë˜í”½ì„ ì„¤ì •í•˜ê³  ê·¸ë¦¬ê¸° ìœ„í•œ ëª¨ë“  D3Dê¸°ëŠ¥ì´ í¬í•¨ë˜ì–´ ìˆë‹¤.
 #pragma comment(lib, "d3d11.lib")
-// ¸ğ´ÏÅÍÀÇ Àç»ıÀ» À§ÇÑ ¶óÀÌºê·¯¸®
+// ëª¨ë‹ˆí„°ì˜ ì¬ìƒì„ ìœ„í•œ ë¼ì´ë¸ŒëŸ¬ë¦¬
 #pragma comment(lib, "dxgi.lib")
-// ¼ÎÀÌ´õ ÄÄÆÄÀÏ¸µ ±â´É
+// ì…°ì´ë” ì»´íŒŒì¼ë§ ê¸°ëŠ¥
 #pragma comment(lib, "d3dcompiler.lib") 
-// ÀÌÆåÆ® ¶óÀÌºê·¯¸®
+// ì´í™íŠ¸ ë¼ì´ë¸ŒëŸ¬ë¦¬
 #ifdef _DEBUG
 #pragma comment(lib, "..\\Lib\\Effects11d.lib")
 #else
 #pragma  comment(lib, "..\\Lib\\Effects11.lib")
 #endif
 
-/// ¸±¸®Áî ¸ğµå¿¡¼­ RuntimeLibrary¿¡ ´ëÇØ ºÒÀÏÄ¡°¡ °Ë»öµÇ¾ú½À´Ï´Ù. ¿¡·¯°¡ ¹ß»ıÁß
-/// -23.07.19- ÀÎÀç¿ø¿¡¼­
-///  #pragma comment¸¦ »ç¿ëÇØ¼­ ÆÄÀÏÀ» ¾²°Ú´Ù°í Çß´Ù¸é ¼Ó¼º¿¡¼­ Á¾¼Ó¼ºÀ» Ç®¾îÁà¾ß ÇÑ´Ù. ¿¡·¯ ÇØ°á
-/// -23.07.21- ÀÎÀç¿ø¿¡¼­
+/// ë¦´ë¦¬ì¦ˆ ëª¨ë“œì—ì„œ RuntimeLibraryì— ëŒ€í•´ ë¶ˆì¼ì¹˜ê°€ ê²€ìƒ‰ë˜ì—ˆìŠµë‹ˆë‹¤. ì—ëŸ¬ê°€ ë°œìƒì¤‘
+/// -23.07.19- ì¸ì¬ì›ì—ì„œ
+///  #pragma commentë¥¼ ì‚¬ìš©í•´ì„œ íŒŒì¼ì„ ì“°ê² ë‹¤ê³  í–ˆë‹¤ë©´ ì†ì„±ì—ì„œ ì¢…ì†ì„±ì„ í’€ì–´ì¤˜ì•¼ í•œë‹¤. ì—ëŸ¬ í•´ê²°
+/// -23.07.21- ì¸ì¬ì›ì—ì„œ
 
 #include "Vertex.h"
 
-//½º¸¶Æ® Æ÷ÀÎÅÍ¸¦ »ç¿ëÇÏ±â À§ÇÑ Çì´õ
+//ìŠ¤ë§ˆíŠ¸ í¬ì¸í„°ë¥¼ ì‚¬ìš©í•˜ê¸° ìœ„í•œ í—¤ë”
 #include <wrl\client.h>
 
-// ¾î´ğÅÍ¸¦ À§ÇÑ Çì´õ
-// »óÀ§Çì´õ ÂüÁ¶½Ã ÇÏÀ§Çì´õ´Â ÀÚµ¿À¸·Î Æ÷ÇÔµÈ´Ù
+// ì–´ëŒ‘í„°ë¥¼ ìœ„í•œ í—¤ë”
+// ìƒìœ„í—¤ë” ì°¸ì¡°ì‹œ í•˜ìœ„í—¤ë”ëŠ” ìë™ìœ¼ë¡œ í¬í•¨ëœë‹¤
 #include <d3d11_4.h>
 #include <dxgi1_2.h>
 
@@ -40,21 +40,23 @@ class Cube;
 class Grid;
 class Camera;
 
+class FbxLoaderV4;
+
 class DX11Render : public IDX11Render
 {
 public:
-	// ½Ì±ÛÅæÀ¸·Î ÇÏ´Â°Ô ÁÁÀ»±î?
+	// ì‹±ê¸€í†¤ìœ¼ë¡œ í•˜ëŠ”ê²Œ ì¢‹ì„ê¹Œ?
 	DX11Render();
 	virtual ~DX11Render();
 
 	/// <summary>
-	/// dll·Î ¸¸µé¸é ÀÌ ÇÔ¼öµéÀ» ¸ğµÎ ÇÏ³ª·Î ¹­¾î¼­ »ç¿ëÇØ¾ßÇÏ³ª?
+	/// dllë¡œ ë§Œë“¤ë©´ ì´ í•¨ìˆ˜ë“¤ì„ ëª¨ë‘ í•˜ë‚˜ë¡œ ë¬¶ì–´ì„œ ì‚¬ìš©í•´ì•¼í•˜ë‚˜?
 	/// __declspec(dllexport)func(int a, int b)
 	/// -23.06.20 -kocca, Dispact-
 	/// </summary>
 	/// 
-	// bool°ªÀ¸·Î ¸¸µé¾î¼­ return false¸¦ ¹İÈ¯ÇØ¾ßÇÑ´Ù.
-	virtual long Initialize(void* hwnd) override;	// ±×·¡ÇÈ ¿£Áø ÃÊ±âÈ­
+	// boolê°’ìœ¼ë¡œ ë§Œë“¤ì–´ì„œ return falseë¥¼ ë°˜í™˜í•´ì•¼í•œë‹¤.
+	virtual long Initialize(void* hwnd) override;	// ê·¸ë˜í”½ ì—”ì§„ ì´ˆê¸°í™”
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
@@ -68,8 +70,8 @@ public:
 
 private:
 	// void OnResize(); 
-	// MessageÂÊ¿¡¼­ »çÀÌÁî°¡ ÀçÁ¤ÀÇ ‰çÀ»¶§ È£ÃâÇÏ´Â ÇÔ¼öÀÌÁö¸¸ ÀÏ´Ü º¸·ù
-	// Render ÇÔ¼ö ³»¿¡¼­ »ç¿ëÇÒ °Íµé
+	// Messageìª½ì—ì„œ ì‚¬ì´ì¦ˆê°€ ì¬ì •ì˜ ë¬ì„ë•Œ í˜¸ì¶œí•˜ëŠ” í•¨ìˆ˜ì´ì§€ë§Œ ì¼ë‹¨ ë³´ë¥˜
+	// Render í•¨ìˆ˜ ë‚´ì—ì„œ ì‚¬ìš©í•  ê²ƒë“¤
 
 	HRESULT CreateDevice();
 	HRESULT CreateSwapChain(HWND hWnd);
@@ -77,60 +79,66 @@ private:
 	HRESULT CreateRaster();
 	// HRESULT CreateInputLayout();
 
-	// ¿ÀºêÁ§Æ®µé »ı¼ºÇÏ±â
-	 HRESULT CreateObject();	
-	 HRESULT CreateCamera();
-	 HRESULT CreateCube();
-	 HRESULT CreateGrid();
-	 HRESULT CreateAxis();
+	// ì˜¤ë¸Œì íŠ¸ë“¤ ìƒì„±í•˜ê¸°
+	HRESULT CreateObject();
+	HRESULT CreateCamera();
+	HRESULT CreateCube();
+	HRESULT CreateGrid();
+	HRESULT CreateAxis();
 
-	 // ½Ã°£ º¯¼ö
-	 float m_deltaTime;
+	// í…ŒìŠ¤íŠ¸ìš©
+	HRESULT CreateLoader();
+	HRESULT CreateShip();
+
+	// ì‹œê°„ ë³€ìˆ˜
+	float _deltaTime;
 
 private:
-	//int mVideoCardMemory;	// ºí·Î±×¿¡¼­´Â ÀÖÁö¸¸ ¾îµğ´Ù°¡ ¾²´Â°É±î?
+	//int mVideoCardMemory;	// ë¸”ë¡œê·¸ì—ì„œëŠ” ìˆì§€ë§Œ ì–´ë””ë‹¤ê°€ ì“°ëŠ”ê±¸ê¹Œ?
 	//char mVideoCardDescription[128];
 	// 
-	// sm_SwapChain¿¡¼­ PresetÇÒ ¶§ ÇÊ¿äÇß´ø º¯¼ö ÇÏÁö¸¸ ±»ÀÌ?
+	// s_SwapChainì—ì„œ Presetí•  ë•Œ í•„ìš”í–ˆë˜ ë³€ìˆ˜ í•˜ì§€ë§Œ êµ³ì´?
 	//bool bVsyncEnabled = false;
-	Microsoft::WRL::ComPtr<ID3D11Device> m_p3DDevice;
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_p3DDeviceContext;
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
+	Microsoft::WRL::ComPtr<ID3D11Device> _p3DDevice;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> _p3DDeviceContext;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _pRenderTargetView;
 
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pTexture2D;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> _pTexture2D;
 
-	// µª½º ½ºÅÄ½Ç
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_pDepthStencilState;
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
+	// ëìŠ¤ ìŠ¤íƒ ì‹¤
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _pDepthStencilState;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _pDepthStencilView;
 
-	// ·¹½ºÅÍ »óÅÂ
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_pCurrRasterState;	// ÇöÀç ·¹½ºÅÍ
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_pSolidRasterState;	// Ã¤¿ì´Â ·¹½ºÅÍ
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_pWireRasterState;	// ¿ÍÀÌ¾î ·¹½ºÅÍ-> ¼±À¸·Î ³ªÅ¸³½´Ù´Â¶æ
+	// ë ˆìŠ¤í„° ìƒíƒœ
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> _pCurrRasterState;	// í˜„ì¬ ë ˆìŠ¤í„°
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> _pSolidRasterState;	// ì±„ìš°ëŠ” ë ˆìŠ¤í„°
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> _pWireRasterState;	// ì™€ì´ì–´ ë ˆìŠ¤í„°-> ì„ ìœ¼ë¡œ ë‚˜íƒ€ë‚¸ë‹¤ëŠ”ëœ»
 
-	// ½º¿ÒÃ¼ÀÎÀ» ¸¸µé±â À§ÇÑ º¯¼ö
-	Microsoft::WRL::ComPtr<IDXGISwapChain> sm_SwapChain;
-	Microsoft::WRL::ComPtr<IDXGIDevice3> sm_dxgiDevice;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D>m_pBackBuffer;
+	// ìŠ¤ì™‘ì²´ì¸ì„ ë§Œë“¤ê¸° ìœ„í•œ ë³€ìˆ˜
+	Microsoft::WRL::ComPtr<IDXGISwapChain> s_SwapChain;
+	Microsoft::WRL::ComPtr<IDXGIDevice3> s_dxgiDevice;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D>_pbackBuffer;
 
-	// Direct2D¿Í °°Àº ´Ù¸¥ Factory¿¡¼­ »ç¿ëÇÒ DXGI ÀåÄ¡ °³Ã¼¸¦ ¸¸µì´Ï´Ù.
+	// Direct2Dì™€ ê°™ì€ ë‹¤ë¥¸ Factoryì—ì„œ ì‚¬ìš©í•  DXGI ì¥ì¹˜ ê°œì²´ë¥¼ ë§Œë“­ë‹ˆë‹¤.
 	Microsoft::WRL::ComPtr<IDXGIDevice3> dxgiDevice;
 
-	// ¸ÅÆ®¸¯½º
-	DirectX::XMFLOAT4X4 m_WorldMatrix;
-	DirectX::XMFLOAT4X4 m_ViewMatrix;
-	DirectX::XMFLOAT4X4 m_ProjectionMatrix;
+	// ë§¤íŠ¸ë¦­ìŠ¤
+	DirectX::XMFLOAT4X4 _worldMatrix;
+	DirectX::XMFLOAT4X4 _viewMatrix;
+	DirectX::XMFLOAT4X4 _projectionMatrix;
 
-	// ¿ÀºêÁ§Æ®
-	 Axis* m_pAxis;
-	 Grid* m_pGrid;
-	 Cube* m_pCube;
-	 Camera* m_pCamera;
+	// ì˜¤ë¸Œì íŠ¸
+	Axis* _pAxis;
+	Grid* _pGrid;
+	Cube* _pCube;
+	Camera* _pCamera;
 
-	// ¹öÆÛ
+	// í…ŒìŠ¤íŠ¸ìš© fbx ì˜¤ë¸Œì íŠ¸
+	FbxLoaderV4* _pLoader = nullptr; ///ì œì‘ì¤‘
+
+	// ë²„í¼
 	ID3D11Buffer* VertexBuffer;
 	ID3D11Buffer* IndexBuffer;
-
 
 };
 

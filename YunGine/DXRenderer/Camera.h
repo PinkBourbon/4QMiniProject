@@ -11,9 +11,9 @@ public:
 
 public:
 	// Get/Set world camera position.
-	DirectX::XMFLOAT3 GetPosition() const;	// Ä«¸Ş¶óÀÇ Æ÷Áö¼ÇÀ» °¡Á®¿Â´Ù.
-	DirectX::XMVECTOR GetPositionXM() const;	// °¡Á®¿Â Ä«¸Ş¶óÀÇ Æ÷Áö¼ÇÀ» float3°³Â¥¸® ¹è¿­·Î ¸®ÅÏ
-	void SetPosition(float x, float y, float z);	// Ä«¸Ş¶óÀÇ Æ÷Áö¼ÇÀ» Á¤ÇÑ´Ù.
+	DirectX::XMFLOAT3 GetPosition() const;	// ì¹´ë©”ë¼ì˜ í¬ì§€ì…˜ì„ ê°€ì ¸ì˜¨ë‹¤.
+	DirectX::XMVECTOR GetPositionXM() const;	// ê°€ì ¸ì˜¨ ì¹´ë©”ë¼ì˜ í¬ì§€ì…˜ì„ float3ê°œì§œë¦¬ ë°°ì—´ë¡œ ë¦¬í„´
+	void SetPosition(float x, float y, float z);	// ì¹´ë©”ë¼ì˜ í¬ì§€ì…˜ì„ ì •í•œë‹¤.
 	void SetPosition(const 	DirectX::XMFLOAT3& v);
 
 	// Get camera basis vectors.
@@ -24,62 +24,62 @@ public:
 	DirectX::XMVECTOR GetLookXM() const;
 	DirectX::XMFLOAT3 GetLook() const;
 
-	// ÇÁ·Î½ºÅÒ ÇÁ·ÎÆÛÆ¼¸¦ °¡Á®¿Â´Ù.
+	// í”„ë¡œìŠ¤í…€ í”„ë¡œí¼í‹°ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	float GetNearZ() const;
 	float GetFarZ() const;
 	float GetAspect() const;
 	float GetFovY() const;
 	float GetFovX() const;
 
-	// ºä °ø°£ ÁÂÇ¥¿¡¼­ ±Ù°Å¸® ¹× ¿ø°Å¸® Æò¸é Ä¡¼ö¸¦ °¡Á®¿É´Ï´Ù.
+	// ë·° ê³µê°„ ì¢Œí‘œì—ì„œ ê·¼ê±°ë¦¬ ë° ì›ê±°ë¦¬ í‰ë©´ ì¹˜ìˆ˜ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
 	float GetNearWindowWidth() const;
 	float GetNearWindowHeight() const;
 	float GetFarWindowWidth() const;
 	float GetFarWindowHeight() const;
 
-	// ÇÁ·Î½ºÅÒ ¼³Ä¡
+	// í”„ë¡œìŠ¤í…€ ì„¤ì¹˜
 	void SetLens(float fovY, float aspect, float zn, float zf);
 
-	// LookAt ¸Å°³ º¯¼ö¸¦ ÅëÇØ Ä«¸Ş¶ó °ø°£À» Á¤ÀÇÇÕ´Ï´Ù.
+	// LookAt ë§¤ê°œ ë³€ìˆ˜ë¥¼ í†µí•´ ì¹´ë©”ë¼ ê³µê°„ì„ ì •ì˜í•©ë‹ˆë‹¤.
 	void LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp);
 	void LookAt(const 	DirectX::XMFLOAT3& pos, const 	DirectX::XMFLOAT3& target, const 	DirectX::XMFLOAT3& up);
 
-	// ºä/ÇÁ·ÎÁ§¼Ç Çà·ÄÀ» °¡Á®¿É´Ï´Ù.
+	// ë·°/í”„ë¡œì ì…˜ í–‰ë ¬ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
 		DirectX::XMMATRIX View() const;
 		DirectX::XMMATRIX Proj() const;
 		DirectX::XMMATRIX ViewProj() const;
 
-	// Ãø¸é/¿òÁ÷ÀÌ´Â ÇÔ¼ö
+	// ì¸¡ë©´/ì›€ì§ì´ëŠ” í•¨ìˆ˜
 	void Strafe(float d);
 	void Walk(float d);
 	void WorldUpDown(float d);
 
-	// Ä«¸Ş¶ó È¸Àü ¤¾¸¶¼ö
+	// ì¹´ë©”ë¼ íšŒì „ ã…ë§ˆìˆ˜
 	void Pitch(float angle);
 	void RotateY(float angle);
 
-	// Ä«¸Ş¶ó À§Ä¡/¹æÇâÀ» ¼öÁ¤ÇÑ ÈÄ ºä ¸ÅÆ®¸¯½º¸¦ Àç±¸¼ºÇÏ±â À§ÇØ È£ÃâÇÕ´Ï´Ù.
+	// ì¹´ë©”ë¼ ìœ„ì¹˜/ë°©í–¥ì„ ìˆ˜ì •í•œ í›„ ë·° ë§¤íŠ¸ë¦­ìŠ¤ë¥¼ ì¬êµ¬ì„±í•˜ê¸° ìœ„í•´ í˜¸ì¶œí•©ë‹ˆë‹¤.
 
 	void UpdateViewMatrix();
 
 private:
-	// ¼¼°è °ø°£¿¡ »ó´ëÀûÀÎ ÁÂÇ¥¸¦ °¡Áø Ä«¸Ş¶ó ÁÂÇ¥°è.
-		DirectX::XMFLOAT3 m_Position;
-		DirectX::XMFLOAT3 m_Right;
-		DirectX::XMFLOAT3 m_Up;
-		DirectX::XMFLOAT3 m_Look;
+	// ì„¸ê³„ ê³µê°„ì— ìƒëŒ€ì ì¸ ì¢Œí‘œë¥¼ ê°€ì§„ ì¹´ë©”ë¼ ì¢Œí‘œê³„.
+		DirectX::XMFLOAT3 _Position;
+		DirectX::XMFLOAT3 _Right;
+		DirectX::XMFLOAT3 _Up;
+		DirectX::XMFLOAT3 _Look;
 
-	// Ä³½Ã ÇÁ·Î½ºÅÒ ÇÁ·ÎÆÛÆ¼
-		float m_NearZ;
-		float m_FarZ;
-		float m_Aspect;
-		float m_FovY;
-		float m_NearWindowHeight;
-		float m_FarWindowHeight;
+	// ìºì‹œ í”„ë¡œìŠ¤í…€ í”„ë¡œí¼í‹°
+		float _NearZ;
+		float _FarZ;
+		float _Aspect;
+		float _FovY;
+		float _NearWindowHeight;
+		float _FarWindowHeight;
 
 	// Cache View/Proj matrices.
-	DirectX::XMFLOAT4X4 m_View;
-	DirectX::XMFLOAT4X4 m_Proj;
+	DirectX::XMFLOAT4X4 _View;
+	DirectX::XMFLOAT4X4 _Proj;
 
 };
 
