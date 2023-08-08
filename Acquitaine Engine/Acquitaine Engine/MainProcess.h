@@ -14,17 +14,17 @@ public:
 	static LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 private:
-	HWND m_hWnd;
-	MSG m_msg;
-	HINSTANCE m_hInstance;
-	HANDLE consoleHandle;
+	HWND _hWnd;
+	MSG _msg;
+	HINSTANCE _hInstance;
+	HANDLE _consoleHandle;
 
-	//°ÔÀÓ¿£Áø
-	GameProcess* gameprocess;
+	//ê²Œì„ì—”ì§„
+	GameProcess* _gameprocess;
 
-	// ½Ã°£°ú °ü·ÃµÈ ºÎºĞ
-	Timer* timer;
-	double deltatime;
+	// ì‹œê°„ê³¼ ê´€ë ¨ëœ ë¶€ë¶„
+	Timer* _timer;
+	double _deltatime;
 
 };
 

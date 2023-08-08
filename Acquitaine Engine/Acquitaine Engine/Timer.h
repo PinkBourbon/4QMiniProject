@@ -1,8 +1,8 @@
 #pragma once
 /// <summary>
-/// ½Ã°£À» Àç±â À§ÇÑ Å¬·¡½º
-/// ¸É¹öº¯¼ö·Î deltaTime°ú fps¸¦ º¸°üÇÏ´Ù°¡
-/// getter¸¦ ÅëÇØ ¾Ë·ÁÁÖ´Â ¿ªÈ°
+/// ì‹œê°„ì„ ì¬ê¸° ìœ„í•œ í´ë˜ìŠ¤
+/// ë§´ë²„ë³€ìˆ˜ë¡œ deltaTimeê³¼ fpsë¥¼ ë³´ê´€í•˜ë‹¤ê°€
+/// getterë¥¼ í†µí•´ ì•Œë ¤ì£¼ëŠ” ì—­í™œ
 /// </summary>
 
 	class Timer
@@ -13,36 +13,36 @@
 
 	public:
 		/// <summary>
-		/// Fps, FrameÅ¸ÀÓ, DeltatimeÀ» ¾÷µ¥ÀÌÆ® ÇÑ´Ù.
-		/// ´ÙÀ½¿¡ ´Ù½Ã ÀÌ ÇÔ¼ö°¡ È£Ãâ µÉ ¶§ ±îÁö°¡ ÇÁ·¹ÀÓ Å¸ÀÓÀÇ ÃøÁ¤ ±âÁØ
+		/// Fps, Frameíƒ€ì„, Deltatimeì„ ì—…ë°ì´íŠ¸ í•œë‹¤.
+		/// ë‹¤ìŒì— ë‹¤ì‹œ ì´ í•¨ìˆ˜ê°€ í˜¸ì¶œ ë  ë•Œ ê¹Œì§€ê°€ í”„ë ˆì„ íƒ€ì„ì˜ ì¸¡ì • ê¸°ì¤€
 		/// </summary>
 		void Update();
 
 		/// <summary>
-		/// DeltaTImeÀ» ¾ò¾î¿Â´Ù.
+		/// DeltaTImeì„ ì–»ì–´ì˜¨ë‹¤.
 		/// </summary>
 		/// <returns></returns>
 		double GetDeltaTime();
 
 		/// <summary>
-		/// ÇÁ·¹ÀÓ Å¸ÀÓÀ» ¾ò¾î¿Â´Ù.
+		/// í”„ë ˆì„ íƒ€ì„ì„ ì–»ì–´ì˜¨ë‹¤.
 		/// </summary>
 		/// <returns></returns>
 		double GetFrameTime();
 
 		/// <summary>
-		/// timescaleÀ» ¾ò¾î¿Â´Ù.
+		/// timescaleì„ ì–»ì–´ì˜¨ë‹¤.
 		/// </summary>
 		/// <returns></returns>
 		double GetTimeScale();
 
 		/// <summary>
-		/// deltatimeÀÇ timescaleÀ» ¼³Á¤ÇÑ´Ù.
+		/// deltatimeì˜ timescaleì„ ì„¤ì •í•œë‹¤.
 		/// </summary>
 		void SetTimeScale(double num);
 		
 		/// <summary>
-		/// fps¸¦ ¾ò¾î¿Â´Ù.
+		/// fpsë¥¼ ì–»ì–´ì˜¨ë‹¤.
 		/// </summary>
 		/// <returns></returns>
 		double GetFps();

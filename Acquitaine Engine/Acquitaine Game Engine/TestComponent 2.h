@@ -5,11 +5,11 @@
 
 class ParentObject;
 
-class TestComponent : public ParentComponent
+class TestComponent2 : public ParentComponent
 {
 public:
-	TestComponent(string name, ParentObject* pObject);
-	virtual ~TestComponent();
+	TestComponent2(string name, ParentObject* pObject);
+	virtual ~TestComponent2();
 
 	virtual void Initialize() override;
 	virtual void Finalize() override;

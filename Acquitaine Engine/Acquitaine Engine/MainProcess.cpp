@@ -11,52 +11,16 @@ constexpr int windowPositionY = 100;
 
 HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 {
-	/// Win32 °ü·Ã
-	// À©µµ Å¬·¡½º
-	LPCWSTR szAppName = L"Acquitain Project";
-	WNDCLASS wndclass;
-
-	wndclass.style = CS_HREDRAW | CS_VREDRAW;
-	wndclass.lpfnWndProc = this->WindowProc;
-	wndclass.cbClsExtra = 0;
-	wndclass.cbWndExtra = 0;
-	wndclass.hInstance = hInstance;
-	wndclass.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
-	wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-	wndclass.lpszMenuName = NULL;
-	wndclass.lpszClassName = szAppName;
-
-	// À©µµ Å¬·¡½º µî·Ï
-	RegisterClass(&wndclass);
-
-	// À©µµ »ý¼º
-	m_hWnd = CreateWindow(
-		szAppName,
-		szAppName,
-		WS_OVERLAPPEDWINDOW,
-		windowPositionX, windowPositionY, windowLength, windowHeight,
-		NULL, NULL, hInstance, NULL);
-
-	if (!m_hWnd) return S_FALSE;
-
-	// »ý¼ºµÈ À©µµ¸¦ È­¸é¿¡ Ç¥½Ã
-	ShowWindow(m_hWnd, SW_SHOWNORMAL);
-	UpdateWindow(m_hWnd);
-
-	// µð¹ö±ë, Å×½ºÆ®¿ë ÄÜ¼ÖÀ» »ý¼º
+	// ë””ë²„ê¹…, í…ŒìŠ¤íŠ¸ìš© ì½˜ì†”ì„ ìƒì„±
  	AllocConsole();
 	FILE* _tempFile;
 	freopen_s(&_tempFile, "CONOUT$", "w", stdout);
-
-	deltatime = 0;
-	timer = new Timer();
+		
+	_deltatime = 0;
+	_timer = new Timer();
 	
-	gameprocess = new GameProcess();
-	gameprocess->Initialize();
-
-
-	///¿©±â ¾Æ·¡´Â ±×·¡ÇÈ½º
+	_gameprocess = new GameProcess();
+	_gameprocess->Initialize();
 
 	///
  	return S_OK;
@@ -66,26 +30,26 @@ void MainProcess::Loop()
 {
 	while (true)
 	{
-		if (PeekMessage(&m_msg, NULL, 0, 0, PM_REMOVE))
+		if (PeekMessage(&_msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if (m_msg.message == WM_QUIT) break;
-			DispatchMessage(&m_msg);
+			if (_msg.message == WM_QUIT) break;
+			DispatchMessage(&_msg);
 		}
 		else
 		{
-			// µ¨Å¸ Å¸ÀÓÀ» ¾ò¾î¿À´Â ºÎºÐ
-			timer->Update();
-			deltatime = timer->GetDeltaTime();
+			// ë¸íƒ€ íƒ€ìž„ì„ ì–»ì–´ì˜¤ëŠ” ë¶€ë¶„
+			_timer->Update();
+			_deltatime = _timer->GetDeltaTime();
 
-			// °ÔÀÓ ¿£ÁøÀÌ À§Ä¡ÇÒ ³»¿ë
-			gameprocess->RunningGameProcess(deltatime);
+			// ê²Œìž„ ì—”ì§„ì´ ìœ„ì¹˜í•  ë‚´ìš©
+			_gameprocess->RunningGameProcess(_deltatime);
 		}
 	}
 }
 
 void MainProcess::Finalize()
 {
-	gameprocess->Finalize();
+	_gameprocess->Finalize();
 }
 
 LRESULT CALLBACK MainProcess::WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

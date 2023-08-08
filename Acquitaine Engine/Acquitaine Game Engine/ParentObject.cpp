@@ -1,16 +1,26 @@
 #include "ParentObject.h"
 #include "ParentComponent.h"
+#include "ParentScene.h"
+
+int ParentObject::_objectIDs;
 
 ParentObject::ParentObject()
-	:objectName("Empty_name_space"), objectID(0), componentList(0)
-	, includedScene(nullptr), includedSceneID(0)
+	:objectName("Empty_name_space"), _objectID(0), _componentList(0)
+	, _includedScene(nullptr), _includedSceneID(0), isEnabled(true)
 {
-	objectIDs++;
-	objectID = objectIDs;
+	_objectIDs = 0;
+
+	_objectIDs++;
+	_objectID = _objectIDs;
 }
 
 ParentObject::~ParentObject()
 {
+}
+
+vector<ParentComponent*> ParentObject::GetComponentlist()
+{
+	return _componentList;
 }
 
 void ParentObject::RemoveComponent()
@@ -19,41 +29,50 @@ void ParentObject::RemoveComponent()
 
 void ParentObject::Initialize()
 {
-	for (auto pObject : componentList)
+	for (auto pComponent : _componentList)
 	{
-		pObject->Initialize();
+		pComponent->Initialize();
 	}
 }
 
 void ParentObject::Finalize()
 {
-	for (auto pObject : componentList)
+	for (auto pComponent : _componentList)
 	{
-		pObject->Finalize();
+		pComponent->Finalize();
 	}
+}
+
+ParentObject& ParentObject::FindObject(std::string objectname)
+{
+	return _includedScene->FindObject(objectname);
 }
 
 void ParentObject::Awake()
 {
-	for (auto pObject : componentList)
+	for (auto pComponent : _componentList)
 	{
-		pObject->Awake();
+		pComponent->Awake();
 	}
 }
 
 void ParentObject::Enable()
 {
-	for (auto pObject : componentList)
+	if (!isEnabled)
 	{
-		pObject->Enable();
+		for (auto pComponent : _componentList)
+		{
+			pComponent->Enable();
+			isEnabled = true;
+		}
 	}
 }
 
 void ParentObject::Start()
 {
-	for (auto pObject : componentList)
+	for (auto pComponent : _componentList)
 	{
-		pObject->Start();
+		pComponent->Start();
 	}
 }
 
@@ -63,49 +82,61 @@ void ParentObject::InputEvent()
 
 void ParentObject::FixedUpdate()
 {
-	for (auto pObject : componentList)
+	for (auto pComponent : _componentList)
 	{
-		pObject->FixedUpdate();
+		pComponent->FixedUpdate();
 	}
 }
 
 void ParentObject::Phsics()
 {
-	for (auto pObject : componentList)
+	for (auto pComponent : _componentList)
 	{
-		pObject->Phsics();
+		pComponent->Phsics();
 	}
 }
 
 void ParentObject::Update()
 {
-	for (auto pObject : componentList)
+	for (auto pComponent : _componentList)
 	{
-		pObject->Update();
+		pComponent->Update();
 	}
 }
 
 void ParentObject::Render()
 {
-	for (auto pObject : componentList)
+	for (auto pComponent : _componentList)
 	{
-		pObject->Render();
+		if (isEnabled)
+		{
+			pComponent->Render();
+		}
 	}
+}
+
+void ParentObject::SetActive(bool state)
+{
+	_includedScene->ChangeObjectState(this, state);
 }
 
 void ParentObject::Disable()
 {
-	for (auto pObject : componentList)
+	if (isEnabled)
 	{
-		pObject->Disable();
+		for (auto pComponent : _componentList)
+		{
+			pComponent->Disable();
+		}
+		isEnabled = false;
 	}
 }
 
 void ParentObject::Release()
 {
-	for (auto pObject : componentList)
+	for (auto pComponent : _componentList)
 	{
-		pObject->Release();
+		pComponent->Release();
 	}
 	Finalize();
 }
