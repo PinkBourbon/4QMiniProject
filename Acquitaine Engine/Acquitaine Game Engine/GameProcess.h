@@ -39,13 +39,20 @@ public:
 	{
 		ParentObject* temp = new T(objectName, parentscene);
 		_objectList.insert(std::make_pair(temp, eObjectState::WAITING));
+		_objectNameList.insert(std::make_pair(objectName, temp));
 		_waitingObjectList.insert(temp);
 		std::cout << "Sucessed object add list" << std::endl;
 	}
 
-	void ChangeObjectState(ParentObject* pobject, bool state);
+	void ChangeObjectState(ParentObject* pobject, bool state);	// 오브젝트의 상태를 바꿀 수 있는 함수. 오브젝트의 Setactive 함수의 도달지점이다.
+																// bool 값만 적용해서 Enable, Disable만 설정할 수 있게 했다.
 
-	ParentObject& FindObject(std::string objectname);
+	ParentObject& FindObject(std::string objectname); // 최종적으로 오브젝트, 씬에서 호출한 Find 함수의 도달 지점.
+													  // 할당된 포인터 값을 바꾸는 일을 막기 위해 참조자로 반환.
+
+	void DeleteObject(ParentObject* pObject);	// 최종적으로 오브젝트에서 실행한 delete 함수가 도달하는 곳.
+												// 그러나 사실 이곳에선 오브젝트를 삭제 하지 않는다.
+												// 이곳에선 순서적인 절차를 거친 후에 삭제된다.
 
 private:
 	/// 함수들의 실행 주기에 맞춰 함수들을 나열
@@ -86,6 +93,7 @@ private:
 
 
 	std::unordered_map<ParentObject*, eObjectState > _objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
+	std::unordered_map< std::string, ParentObject* > _objectNameList; // 위쪽은 내부관리를 위해 쓰는 리스트이고, 이쪽은 외부에서 오브젝트를 검색할 수 있게 만든 맵
 
 	std::unordered_set<ParentObject*> _awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
 	std::unordered_set<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
@@ -241,3 +249,22 @@ private:
 //	근데 난 오브젝트에게 자기가 어떤 상태인지 모르게 하고 싶어
 //	그러면 어떻게 해야 하지? start에서 update가 아니라 disable로 가게 하려면 어떻게 해야 하지???
 //	어떻게 짜야 엔진에서 부탁받은 오브젝트가 들어있는 위치를 찾아서 거기서 뺄 수 있는거지?    
+//	오브젝트 전체를 담고 있는 리스트가 지금 내가 들고 있는 오브젝트가 어떤 상태 인지 같이 들고 있도록 수정
+
+//	그래서 오브젝트리스를 언 오더드 맵으로 바꾸고 포인터를 키로 이넘을 벨류로 했다.
+//	그랬더니 검색할때 문제가 있다.
+//	이름으로 찾았더니 기껏 map을 쓰고 있는데 얘를 순회해서 찾고 있다.
+//	이거 겁나 맘에 안든다고!!!!
+//	그렇다고 검색을 string(objectname)이 아니라 Object의 포인터로 할 수는 없잖아.
+//	아예 리스트를 두개를 만들어서 검색을 두번 할까?
+//	어차피 O(1) 이잖아.
+
+/// 이상한 문제 발생
+//	오브젝트가 다른 오브젝트를 disable 시키도록 했는데, 이상하게 자기 자신을 disable 해버리는 문제를 확인
+//	심지어 이 문제는 골치아프게도 있다가 재대로 동작했다가 문제가 있다가 한다.
+//	원인이 뭔지 잘 모르겠지만, console 창 출력을 확인 한 결과 SetActive(false)를 자기자신한테 걸고 있는것 같음
+//	이름은 일단 중복되지 않는 상태라 자신 자신을 지목하는 문제는 거리가 멀어보임
+//	일단 확인 해보니 다른 오브젝트를 disable하는 상태 일때
+//	콘솔 출력에 Object is unactivated 라는 문구가 최하단에 뜨는 경우를 제외하면 모두 자기자신을 disable한다.
+//	고쳤다! string의 compare 함수는 반환 값이 bool 값이 아니라 int 값이었다.
+//	왼쪽이 작으면 음수, 같으면 0, 크다면 양수를 반환한다.

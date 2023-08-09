@@ -40,7 +40,9 @@ void ParentObject::Finalize()
 	for (auto pComponent : _componentList)
 	{
 		pComponent->Finalize();
+		delete pComponent;
 	}
+	_componentList.clear();
 }
 
 ParentObject& ParentObject::FindObject(std::string objectname)
@@ -54,6 +56,11 @@ void ParentObject::Awake()
 	{
 		pComponent->Awake();
 	}
+}
+
+void ParentObject::Delete()
+{
+	_includedScene->DeleteObject(this);
 }
 
 void ParentObject::Enable()

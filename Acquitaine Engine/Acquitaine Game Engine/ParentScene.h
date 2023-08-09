@@ -29,6 +29,8 @@ public:
 
 	ParentObject& FindObject(std::string objectname);
 
+	void DeleteObject(ParentObject* pObject);
+
 protected:
 	string _SceneName;
 	vector<IObject*>  _inControlObjects;

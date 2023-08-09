@@ -83,16 +83,11 @@ void GameProcess::ChangeObjectState(ParentObject* pobject, bool state)
 	}
 }
 
-ParentObject& GameProcess::FindObject(std::string objectname)
-{
-	for (auto object : _objectList)
-	{
-		if (object.first->objectName.compare(objectname))
-		{
-			ParentObject& temp = *object.first;
-			return temp;
-		}
-	}
+ParentObject& GameProcess::FindObject(std::string objectname)	// 이거 겁나 맘에 안들어!!!!
+{																// 아니 왜 map을 만들어 두고 순회 탐색을 하는거야
+																// 그래서 검색용 map을 따로 만들었습니다.
+	auto result = _objectNameList.find(objectname);
+	return *result->second;
 }
 
 void GameProcess::InitializeObjects()
@@ -180,8 +175,12 @@ void GameProcess::Release()
 {
 	for (auto pObject : _releaseObjectList)
 	{
+		_objectNameList.erase(_objectNameList.find(pObject->objectName));
+		_objectList.erase(_objectList.find(pObject));
 		pObject->Release();
+		delete pObject;
 	}
+	_releaseObjectList.clear();
 }
 
 void GameProcess::ObjectStateChange()
@@ -229,6 +228,11 @@ void GameProcess::ObjectStateChange()
 	}
 
 	_stateChangeBuffer.clear();
+}
+
+void GameProcess::DeleteObject(ParentObject* pObject)
+{
+	PutStateChangeBuffer(eObjectState::RELEASE, pObject);
 }
 
 void GameProcess::PutStateChangeBuffer(eObjectState newstate, ParentObject* pObject)

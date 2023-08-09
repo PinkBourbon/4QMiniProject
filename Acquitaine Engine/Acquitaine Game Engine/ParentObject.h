@@ -39,6 +39,7 @@ public:
 	void RemoveComponent();
 	void SetActive(bool state);
 	ParentObject& FindObject(std::string objectname);
+	void Delete();
 
 //private:
 public:
