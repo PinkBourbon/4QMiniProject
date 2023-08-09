@@ -3,6 +3,8 @@
 //#include <iostream>
 //#include <codecvt>
 #include <windows.h>
+#include <iostream>
+#include <functional>
 
 void wstostr(std::wstring wstr, std::string* outStr)
 {

@@ -41,12 +41,10 @@ private:
 	void ProcessControlPoint(FbxMesh* mesh);
 	void InsertVertex(const vec3& position, const vec3& normal, const vec2& uv, const vec3& binormal, const vec3& tangent);
 
-
 	vec3 ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCount);
 	vec3 ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexCount);
 	vec3 ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCount);
 	vec2 ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCount);
-
 
 };
 

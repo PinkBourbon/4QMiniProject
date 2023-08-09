@@ -1,12 +1,14 @@
 #include "FbxLoaderV4.h"
 #include "Utility.h"
 
+#include "Vertex.h"
 #include <vector>
 #include <unordered_map>
 
 std::vector<Vertex> vertices;
-std::vector<UINT> indices;
-//std::unordered_map<Vertex, UINT> indexMapping;
+std::vector<unsigned int> indices;
+
+//std::unordered_map<Vertex, unsigned int> indexMapping;
 
 FbxLoaderV4::FbxLoaderV4()
 {
@@ -162,7 +164,7 @@ vec3 FbxLoaderV4::ReadNormal(const FbxMesh* mesh, int controlPointIndex, int ver
 	{
 		const FbxGeometryElementNormal* vertexNormal = mesh->GetElementNormal(0);
 
-		vec3 result;
+		vec3 result = {0.0f, };
 
 		switch (vertexNormal->GetMappingMode())
 		{
@@ -220,7 +222,7 @@ vec3 FbxLoaderV4::ReadNormal(const FbxMesh* mesh, int controlPointIndex, int ver
 vec3 FbxLoaderV4::ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
 {
 	FbxGeometryElementBinormal* vertexBinormal = mesh->GetElementBinormal(0);
-	vec3 result;
+	vec3 result = { 0.0f, 0.0f,0.0f};
 
 	if (vertexBinormal == nullptr)
 	{
@@ -229,6 +231,7 @@ vec3 FbxLoaderV4::ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexC
 
 
 	/// 이부분에서 null
+	/// null이 나오는 이유-> 가져오려고 하는 정보가 fbx파일에 없을시에는 null값이 나옴
 	switch (vertexBinormal->GetMappingMode())
 	{
 		case FbxGeometryElement::eByControlPoint:
@@ -288,7 +291,7 @@ vec3 FbxLoaderV4::ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexC
 vec3 FbxLoaderV4::ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
 {
 	FbxGeometryElementTangent* vertexTangent = mesh->GetElementTangent(0);
-	vec3 result;
+	vec3 result = { 0.0f, };
 
 	if (vertexTangent == nullptr)
 	{
@@ -353,7 +356,12 @@ vec3 FbxLoaderV4::ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCo
 vec2 FbxLoaderV4::ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
 {
 	FbxGeometryElementUV* vertexUV = mesh->GetElementUV(0);
-	vec2 result;
+	vec2 result = { 0.0f, };
+
+	if (vertexUV == nullptr)
+	{
+		return result;
+	}
 
 	switch (vertexUV->GetMappingMode())
 	{

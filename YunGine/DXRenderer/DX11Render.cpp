@@ -479,7 +479,7 @@ HRESULT DX11Render::CreateShip()
 {
 	HRESULT hr = S_OK;
 
-	_pLoader->Load(L"..//Resource//spaceship.fbx");
+	//_pLoader->Load(L"..//Resource//spaceship.fbx");
 
 
 	return S_OK;
