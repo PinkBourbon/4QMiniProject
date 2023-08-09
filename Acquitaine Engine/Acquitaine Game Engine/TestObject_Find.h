@@ -7,7 +7,7 @@ using namespace std;
 
 class TestComponent;
 class TestComponent1;
-class TestComponent_Find;
+class TestComponent2;
 
 class TestObject_Find :public ParentObject
 {

@@ -33,3 +33,8 @@ ParentObject& ParentScene::FindObject(std::string objectname)
 {
 	return _gameProcess->FindObject(objectname);
 }
+
+void ParentScene::DeleteObject(ParentObject* pObject)
+{
+	_gameProcess->DeleteObject(pObject);
+}

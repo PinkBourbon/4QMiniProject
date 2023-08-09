@@ -56,11 +56,16 @@ void TestComponent2::Update()
 {
 	cout << _gameObject->objectName << " : component2 Update is sucessed." << endl;
 
-	if (countnum < 10)
+	if (countnum < 3)
 	{
 		_gameObject->FindObject("test0").SetActive(false);
 		_gameObject->FindObject("test1").SetActive(false);
 		countnum++;
+	}
+
+	else
+	{
+		_gameObject->Delete();
 	}
 }
 
@@ -71,4 +76,8 @@ void TestComponent2::Disable()
 
 void TestComponent2::Release()
 {
+	cout << _gameObject->objectName << " : component2 is Released!!!!" << endl;
+	cout << _gameObject->objectName << " : component2 is Released!!!!" << endl;
+	cout << _gameObject->objectName << " : component2 is Released!!!!" << endl;
+	cout << _gameObject->objectName << " : component2 is Released!!!!" << endl;
 }
