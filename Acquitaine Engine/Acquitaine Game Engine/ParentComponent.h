@@ -1,41 +1,39 @@
 #pragma once
 #include <string>
 
-#include "IComponent.h"
-#include "IObject.h"
-
 using namespace std;
 
-class ParentComponent : IComponent
+class ParentObject;
+
+class ParentComponent
 {
 public:
 	ParentComponent();
-	~ParentComponent();
+	virtual ~ParentComponent();
 
 //private:
 public:
-	virtual void Initialize() override;
-	virtual void Finalize() override;
+	virtual void Initialize();
+	virtual void Finalize();
+	virtual void InputEvent();
+	virtual void Render();
+	virtual void Phsics();
+	//ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡//
 
-	virtual void Awake() override;
-	virtual void Enable() override;
-	virtual void Start() override;
+	virtual void Awake();
+	virtual void Enable();
+	virtual void Start();
+	virtual void FixedUpdate();
+	virtual void Update();
 
-	virtual void InputEvent() override;
-	virtual void FixedUpdate() override;
-	virtual void Update() override;
+	virtual void Disable();
+	virtual void Release();
 
-	virtual void Render() override;
+	virtual void SetGameObject(ParentObject* parentObject);
 
-	virtual void Disable() override;
-	virtual void Release() override;
-
-	virtual void SetGameObject(IObject* parentObject);
-
-private:
-	string ComponentName;		// ÄÄÆ÷³ÍÆ®ÀÇ ÀÌ¸§
-	static int componentIDs;	// ÄÄÆ÷³ÍÆ®ÀÇ ID? ¿ØÁö ÀÖ¾î¾ß ÇÒ°Í °°¾Æ¼­.
-	int componentID;			// ÄÄÆ÷³ÍÆ®ÀÇ ID.
-	IObject* gameObject;		// ³»°¡ ¼Ò¼ÓµÈ ¿ÀºêÁ§Æ®
-	bool isEnabled;				// ÄÄÆ÷³ÍÆ®°¡ È°¼ºÈ­ µÇ¾î ÀÖ´ÂÁö? ¾Æ´ÑÁö.
+protected:
+	string _componentName;		// ì»´í¬ë„ŒíŠ¸ì˜ ì´ë¦„
+	int _componentID;			// ì»´í¬ë„ŒíŠ¸ì˜ ID.
+	ParentObject* _gameObject;		// ë‚´ê°€ ì†Œì†ëœ ì˜¤ë¸Œì íŠ¸
+	bool _isEnabled;			// ì»´í¬ë„ŒíŠ¸ê°€ í™œì„±í™” ë˜ì–´ ìˆëŠ”ì§€? ì•„ë‹Œì§€.
 };

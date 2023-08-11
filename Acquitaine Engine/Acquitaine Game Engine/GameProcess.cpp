@@ -1,4 +1,11 @@
+#include <windows.h>
+
 #include "GameProcess.h"
+#include "TestScene.h"
+#include "SceneManager.h"
+#include "ParentObject.h"
+
+import aptoCore.Graphics;
 
 GameProcess::GameProcess()
 {
@@ -10,89 +17,133 @@ GameProcess::~GameProcess()
 
 void GameProcess::Initialize()
 {
+	s_gameEnginePointer = this;
+
+	_sceneManager = new SceneManager();
+	_sceneManager->Initialize();
+
+	bool ret = aptoCore::Graphics::Initialize();
+
+	cout << "Engine Initialized sucess" << endl;
 }
 
 void GameProcess::Finalize()
 {
+	aptoCore::Graphics::Finalize();
 }
 
 void GameProcess::RunningGameProcess(double deltaTime)
 {
-	float fixedupdateTimeRate = 0;
-	std::cout << "°ÔÀÓ¿£Áø ½ÇÇà" << endl;
+	cout << endl<< "Engine is working" << endl<< endl;
 
-	/// ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌÁö ¾Ê´Â ºÎºÐ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ
+	float fixedupdateTimeRate = 0;
+
+	/// ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ì§€ ì•ŠëŠ” ë¶€ë¶„ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡
 	ObjectStateChange();
-	
-	/// ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌ´Â ºÎºÐ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ
-	// ÃÊ±âÈ­,Ãß°¡, ½ÃÀÛ
+
+	/// ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ëŠ” ë¶€ë¶„ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡
+	// ì´ˆê¸°í™”,ì¶”ê°€, ì‹œìž‘
 	Awake();
 	Enable();
 	Start();
 
-	// ÀÎÇ² ÀÔ·Â, ¹°¸®¿¬»ê, ¾÷µ¥ÀÌÆ®
-	InputEvent(); /// ¾ê´Â ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌÁö ¾Ê°Ô ÇÒ°Í.
-	while (fixedupdateTimeRate > FixedUpdate());	//¹°¸®¿¬»êÀÌ µé¾î°£ ºÎºÐ. ½ÇÇà½Ã°£ÀÌ fixedupdatetimeº¸´Ù ÀÛ´Ù¸é ÇÈ½ºµå ¾÷µ¥ÀÌÆ®¸¦ ¹Ýº¹ ½ÇÇàÇÑ´Ù.
+	// ì¸í’‹ ìž…ë ¥, ë¬¼ë¦¬ì—°ì‚°, ì—…ë°ì´íŠ¸
+	InputEvent(); /// ì–˜ëŠ” ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ì§€ ì•Šê²Œ í• ê²ƒ.
+	while (fixedupdateTimeRate > FixedUpdate());	//ë¬¼ë¦¬ì—°ì‚°ì´ ë“¤ì–´ê°„ ë¶€ë¶„. ì‹¤í–‰ì‹œê°„ì´ fixedupdatetimeë³´ë‹¤ ìž‘ë‹¤ë©´ í”½ìŠ¤ë“œ ì—…ë°ì´íŠ¸ë¥¼ ë°˜ë³µ ì‹¤í–‰í•œë‹¤.
 	Update();
 
-	Render();	/// ¾ê´Â ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌÁö ¾Ê°Ô ÇÒ°Í.
+	Render();	/// ì–˜ëŠ” ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ì§€ ì•Šê²Œ í• ê²ƒ.
 
-	// ºñÈ°¼ºÈ­, »ç¿ë Á¾·á
+	// ë¹„í™œì„±í™”, ì‚¬ìš© ì¢…ë£Œ
 	Disable();
 	Release();
 
-	/// ½ºÅ©¸³ÆÃ ÇÒ¶§ º¸ÀÌÁö ¾Ê´Â ºÎºÐ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ
+	/// ìŠ¤í¬ë¦½íŒ… í• ë•Œ ë³´ì´ì§€ ì•ŠëŠ” ë¶€ë¶„ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡
 	InitializeObjects();
+
+	Sleep(1000);
+}
+
+void GameProcess::AddScene(ParentScene* pscene)
+{
+	_SceneList.push_back(pscene);
+}
+
+void GameProcess::ChangeObjectState(ParentObject* pobject, bool state)
+{
+	if (state && _objectList.find(pobject)->second != eObjectState::ENABLE)
+	{
+		PutStateChangeBuffer(eObjectState::ENABLE, pobject);
+		std::cout << "Object is activated" << std::endl;
+	}
+	else if (!state && _objectList.find(pobject)->second != eObjectState::DISABLE)
+	{
+		PutStateChangeBuffer(eObjectState::DISABLE, pobject);
+		std::cout << "Object is unactivated" << std::endl;
+	}
+}
+
+ParentObject& GameProcess::FindObject(std::string objectname)
+{
+	for (auto object : _objectList)
+	{
+		if (object.first->objectName.compare(objectname))
+		{
+			ParentObject& temp = *object.first;
+			return temp;
+		}
+	}
 }
 
 void GameProcess::InitializeObjects()
 {
-	for (auto pObject : waitingObjectList)
+	for (auto pObject : _waitingObjectList)
 	{
 		pObject->Initialize();
-		PutStateChangeBuffer(ObjectState::START, pObject);
+		PutStateChangeBuffer(eObjectState::START, pObject);
 	}
+	_waitingObjectList.clear();
 }
 
 void GameProcess::Awake()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _awakeObjectList)
 	{
 		pObject->Awake();
-		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
+		PutStateChangeBuffer( eObjectState::UPDATE, pObject);
 	}
 }
 
 void GameProcess::Enable()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _enableObjectList)
 	{
 		pObject->Enable();
-		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
+		PutStateChangeBuffer(eObjectState::UPDATE, pObject);
 	}
 }
 
 void GameProcess::Start()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _startObjectList)
 	{
 		pObject->Start();
-		PutStateChangeBuffer(ObjectState::UPDATE, pObject);
+		PutStateChangeBuffer(eObjectState::UPDATE, pObject);
 	}
 }
 
 void GameProcess::InputEvent()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _objectList)
 	{
-		pObject->InputEvent();
+		pObject.first->InputEvent();
 	}
 }
 
 float GameProcess::FixedUpdate()
 {
-	///¹°¸®¿¬»êÀÌ ½ÇÇàµÇ´Â ºÎºÐÀÌ°í, ½ÇÇà ½Ã°£À» ÃÊ´ÜÀ§·Î ¹ÝÈ¯ÇÏµµ·Ï ±¸¼º
-	for (auto pObject : awakeObjectList)
+	///ë¬¼ë¦¬ì—°ì‚°ì´ ì‹¤í–‰ë˜ëŠ” ë¶€ë¶„ì´ê³ , ì‹¤í–‰ ì‹œê°„ì„ ì´ˆë‹¨ìœ„ë¡œ ë°˜í™˜í•˜ë„ë¡ êµ¬ì„±
+	for (auto pObject : _fixedUpdateObjectList)
 	{
 		pObject->FixedUpdate();
 		pObject->Phsics();
@@ -103,7 +154,7 @@ float GameProcess::FixedUpdate()
 
 void GameProcess::Update()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _updateObjectList)
 	{
 		pObject->Update();
 	}
@@ -111,15 +162,15 @@ void GameProcess::Update()
 
 void GameProcess::Render()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _objectList)
 	{
-		pObject->Render();
+		pObject.first->Render();
 	}
 }
 
 void GameProcess::Disable()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _disableObjectList)
 	{
 		pObject->Disable();
 	}
@@ -127,7 +178,7 @@ void GameProcess::Disable()
 
 void GameProcess::Release()
 {
-	for (auto pObject : awakeObjectList)
+	for (auto pObject : _releaseObjectList)
 	{
 		pObject->Release();
 	}
@@ -135,43 +186,90 @@ void GameProcess::Release()
 
 void GameProcess::ObjectStateChange()
 {
-	for (auto buff : stateChangeBuffer)
+	for (auto buff : _stateChangeBuffer)
 	{
+		EraseObjectStateList(buff.second);
 		switch (buff.first)
 		{
-			case ObjectState::AWAKE:
+			case eObjectState::AWAKE:
 			{
-				awakeObjectList.push_back(buff.second);
+				_awakeObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::AWAKE;
 			}break;
-			case ObjectState::ENABLE:
+			case eObjectState::ENABLE:
 			{
-				enableObjectList.push_back(buff.second);
+				_enableObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::ENABLE;
 			}break;
-			case ObjectState::START:
+			case eObjectState::START:
 			{
-				startObjectList.push_back(buff.second);
+				_startObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::START;
 			}break;
-			case ObjectState::UPDATE:
+			case eObjectState::UPDATE:
 			{
-				updateObjectList.push_back(buff.second);
+				_updateObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::UPDATE;
 			}break;
-			case ObjectState::DISABLE:
+			case eObjectState::DISABLE:
 			{
-				disableObjectList.push_back(buff.second);
+				_disableObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::DISABLE;
 			}break;
-			case ObjectState::RELEASE:
+			case eObjectState::RELEASE:
 			{
-				releaseObjectList.push_back(buff.second);
+				_releaseObjectList.insert(buff.second);
+				_objectList.find(buff.second)->second = eObjectState::RELEASE;
 			}break;
 			default:
 			{
-			
+
 			}break;
 		}
 	}
+
+	_stateChangeBuffer.clear();
 }
 
-void GameProcess::PutStateChangeBuffer(ObjectState state, IObject* pObject)
+void GameProcess::PutStateChangeBuffer(eObjectState newstate, ParentObject* pObject)
 {
-	stateChangeBuffer.push_back(make_pair(state, pObject));
+	_stateChangeBuffer.push_back(make_pair(newstate ,pObject));
 }
+
+void GameProcess::EraseObjectStateList(ParentObject* pObject)
+{
+	std::unordered_map<ParentObject*, eObjectState>::iterator temp = _objectList.find(pObject);
+	switch (temp->second)
+	{
+		case eObjectState::AWAKE:
+		{
+			_awakeObjectList.erase(_awakeObjectList.find(temp->first));
+		}break;
+		case eObjectState::ENABLE:
+		{
+			_enableObjectList.erase(_enableObjectList.find(temp->first));
+		}break;
+		case eObjectState::START:
+		{
+			_startObjectList.erase(_startObjectList.find(temp->first));
+		}break;
+		case eObjectState::UPDATE:
+		{
+			_updateObjectList.erase(_updateObjectList.find(temp->first));
+		}break;
+		case eObjectState::DISABLE:
+		{
+			_disableObjectList.erase(_disableObjectList.find(temp->first));
+		}break;
+		case eObjectState::RELEASE:
+		{
+			_releaseObjectList.erase(_releaseObjectList.find(temp->first));
+		}break;
+		default:
+		{
+
+		}break;
+	}
+}
+
+GameProcess* GameProcess::s_gameEnginePointer;

@@ -6,7 +6,7 @@
 class GameProcess;
 #define MAXLOADSTRING 100
 
-//Àü¿ª
+//ì „ì—­
 HINSTANCE hInst;
 WCHAR szTitle[MAXLOADSTRING];
 WCHAR szWindowClass[MAXLOADSTRING];
@@ -16,16 +16,19 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	//°ÔÀÓ ÇÁ·Î¼¼½º ÀÎ½ºÅÏ½º »ý¼º
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
+
+	//ê²Œìž„ í”„ë¡œì„¸ìŠ¤ ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
 	MainProcess* mainProcess = new MainProcess();
 
-	// ÇÁ·Î¼¼½º ÃÊ±âÈ­
+	// í”„ë¡œì„¸ìŠ¤ ì´ˆê¸°í™”
 	mainProcess->Initialize(hInstance);
 
-	// ¸ÞÀÎ ·çÇÁ
+	// ë©”ì¸ ë£¨í”„
 	mainProcess->Loop();
 
-	// ÇÁ·Î±×·¥ Á¾·á
+	// í”„ë¡œê·¸ëž¨ ì¢…ë£Œ
 	mainProcess->Finalize();
 
 	delete mainProcess;

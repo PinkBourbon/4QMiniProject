@@ -16,13 +16,16 @@
     <Filter Include="TestSpace">
       <UniqueIdentifier>{cdf1ab62-61c8-44f2-8cd8-2fc983a658c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TestSpace\Object">
+      <UniqueIdentifier>{fba7ce2f-2986-4c51-98be-1a1aff091ebe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestSpace\Component">
+      <UniqueIdentifier>{c1254fb8-4cbf-453c-b247-9929ef717452}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameProcess.h">
       <Filter>GameProcess</Filter>
-    </ClInclude>
-    <ClInclude Include="IComponent.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="ParentComponent.h">
       <Filter>Component</Filter>
@@ -33,17 +36,26 @@
     <ClInclude Include="ParentScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="IObject.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>TestSpace</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObject_Find.h">
+      <Filter>TestSpace\Object</Filter>
+    </ClInclude>
     <ClInclude Include="TestObject.h">
-      <Filter>TestSpace</Filter>
+      <Filter>TestSpace\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent 1.h">
+      <Filter>TestSpace\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent 2.h">
+      <Filter>TestSpace\Component</Filter>
     </ClInclude>
     <ClInclude Include="TestComponent.h">
-      <Filter>TestSpace</Filter>
+      <Filter>TestSpace\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,11 +74,23 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>TestSpace</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObject_FInd.cpp">
+      <Filter>TestSpace\Object</Filter>
+    </ClCompile>
     <ClCompile Include="TestObject.cpp">
-      <Filter>TestSpace</Filter>
+      <Filter>TestSpace\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent 1.cpp">
+      <Filter>TestSpace\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent 2.cpp">
+      <Filter>TestSpace\Component</Filter>
     </ClCompile>
     <ClCompile Include="TestComponent.cpp">
-      <Filter>TestSpace</Filter>
+      <Filter>TestSpace\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
