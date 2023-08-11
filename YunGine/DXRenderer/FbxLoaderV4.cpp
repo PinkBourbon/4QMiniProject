@@ -39,7 +39,7 @@ bool FbxLoaderV4::Load(std::wstring filename)
 	// 설정 객체 생성
 	FbxIOSettings* ios = FbxIOSettings::Create(_manager, IOSROOT);
 	_manager->SetIOSettings(ios);
-
+	
 	// 파일 변환
 	std::string temp;
 	wstostr(filename, &temp);
@@ -51,6 +51,10 @@ bool FbxLoaderV4::Load(std::wstring filename)
 	// 씬 가져오기, importer 초기화 되면 파일에서 씬을 가져오기 위해 씬 컨테이너 생성
 	_scene = FbxScene::Create(_manager, "scene");
 	_importer->Import(_scene);
+	FbxDocument* document= _importer->GetDocument();
+	int rootMemberCount = document->GetRootMemberCount();
+
+	std::wcout << rootMemberCount << std::endl;
 
 	SceneSetting();
 
@@ -99,25 +103,24 @@ void FbxLoaderV4::LoadNodeRecursive(FbxNode* node)
 	{
 		LoadNodeRecursive(node->GetChild(i));
 	}
-
 }
 
 void FbxLoaderV4::ProcessControlPoint(FbxMesh* mesh)
 {
 	unsigned int count = mesh->GetControlPointsCount();
 
+	vec3 position = { 0.f, };
 	_position = new vec3[count];
 
 	for (unsigned int i = 0; i < count; ++i)
 	{
-		vec3 position;
-
 		position.x = static_cast<float>(mesh->GetControlPointAt(i).mData[0]);
 		position.y = static_cast<float>(mesh->GetControlPointAt(i).mData[1]);
 		position.z = static_cast<float>(mesh->GetControlPointAt(i).mData[2]);
 	}
 
-	unsigned int triangleCount = mesh->GetPolygonCount();
+	//unsigned int triangleCount = mesh->GetPolygonCount();
+	unsigned int triangleCount = mesh->GetPolygonVertexCount();
 	unsigned int vertexCount = 0;	// 정점의 개수
 
 	for (unsigned int i = 0; i < triangleCount; ++i)
@@ -228,7 +231,6 @@ vec3 FbxLoaderV4::ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexC
 	{
 		return result;
 	}
-
 
 	/// 이부분에서 null
 	/// null이 나오는 이유-> 가져오려고 하는 정보가 fbx파일에 없을시에는 null값이 나옴

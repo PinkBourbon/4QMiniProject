@@ -43,5 +43,6 @@ protected:
 	ID3D10Blob* compiledShader = 0;
 	ID3D10Blob* compilationMsgs = 0;
 
+	Vertex3 _position = { 0.0f, };
 
 };
