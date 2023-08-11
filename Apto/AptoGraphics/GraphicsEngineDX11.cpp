@@ -95,7 +95,7 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "Device 생성 실패");
+			APTO_ASSERT(false, "Device 생성 실패");
 			return false;
 		}
 
@@ -104,7 +104,7 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "멀티 샘플 품질레벨 체크 실패");
+			APTO_ASSERT(false, "멀티 샘플 품질레벨 체크 실패");
 			return false;
 		}
 
@@ -112,19 +112,19 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "DXGI Factory 생성 실패");
+			APTO_ASSERT(false, "DXGI Factory 생성 실패");
 			return false;
 		}
 
 		if (!InitDisplayInfo())
 		{
-			ASSERT(false, "모니터 모드 초기화 실패");
+			APTO_ASSERT(false, "모니터 모드 초기화 실패");
 			return false;
 		}
 
 		if (!InitGPUInfo())
 		{
-			ASSERT(false, "GPU 정보 초기화 실패");
+			APTO_ASSERT(false, "GPU 정보 초기화 실패");
 			return false;
 		}
 
@@ -152,7 +152,7 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "스왑체인 생성 실패");
+			APTO_ASSERT(false, "스왑체인 생성 실패");
 			return false;
 		}
 
@@ -178,7 +178,7 @@ namespace aptoCore::Graphics
 		result = g_device->CreateRasterizerState(&rasterizerDesc, &g_rasterizerState);
 		if (result != S_OK)
 		{
-			ASSERT(false, "RasterizerState 생성 실패");
+			APTO_ASSERT(false, "RasterizerState 생성 실패");
 			return false;
 		}
 
@@ -371,7 +371,7 @@ namespace aptoCore::Graphics
 	{
 		if (g_dxgiFactory == nullptr)
 		{
-			ASSERT(false, "dxgiFactory 부터 만드세요");
+			APTO_ASSERT(false, "dxgiFactory 부터 만드세요");
 			return false;
 		}
 
@@ -397,7 +397,7 @@ namespace aptoCore::Graphics
 			HRESULT result = g_outputs[i]->GetDisplayModeList1(DXGI_FORMAT_R8G8B8A8_UNORM, 0, &displayModeNum, NULL);
 			if (result != S_OK)
 			{
-				ASSERT(false, "디스플레이 모드 리스트 갯수 가져오기 실패");
+				APTO_ASSERT(false, "디스플레이 모드 리스트 갯수 가져오기 실패");
 				return false;
 			}
 
@@ -405,7 +405,7 @@ namespace aptoCore::Graphics
 			
 			if(dxgiModeArr.get() == nullptr)
 			{
-				ASSERT(false, "디스플레이 모드 리스트 할당 실패");
+				APTO_ASSERT(false, "디스플레이 모드 리스트 할당 실패");
 				return false;
 			}
 
@@ -432,7 +432,7 @@ namespace aptoCore::Graphics
 	{
 		if (g_adapters.empty())
 		{
-			ASSERT(false, "디스플레이 모드를 먼저 초기화 해주세요");
+			APTO_ASSERT(false, "디스플레이 모드를 먼저 초기화 해주세요");
 			return false;
 		}
 
@@ -465,7 +465,7 @@ namespace aptoCore::Graphics
 		HRESULT result = g_swapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH | DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING);
 		if (result != S_OK)
 		{
-			ASSERT(false, "스왑체인 리사이즈 실패");
+			APTO_ASSERT(false, "스왑체인 리사이즈 실패");
 			return false;
 		}
 
@@ -473,7 +473,7 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "버퍼 가져오기 실패");
+			APTO_ASSERT(false, "버퍼 가져오기 실패");
 			return false;
 		}
 
@@ -481,7 +481,7 @@ namespace aptoCore::Graphics
 
 		if (result != S_OK)
 		{
-			ASSERT(false, "렌더 타겟 뷰 생성 실패");
+			APTO_ASSERT(false, "렌더 타겟 뷰 생성 실패");
 			return false;
 		}
 

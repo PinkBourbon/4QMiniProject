@@ -165,7 +165,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h" />
     <ClInclude Include="IBuilder.h" />
     <ClInclude Include="KeyFrameData.h" />
     <ClInclude Include="Mesh.h" />
@@ -174,10 +173,15 @@
     <ClCompile Include="aptoCore.ixx" />
     <ClCompile Include="graphics.ixx" />
     <ClCompile Include="KeyFrameData.cpp" />
+    <ClCompile Include="RawAnimation.ixx" />
     <ClCompile Include="rawData.ixx" />
+    <ClCompile Include="RawMaterial.ixx" />
     <ClCompile Include="RawMesh.cpp" />
     <ClCompile Include="RawNode.cpp" />
     <ClCompile Include="RawNode.ixx" />
+    <ClCompile Include="RawSampler.ixx" />
+    <ClCompile Include="RawSkin.ixx" />
+    <ClCompile Include="RawTextrue.ixx" />
     <ClCompile Include="Renderable.ixx">
       <FileType>Document</FileType>
     </ClCompile>

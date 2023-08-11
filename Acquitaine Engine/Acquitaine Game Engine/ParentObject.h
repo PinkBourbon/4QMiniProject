@@ -2,15 +2,13 @@
 #include <vector>
 #include <string>
 
-#include "IObject.h"
-#include "IComponent.h"
-
 using namespace std;
 
 class ParentScene;
 class ParentComponent;
+class TestComponent;
 
-class ParentObject : public IObject
+class ParentObject
 {
 public:
 	ParentObject();
@@ -18,44 +16,65 @@ public:
 
 public:
 	template<typename T>
-	void AddComponent()
+	void AddComponent(string componentname, ParentObject* thispointer)
 	{
-		IComponent* temp = new T();
-		componentList.push_back(temp);
+		ParentComponent* temp = new T(componentname, thispointer);
+		_componentList.push_back(temp);
 	}
 
+	template<typename T>
+	ParentComponent* GetComponentPointer()
+	{
+		for (auto pComponent : _componentList)
+		{
+			if (typeid(pComponent) == typeid(T))
+			{
+				return pComponent;
+			}
+		}
+		return nullptr;
+	}
+
+	vector<ParentComponent*> GetComponentlist();
 	void RemoveComponent();
+	void SetActive(bool state);
+	ParentObject& FindObject(std::string objectname);
 
 //private:
 public:
-	virtual void Initialize() override;
-	virtual void Finalize() override;
+	virtual void Initialize();
+	virtual void Finalize();
 
-	virtual void Awake() override;
-	virtual void Enable() override;
-	virtual void Start() override;
+	virtual void InputEvent();
+	virtual void Phsics();
+	virtual void Render();
 
-	virtual void InputEvent() override;
-	virtual void FixedUpdate() override;
-	virtual void Phsics() override;
-	virtual void Update() override;
+public:
+	virtual void Awake();
+	virtual void Enable();
+	virtual void Start();
 
-	virtual void Render() override;
+	virtual void FixedUpdate();
+	virtual void Update();
 
-	virtual void Disable() override;
-	virtual void Release() override;
 
-private:
-	static int objectIDs;					// ÀÌ°Ç... »ı¼ºÀÚ°¡ È£Ãâ µÉ ¶§¸¶´Ù ÀÚµ¿À¸·Î 1¾¿ ´õÇØÁø´Ù. ±×¸®°í ±×°É ID·Î »ï´Â´Ù.
+	virtual void Disable();
+	virtual void Release();
 
-	/// ¿ÀºêÁ§Æ®ÀÇ ±âÃÊ Á¤º¸°¡ ÀúÀåµÇ¾î ÀÖ´Â ºÎºĞ
-	int objectID;							// ½ÇÁ¦ ÀÌ ¿ÀºêÁ§Æ®¸¦ ±¸ºĞÇÏ´Â ¿ëµµ·Î ¾²ÀÏ ID
-	string objectName;						// ¿ÀºêÁ§Æ®ÀÇ ÀÌ¸§
-	vector<IComponent*> componentList;		// ¿ÀºêÁ§Æ®°¡ °¡Áö°í ÀÖ´Â ÄÄÆ÷³ÍÆ®ÀÇ ¸ñ·Ï
+public:
 	bool isEnabled;
+	string objectName;						// ì˜¤ë¸Œì íŠ¸ì˜ ì´ë¦„
 
-	///¼Ò¼ÓµÈ Scene Á¤º¸
-	ParentScene* includedScene;
-	int includedSceneID;
+protected:
+	static int _objectIDs;					// ì´ê±´... ìƒì„±ìê°€ í˜¸ì¶œ ë  ë•Œë§ˆë‹¤ ìë™ìœ¼ë¡œ 1ì”© ë”í•´ì§„ë‹¤. ê·¸ë¦¬ê³  ê·¸ê±¸ IDë¡œ ì‚¼ëŠ”ë‹¤.
+
+
+	/// ì˜¤ë¸Œì íŠ¸ì˜ ê¸°ì´ˆ ì •ë³´ê°€ ì €ì¥ë˜ì–´ ìˆëŠ” ë¶€ë¶„
+	int _objectID;							// ì‹¤ì œ ì´ ì˜¤ë¸Œì íŠ¸ë¥¼ êµ¬ë¶„í•˜ëŠ” ìš©ë„ë¡œ ì“°ì¼ ID
+	vector<ParentComponent*> _componentList;		// ì˜¤ë¸Œì íŠ¸ê°€ ê°€ì§€ê³  ìˆëŠ” ì»´í¬ë„ŒíŠ¸ì˜ ëª©ë¡
+
+	///ì†Œì†ëœ Scene ì •ë³´
+	ParentScene* _includedScene;
+	int _includedSceneID;
 };
 

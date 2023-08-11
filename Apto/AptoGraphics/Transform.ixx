@@ -10,6 +10,7 @@ export namespace apto
 	class __declspec(dllexport) Transform
 	{
 		friend class Camera;
+
 	public:
 		Transform() : _position(), _scale(1.0f, 1.0f, 1.0f, 0.0f), _rotation(){}
 
