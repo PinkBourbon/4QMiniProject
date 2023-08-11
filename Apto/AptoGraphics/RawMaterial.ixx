@@ -27,7 +27,6 @@ export namespace aptoCore
 			normalTexture(L""), emissiveTexture(L""), emissiveFactor(0.0f, 0.0f, 0.0f), ambientOcclusionTexture(L""),
 			alphaMode(AlphaMode::OPAQUE), alphaCutoff(0.5f), isDoubleSided(false)
 		{
-
 		}
 		wstring baseColor;
 		Vector4f baseColorFactor;

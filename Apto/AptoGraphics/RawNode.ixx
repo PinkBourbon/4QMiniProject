@@ -4,6 +4,7 @@ module;
 export module aptoCore.rawData.RawNode;
 
 import aptoCore.rawData.RawMesh;
+import aptoCore.rawData.RawAnimation;
 
 export namespace aptoCore
 {
@@ -12,7 +13,8 @@ export namespace aptoCore
 		std::wstring name;
 
 		std::vector<RawNode*> children;
-		
+
 		RawMesh* mesh;
+		RawAnimation* animation;
 	};
 }

@@ -142,5 +142,11 @@
     <ClCompile Include="RawSampler.ixx">
       <Filter>Resource\RawData</Filter>
     </ClCompile>
+    <ClCompile Include="RawAnimation.ixx">
+      <Filter>Resource\RawData</Filter>
+    </ClCompile>
+    <ClCompile Include="RawSkin.ixx">
+      <Filter>Resource\RawData</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
