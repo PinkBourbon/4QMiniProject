@@ -9,10 +9,12 @@ export namespace aptoCore
 {
 	struct RawTexture
 	{
+		RawTexture() = default;
+
 		using wstring = std::wstring;
 		wstring name;
 		wstring path;
 
-		RawSampler* sampler;
+		RawSampler sampler;
 	};
 }

@@ -8,8 +8,8 @@ export namespace aptoCore
 	{
 		enum class Filter
 		{
-			Nearest,
-			Linear
+			Linear,
+			Nearest
 		};
 
 		enum class Wrap
@@ -19,9 +19,17 @@ export namespace aptoCore
 			Mirror
 		};
 
+		RawSampler() : 
+			minFilter(Filter::Linear),
+			magFilter(Filter::Linear),
+			wrapU(Wrap::Clamp),
+			wrapV(Wrap::Clamp)
+		{
+		}
+
 		Filter minFilter;
 		Filter magFilter;
-		Wrap wrapS;
-		Wrap wrapT;
+		Wrap wrapU;
+		Wrap wrapV;
 	};
 }
