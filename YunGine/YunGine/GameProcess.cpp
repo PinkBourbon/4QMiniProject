@@ -14,38 +14,38 @@ HRESULT GameProcess::Initialize(HINSTANCE hInstance)
 	// 
 	// 멀티바이트에서 유니코드로 넘어오면서 char* 에러가 났는데
 	// 이런식으로 형변환을 해도 될까?
-	wchar_t szAppName[] = L"YJD3Ddemo Engine";
-	WNDCLASS wndclass;
+	//wchar_t szAppName[] = L"YJD3Ddemo Engine";
+	//WNDCLASS wndclass;
 
-	wndclass.style = CS_HREDRAW | CS_VREDRAW;
-	wndclass.lpfnWndProc = GameProcess::WndProc;
-	wndclass.cbClsExtra = 0;
-	wndclass.cbWndExtra = 0;
-	wndclass.hInstance = hInstance;
-	wndclass.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
-	wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-	wndclass.lpszMenuName = NULL;
-	wndclass.lpszClassName = szAppName;
+	//wndclass.style = CS_HREDRAW | CS_VREDRAW;
+	//wndclass.lpfnWndProc = GameProcess::WndProc;
+	//wndclass.cbClsExtra = 0;
+	//wndclass.cbWndExtra = 0;
+	//wndclass.hInstance = hInstance;
+	//wndclass.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
+	//wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
+	//wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	//wndclass.lpszMenuName = NULL;
+	//wndclass.lpszClassName = szAppName;
 
-	// 윈도 클래스 등록
-	RegisterClass(&wndclass);
+	//// 윈도 클래스 등록
+	//RegisterClass(&wndclass);
 
-	// 윈도 생성
-	hWnd = CreateWindow(
-		// 멀티바이트에서 유니코드로 넘어오면서 char* 에러가 났는데
-		// 이런식으로 형변환을 해도 될까?
-		szAppName,
-		szAppName,
-		WS_OVERLAPPEDWINDOW,
-		100, 100, m_ScreenWidth, m_ScreenHeight,
-		NULL, NULL, hInstance, NULL);
+	//// 윈도 생성
+	//hWnd = CreateWindow(
+	//	// 멀티바이트에서 유니코드로 넘어오면서 char* 에러가 났는데
+	//	// 이런식으로 형변환을 해도 될까?
+	//	szAppName,
+	//	szAppName,
+	//	WS_OVERLAPPEDWINDOW,
+	//	100, 100, m_ScreenWidth, m_ScreenHeight,
+	//	NULL, NULL, hInstance, NULL);
 
-	if (!hWnd) return S_FALSE;
+	//if (!hWnd) return S_FALSE;
 
-	// 생성된 윈도를 화면에 표시
-	ShowWindow(hWnd, SW_SHOWNORMAL);
-	UpdateWindow(hWnd);
+	//// 생성된 윈도를 화면에 표시
+	//ShowWindow(hWnd, SW_SHOWNORMAL);
+	//UpdateWindow(hWnd);
 
 	if (CreateGraphicEngine() == S_FALSE)
 	{
@@ -167,7 +167,7 @@ HRESULT GameProcess::CreateGraphicEngine()
 	else
 	{
 		// 구체적인 내부 구현이 없으므로 사용할 수 없는 것이다.
-		renderer->Initialize((void*)hWnd);
+		renderer->Initialize(hInstance);
 	}
 
 	return S_OK;

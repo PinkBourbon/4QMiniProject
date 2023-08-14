@@ -52,9 +52,15 @@ DX11Render::~DX11Render()
 
 }
 
-long DX11Render::Initialize(void* hwnd)
+long DX11Render::Initialize(HINSTANCE hInstance)
 {
 	HRESULT hr = S_OK;
+
+	hr = CreateHandleWindow(2560,1080,hInstance);
+	if (FAILED(hr))
+	{
+		return false;
+	}
 
 	hr = CreateDevice();
 	if (FAILED(hr))
@@ -65,7 +71,7 @@ long DX11Render::Initialize(void* hwnd)
 		// 워프 렌더링.
 	}
 
-	hr = CreateSwapChain((HWND)hwnd);	// 스왑체인 생성
+	hr = CreateSwapChain((HWND)_hWnd);	// 스왑체인 생성
 	if (FAILED(hr))
 	{
 		return false;
@@ -199,6 +205,48 @@ HRESULT DX11Render::InitVB()
 void DX11Render::Finalize()
 {
 
+}
+
+
+HRESULT DX11Render::CreateHandleWindow(int windowWidth, int windowHeight, HINSTANCE hInstance)
+{
+	/// Win32 관련
+// 윈도 클래스
+// 
+// 멀티바이트에서 유니코드로 넘어오면서 char* 에러가 났는데
+// 이런식으로 형변환을 해도 될까?
+	wchar_t szAppName[] = L"YJD3Ddemo Engine";
+	WNDCLASS wndclass;
+
+	wndclass.style = CS_HREDRAW | CS_VREDRAW;
+	wndclass.lpfnWndProc = WndProc;
+	wndclass.cbClsExtra = 0;
+	wndclass.cbWndExtra = 0;
+	wndclass.hInstance = hInstance;
+	wndclass.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
+	wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wndclass.lpszMenuName = NULL;
+	wndclass.lpszClassName = szAppName;
+
+	// 윈도 클래스 등록
+	RegisterClass(&wndclass);
+
+	// 윈도 생성
+	_hWnd = CreateWindow(
+		// 멀티바이트에서 유니코드로 넘어오면서 char* 에러가 났는데
+		// 이런식으로 형변환을 해도 될까?
+		szAppName,
+		szAppName,
+		WS_OVERLAPPEDWINDOW,
+		100, 100, windowWidth, windowWidth,
+		NULL, NULL, hInstance, NULL);
+
+	if (!_hWnd) return S_FALSE;
+
+	// 생성된 윈도를 화면에 표시
+	ShowWindow(_hWnd, SW_SHOWNORMAL);
+	UpdateWindow(_hWnd);
 }
 
 HRESULT DX11Render::CreateDevice()
@@ -470,7 +518,7 @@ HRESULT DX11Render::CreateLoader()
 {
 	HRESULT hr = S_OK;
 	
-	_pLoader = new FbxLoaderV4;
+	//_pLoader = new FbxLoaderV4;
 
 	return S_OK;
 }
@@ -479,8 +527,28 @@ HRESULT DX11Render::CreateShip()
 {
 	HRESULT hr = S_OK;
 
-	_pLoader->Load(L"..//Resource//spaceship.fbx");
+	//_pLoader->Load(L"..//Resource//spaceship.fbx");
 
 
 	return S_OK;
+}
+
+LRESULT CALLBACK DX11Render::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	HDC         hdc;
+	PAINTSTRUCT ps;
+
+	switch (message)
+	{
+		case WM_PAINT:
+			hdc = BeginPaint(hWnd, &ps);
+			EndPaint(hWnd, &ps);
+			break;
+
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
+	}
+
+	return DefWindowProc(hWnd, message, wParam, lParam);
 }

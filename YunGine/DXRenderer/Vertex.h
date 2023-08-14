@@ -68,10 +68,4 @@ struct Vertex
 	vec2 uv;
 	vec3 binormal;
 	vec3 tangent;
-
-	// 뭐하는 부분인지 모르겠음
-	/*bool operator==(const Vertex& other) const
-	{
-		return position == other.position && normal == other.normal && uv == other.uv && binormal == other.binormal && tangent == other.tangent;
-	}*/
 };

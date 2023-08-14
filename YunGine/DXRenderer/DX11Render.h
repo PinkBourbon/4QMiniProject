@@ -56,7 +56,7 @@ public:
 	/// </summary>
 	/// 
 	// bool값으로 만들어서 return false를 반환해야한다.
-	virtual long Initialize(void* hwnd) override;	// 그래픽 엔진 초기화
+	virtual long Initialize(HINSTANCE hInstance) override;	// 그래픽 엔진 초기화
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
@@ -73,6 +73,7 @@ private:
 	// Message쪽에서 사이즈가 재정의 됬을때 호출하는 함수이지만 일단 보류
 	// Render 함수 내에서 사용할 것들
 
+	HRESULT CreateHandleWindow(int windowWidth, int windowHeight, HINSTANCE hInstance);
 	HRESULT CreateDevice();
 	HRESULT CreateSwapChain(HWND hWnd);
 	HRESULT CreateBackBuffer();
@@ -90,13 +91,20 @@ private:
 	HRESULT CreateLoader();
 	HRESULT CreateShip();
 
+	// 메시지 핸들러 (윈도 콜백)
+	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 	// 시간 변수
 	float _deltaTime;
 
 private:
 	//int mVideoCardMemory;	// 블로그에서는 있지만 어디다가 쓰는걸까?
 	//char mVideoCardDescription[128];
-	// 
+	
+	// 윈도우 핸들
+	HWND _hWnd;
+	HINSTANCE _hInstance;
+
 	// s_SwapChain에서 Preset할 때 필요했던 변수 하지만 굳이?
 	//bool bVsyncEnabled = false;
 	Microsoft::WRL::ComPtr<ID3D11Device> _p3DDevice;

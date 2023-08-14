@@ -1,12 +1,14 @@
 #include <iostream>
 #include "Vertex.h"
 #include "AptoMacro.h"
-
+#include <memory>
 
 import apto.math;
 import apto.util.Time;
 import apto.graphics.Camera;
 import aptoCore.Graphics;
+
+import aptoCore.rawData;
 
 bool isResize = false;
 
@@ -27,6 +29,10 @@ int main()
 	std::cout << str << std::endl;
 	std::wcout << wstr << std::endl;
 	wprintf(L"%s", wstr.c_str());
+
+	aptoCore::RawNode node(L"raw Data");
+	node.mesh.reset(new aptoCore::RawMesh());
+	std::wcout << node.mesh->indices.size() << std::endl;
 
 	aptoCore::Graphics::Initialize();
 

@@ -89,11 +89,11 @@
     <ClInclude Include="Mesh.h">
       <Filter>Source File\Shader&amp;Vertex</Filter>
     </ClInclude>
-    <ClInclude Include="FbxLoaderV4.h">
-      <Filter>Source File\FBXLoader\SDK</Filter>
-    </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Source File\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxLoaderV4.h">
+      <Filter>Source File\FBXLoader\SDK</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

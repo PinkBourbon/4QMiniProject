@@ -39,6 +39,7 @@ private:
 	
 	// 그래픽스 엔진
 	HMODULE m_hModule;
+	HINSTANCE hInstance;
 	std::unique_ptr<IDX11Render> renderer;
 	
 	// 게임 타이머
