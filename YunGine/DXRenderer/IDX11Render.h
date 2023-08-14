@@ -31,10 +31,16 @@ extern "C" YUNGINEDLL IDX11Render * CreateRenderer();
 extern "C" YUNGINEDLL void DeleteRenderer(IDX11Render * renderer);
 
 // 용훈이형의 인터페이스에 맞췄음
-extern "C" YUNGINEDLL bool Initialize();
-extern "C" YUNGINEDLL void Finalize();
-extern "C" YUNGINEDLL void Render(float deltaTime);
-extern "C" YUNGINEDLL bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight);
-extern "C" YUNGINEDLL void RegisterObject(Renderable & object);
-extern "C" YUNGINEDLL void DeregisterObject(Renderable & object);
 
+namespace aptoCore
+{
+	namespace Graphics 
+	{
+		YUNGINEDLL bool Initialize();
+		YUNGINEDLL void Finalize();
+		YUNGINEDLL void Render(float deltaTime);
+		YUNGINEDLL bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight);
+		YUNGINEDLL void RegisterObject(Renderable& object);
+		YUNGINEDLL void DeregisterObject(Renderable& object);
+	}
+}
