@@ -3,6 +3,12 @@
 
 struct Renderable;
 
+#ifdef YUNGINEDLLEXPORT
+#define YUNGINEDLL __declspec(dllexport)
+#else
+#define YUNGINEDLL __declspec(dllimport)
+#endif
+
 class IDX11Render abstract
 {
 public:
@@ -21,14 +27,14 @@ public:
 };
 
 // dll외부에서 사용가능한 함수라고 알려주는 것
-extern "C" __declspec(dllexport) IDX11Render * CreateRenderer();
-extern "C" __declspec(dllexport) void DeleteRenderer(IDX11Render * renderer);
+extern "C" YUNGINEDLL IDX11Render * CreateRenderer();
+extern "C" YUNGINEDLL void DeleteRenderer(IDX11Render * renderer);
 
 // 용훈이형의 인터페이스에 맞췄음
-extern "C" __declspec(dllexport) bool Initialize();
-extern "C" __declspec(dllexport) void Finalize();
-extern "C" __declspec(dllexport) void Render(float deltaTime);
-extern "C" __declspec(dllexport) bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight);
-extern "C" __declspec(dllexport) void RegisterObject(Renderable & object);
-extern "C" __declspec(dllexport) void DeregisterObject(Renderable & object);
+extern "C" YUNGINEDLL bool Initialize();
+extern "C" YUNGINEDLL void Finalize();
+extern "C" YUNGINEDLL void Render(float deltaTime);
+extern "C" YUNGINEDLL bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight);
+extern "C" YUNGINEDLL void RegisterObject(Renderable & object);
+extern "C" YUNGINEDLL void DeregisterObject(Renderable & object);
 

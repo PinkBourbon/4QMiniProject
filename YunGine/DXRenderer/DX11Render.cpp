@@ -470,7 +470,7 @@ HRESULT DX11Render::CreateLoader()
 {
 	HRESULT hr = S_OK;
 	
-	_pLoader = new FbxLoaderV4;
+	//_pLoader = new FbxLoaderV4;
 
 	return S_OK;
 }
@@ -479,7 +479,7 @@ HRESULT DX11Render::CreateShip()
 {
 	HRESULT hr = S_OK;
 
-	_pLoader->Load(L"..//Resource//spaceship.fbx");
+	//_pLoader->Load(L"..//Resource//spaceship.fbx");
 
 
 	return S_OK;
