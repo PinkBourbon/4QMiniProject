@@ -13,7 +13,6 @@ bool aptoCore::Graphics::Initialize()
 	return true;
 }
 
-
 void aptoCore::Graphics::Finalize()
 {
 	g_renderer->Finalize();
