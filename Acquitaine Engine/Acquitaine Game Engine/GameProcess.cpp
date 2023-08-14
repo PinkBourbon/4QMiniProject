@@ -16,12 +16,12 @@ namespace act
 	}
 
 	void GameProcess::GameProcessInitialize()
-	{
+{
 		s_gameEnginePointer = this;
 #ifdef YUNJINDLLEXPORT
 		bool ret = aptoCore::Graphics::Initialize();
 #else
-
+		CreateInitialize();
 #endif
 
 
@@ -30,7 +30,11 @@ namespace act
 
 	void GameProcess::Finalize()
 	{
+#ifdef YUNJINDLLEXPORT
 		aptoCore::Graphics::Finalize();
+#else
+		
+#endif	
 	}
 
 	void GameProcess::RunningGameProcess(double deltaTime)
@@ -277,25 +281,25 @@ namespace act
 	}
 
 	HRESULT GameProcess::CreateInitialize()
-	{
+{
 		HMODULE Module = LoadLibrary(RENDER_PATH);
 		if (Module == nullptr)
 		{
 			return S_FALSE;
 		}
 
-		_renderer.reset(reinterpret_cast<IDX11Render * (*)(void)>(GetProcAddress(_module, "CreateRenderer"))());
+		_renderer.reset(reinterpret_cast<IDX11Render * (*)(void)>(GetProcAddress(Module, "CreateRenderer"))());
 
 		if (_renderer == nullptr)
 		{
 			// 함수 가져오기 실패 처리
-			FreeLibrary(_module);
+			FreeLibrary(Module);
 			return S_FALSE;
 		}
 		else
 		{
 			// 구체적인 내부 구현이 없으므로 사용할 수 없는 것이다.
-			_renderer->Initialize();
+			_renderer->Initialize(hinstanse);
 		}
 
 		return S_OK;
