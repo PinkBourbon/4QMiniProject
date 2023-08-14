@@ -1,10 +1,12 @@
 /// 4Q에서 사용할 게임엔진
 /// 2023.07.20 작성 시작
 #pragma once
+
 #include <iostream>
 #include <unordered_set>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 class IDX11Render;
 
@@ -115,7 +117,6 @@ namespace act
 		std::vector <ParentScene*> _SceneList;
 
 		std::unique_ptr<IDX11Render> _renderer;
-		HMODULE _module;
 	};
 }
 
