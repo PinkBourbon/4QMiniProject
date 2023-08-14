@@ -1,67 +1,72 @@
 #include "ParentComponent.h"
 #include "ParentObject.h";
 
-ParentComponent::ParentComponent()
-	: _gameObject(nullptr), _isEnabled(true)
+namespace act
 {
 
-}
+	ParentComponent::ParentComponent()
+		: _gameObject(nullptr), _isEnabled(true)
+	{
 
-ParentComponent::~ParentComponent()
-{
+	}
 
-}
+	ParentComponent::~ParentComponent()
+	{
 
-void ParentComponent::SetGameObject(ParentObject* parentObject)
-{
-	_gameObject = parentObject;
-}
+	}
 
-void ParentComponent::Initialize()
-{
-}
+	void ParentComponent::SetGameObject(ParentObject* parentObject)
+	{
+		_gameObject = parentObject;
+	}
 
-void ParentComponent::Finalize()
-{
-}
+	void ParentComponent::Initialize()
+	{
+	}
 
-void ParentComponent::Awake()
-{
-}
+	void ParentComponent::Finalize()
+	{
+	}
 
-void ParentComponent::Enable()
-{
-}
+	void ParentComponent::Awake()
+	{
+	}
 
-void ParentComponent::Start()
-{
-}
+	void ParentComponent::Enable()
+	{
+	}
 
-void ParentComponent::InputEvent()
-{
-}
+	void ParentComponent::Start()
+	{
+	}
 
-void ParentComponent::FixedUpdate()
-{
-}
+	void ParentComponent::InputEvent()
+	{
+	}
 
-void ParentComponent::Update()
-{
-}
+	void ParentComponent::FixedUpdate()
+	{
+	}
 
-void ParentComponent::Render()
-{
-}
+	void ParentComponent::Update()
+	{
+	}
 
-void ParentComponent::Phsics()
-{
-}
+	void ParentComponent::Render()
+	{
+	}
 
-void ParentComponent::Disable()
-{
-}
+	void ParentComponent::Phsics()
+	{
+	}
 
-void ParentComponent::Release()
-{
-	Finalize();
+	void ParentComponent::Disable()
+	{
+	}
+
+	void ParentComponent::Release()
+	{
+		Finalize();
+	}
+
 }
