@@ -56,7 +56,7 @@ public:
 	/// </summary>
 	/// 
 	// bool값으로 만들어서 return false를 반환해야한다.
-	virtual long Initialize(HINSTANCE hInstance) override;	// 그래픽 엔진 초기화
+	virtual long Initialize() override;	// 그래픽 엔진 초기화
 
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
@@ -73,7 +73,7 @@ private:
 	// Message쪽에서 사이즈가 재정의 됬을때 호출하는 함수이지만 일단 보류
 	// Render 함수 내에서 사용할 것들
 
-	HRESULT CreateHandleWindow(int windowWidth, int windowHeight, HINSTANCE hInstance);
+	HRESULT CreateHandleWindow(int windowWidth, int windowHeight);
 	HRESULT CreateDevice();
 	HRESULT CreateSwapChain(HWND hWnd);
 	HRESULT CreateBackBuffer();

@@ -52,11 +52,11 @@ DX11Render::~DX11Render()
 
 }
 
-long DX11Render::Initialize(HINSTANCE hInstance)
+long DX11Render::Initialize()
 {
 	HRESULT hr = S_OK;
 
-	hr = CreateHandleWindow(2560,1080,hInstance);
+	hr = CreateHandleWindow(2560,1080);
 	if (FAILED(hr))
 	{
 		return false;
@@ -149,7 +149,7 @@ void DX11Render::Render()
 
 void DX11Render::BeginRender(float red, float green, float blue, float alpha)
 {
-	float color[4];
+	float color[4] = {0.0f,};
 
 	// Setup the color to clear the buffer to.
 	color[0] = red;	// r
@@ -208,7 +208,7 @@ void DX11Render::Finalize()
 }
 
 
-HRESULT DX11Render::CreateHandleWindow(int windowWidth, int windowHeight, HINSTANCE hInstance)
+HRESULT DX11Render::CreateHandleWindow(int windowWidth, int windowHeight)
 {
 	/// Win32 관련
 // 윈도 클래스
@@ -216,14 +216,14 @@ HRESULT DX11Render::CreateHandleWindow(int windowWidth, int windowHeight, HINSTA
 // 멀티바이트에서 유니코드로 넘어오면서 char* 에러가 났는데
 // 이런식으로 형변환을 해도 될까?
 	wchar_t szAppName[] = L"YJD3Ddemo Engine";
-	WNDCLASS wndclass;
+	WNDCLASS wndclass{};
 
 	wndclass.style = CS_HREDRAW | CS_VREDRAW;
 	wndclass.lpfnWndProc = WndProc;
 	wndclass.cbClsExtra = 0;
 	wndclass.cbWndExtra = 0;
-	wndclass.hInstance = hInstance;
-	wndclass.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
+	wndclass.hInstance = _hInstance;
+	wndclass.hIcon = LoadIcon(_hInstance, IDI_APPLICATION);
 	wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wndclass.lpszMenuName = NULL;
@@ -240,7 +240,7 @@ HRESULT DX11Render::CreateHandleWindow(int windowWidth, int windowHeight, HINSTA
 		szAppName,
 		WS_OVERLAPPEDWINDOW,
 		100, 100, windowWidth, windowWidth,
-		NULL, NULL, hInstance, NULL);
+		NULL, NULL, _hInstance, NULL);
 
 	if (!_hWnd) return S_FALSE;
 

@@ -16,7 +16,7 @@ public:
 	IDX11Render() {}
 	virtual ~IDX11Render() {};	// 인터페이스 소멸자는 virtual로
 
-	virtual long Initialize(HINSTANCE hInstance) abstract;
+	virtual long Initialize() abstract;
 
 	virtual void Update(float deltaTime) abstract;
 	virtual void Render() abstract;

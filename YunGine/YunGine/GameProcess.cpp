@@ -167,7 +167,7 @@ HRESULT GameProcess::CreateGraphicEngine()
 	else
 	{
 		// 구체적인 내부 구현이 없으므로 사용할 수 없는 것이다.
-		_renderer->Initialize(_hInstance);
+		_renderer->Initialize();
 	}
 
 	return S_OK;
