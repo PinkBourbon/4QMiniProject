@@ -4,11 +4,12 @@
 #include "ParentComponent.h"  
 
 class ParentObject;
+class ParentComponent2;
 
-class TestComponent1 : public ParentComponent
+class TestComponent1 : public act::ParentComponent
 {
 public:
-	TestComponent1(string name, ParentObject* pObject);
+	TestComponent1(string name, act::ParentObject* pObject);
 	virtual ~TestComponent1();
 
 	virtual void Initialize() override;

@@ -3,7 +3,7 @@
 #include "TestComponent 1.h"
 #include "TestComponent 2.h"
 
-TestObject::TestObject(string objectName, ParentScene* parentScene)
+TestObject::TestObject(string objectName, act::ParentScene* parentScene)
 {
 	this->objectName = objectName;
 	this->_includedScene = parentScene;

@@ -3,12 +3,12 @@
 #include "TestComponent 1.h"
 #include "TestComponent 2.h"
 
-TestObject_Find::TestObject_Find(string objectName, ParentScene* parentScene)
+TestObject_Find::TestObject_Find(string objectName, act::ParentScene* parentScene)
 {
 	this->objectName = objectName;
 	this->_includedScene = parentScene;
 
-	AddComponent<TestComponent_Find>("component_Find", this);
+	AddComponent<TestComponent2>("component_Find", this);
 }
 
 TestObject_Find::~TestObject_Find()

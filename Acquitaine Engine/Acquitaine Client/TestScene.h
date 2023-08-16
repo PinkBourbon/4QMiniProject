@@ -3,7 +3,7 @@
 
 class TestObject;
 
-class TestScene : public ParentScene
+class TestScene : public act::ParentScene
 {
 public:
 	TestScene(string SceneName);

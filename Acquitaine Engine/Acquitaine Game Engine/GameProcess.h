@@ -1,108 +1,124 @@
 /// 4Q에서 사용할 게임엔진
 /// 2023.07.20 작성 시작
 #pragma once
+
 #include <iostream>
 #include <unordered_set>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
-class SceneManager;
-class ParentScene;
-class ParentObject;
+class IDX11Render;
 
-enum class eObjectState
+namespace act
 {
-	WAITING,
-	AWAKE,
-	ENABLE,
-	START,
-	FIXEDUPDATE,
-	UPDATE,
-	DISABLE,
-	RELEASE
-};
+	class ParentObject;
+	class ParentScene;
 
-class GameProcess
-{
-public:
-	GameProcess();
-	~GameProcess();
-public:
-	void Initialize();			// 프로그램을 시작할때의 전처리
-	void Finalize();			// 프로그램을 종료할때의 후처리
-	void RunningGameProcess(double deltaTime);	// 이 함수 내에서 생명주기 함수들이 순서대로 실행된다.
-
-	void AddScene(ParentScene* pscene);
-
-	template<typename T>
-	void CreateObjects(std::string objectName, ParentScene* parentscene) // 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
+	enum class eObjectState
 	{
-		ParentObject* temp = new T(objectName, parentscene);
-		_objectList.insert(std::make_pair(temp, eObjectState::WAITING));
-		_waitingObjectList.insert(temp);
-		std::cout << "Sucessed object add list" << std::endl;
-	}
+		WAITING,
+		AWAKE,
+		ENABLE,
+		START,
+		FIXEDUPDATE,
+		UPDATE,
+		DISABLE,
+		RELEASE
+	};
 
-	void ChangeObjectState(ParentObject* pobject, bool state);
+	class GameProcess
+	{
+	public:
+		GameProcess();
+		~GameProcess();
+	public:
+		void GameProcessInitialize();			// 프로그램을 시작할때의 전처리
+		void Finalize();			// 프로그램을 종료할때의 후처리
+		void RunningGameProcess(double deltaTime);	// 이 함수 내에서 생명주기 함수들이 순서대로 실행된다.
 
-	ParentObject& FindObject(std::string objectname);
+		void AddScene(ParentScene* pscene);
 
-private:
-	/// 함수들의 실행 주기에 맞춰 함수들을 나열
-	/// 각 오브젝트들이 한 프레임에 한번의 상태를 가지도록 하는것이 원칙.
-	/// 한 프레임 내에 중복하여 다른 주기함수에서 실행되지 않게 할것.
-	
-	void InitializeObjects();	// 생성대기 리스트를 순회해서 Initialize 함수를 호출하고 start로 대기시킨다.(Initialize함수를 밖으로 노출하지 말것)
+		template<typename T>
+		void CreateObjects(std::string objectName, ParentScene* parentscene) // 호출되면 오브젝트를 생성해서 성생대기 리스트에 넣어준다.
+		{
+			ParentObject* temp = new T(objectName, parentscene);
+			_objectList.insert(std::make_pair(temp, eObjectState::WAITING));
+			_objectNameList.insert(std::make_pair(objectName, temp));
+			_waitingObjectList.insert(temp);
+			std::cout << "Sucessed object add list" << std::endl;
+		}
 
-	void Awake();			// 가장 먼저 실행되는 함수. // 우선적으로 실행되어야 할 오브젝트가 가끔은 있기때문에 존재.
-	void Enable();			// enable 상태로 전환된 오브젝트들이 그에 대한 처리가 실행될 함수
-	void Start();			// 두번째로 실행되는 함수 - 최초 단 한번만 실행되는 내용이 들어가는 부분.
-							// 컨텐츠 스크립트상의 변수는 여기서 초기화 되어도 상관은 없는데, 실제 오브젝트 초기화는 여기서 하지 말것.
-	void InputEvent();		// 키, 마우스 등을 인풋 받는 위치
-	float FixedUpdate();	// fixedupdatetime을 기반으로 물리연산을 위해 반복 실행되는 업데이트 함수
-	void Update();			// 프레임을 기준으로 메 프레임마다 반복 실행되는 업데이트 함수
+		void ChangeObjectState(ParentObject* pobject, bool state);	// 오브젝트의 상태를 바꿀 수 있는 함수. 오브젝트의 Setactive 함수의 도달지점이다.
+		// bool 값만 적용해서 Enable, Disable만 설정할 수 있게 했다.
 
-	void Render();			// 그래픽스가 실제로 랜더링 되는 부분
+		ParentObject& FindObject(std::string objectname); // 최종적으로 오브젝트, 씬에서 호출한 Find 함수의 도달 지점.
+		// 할당된 포인터 값을 바꾸는 일을 막기 위해 참조자로 반환.
 
-	void Disable();			// enable 상태가 해제된 오브젝트들이 disable 되었을 때의 처리가 실행될 함수
-	void Release();			// 완전히 사용이 종료된 오브젝트들이 실제로 제거되는 부분
+		void DeleteObject(ParentObject* pObject);	// 최종적으로 오브젝트에서 실행한 delete 함수가 도달하는 곳.
+		// 그러나 사실 이곳에선 오브젝트를 삭제 하지 않는다.
+		// 이곳에선 순서적인 절차를 거친 후에 삭제된다.
 
-	void ObjectStateChange();	// 관리 중인 오브젝트들의 상태를 바꾸어주는 함수. 바뀔 오브젝트 들이 담길 풀을 순회
-								// 이건 언젠가 리소스 매니저를 넘겨줘야 하지 않을까?
+	private:
+		/// 함수들의 실행 주기에 맞춰 함수들을 나열
+		/// 각 오브젝트들이 한 프레임에 한번의 상태를 가지도록 하는것이 원칙.
+		/// 한 프레임 내에 중복하여 다른 주기함수에서 실행되지 않게 할것.
 
-	/// 이건 일단 보조로 두자
-	void PutStateChangeBuffer(eObjectState newstate, ParentObject* pObject);
-	void EraseObjectStateList(ParentObject* pObject);
-	// 관리 중인 오브젝트들의 상태를 바꿔주려고 할때
-	// 바로 바꿔주는것은 안되므로 이 함수를 통해 풀에 넣어두고 나중에 바꾼다.
-	// 리소스 매니저가 추가된다면 리소스 매니저로 넣어주라는 명령함수만 가지고 있는 놈이 될지도
+		void InitializeObjects();	// 생성대기 리스트를 순회해서 Initialize 함수를 호출하고 start로 대기시킨다.(Initialize함수를 밖으로 노출하지 말것)
 
-public:
-	static GameProcess* s_gameEnginePointer;
-private:
+		void Awake();			// 가장 먼저 실행되는 함수. // 우선적으로 실행되어야 할 오브젝트가 가끔은 있기때문에 존재.
+		void Enable();			// enable 상태로 전환된 오브젝트들이 그에 대한 처리가 실행될 함수
+		void Start();			// 두번째로 실행되는 함수 - 최초 단 한번만 실행되는 내용이 들어가는 부분.
+		// 컨텐츠 스크립트상의 변수는 여기서 초기화 되어도 상관은 없는데, 실제 오브젝트 초기화는 여기서 하지 말것.
+		void InputEvent();		// 키, 마우스 등을 인풋 받는 위치
+		float FixedUpdate();	// fixedupdatetime을 기반으로 물리연산을 위해 반복 실행되는 업데이트 함수
+		void Update();			// 프레임을 기준으로 메 프레임마다 반복 실행되는 업데이트 함수
 
-	float _deltatime;		// 프레임당 시간
-	float _fixedupdatetime;	// fixedUpdate를 위한 고정 실행주기
+		void Render();			// 그래픽스가 실제로 랜더링 되는 부분
+
+		void Disable();			// enable 상태가 해제된 오브젝트들이 disable 되었을 때의 처리가 실행될 함수
+		void Release();			// 완전히 사용이 종료된 오브젝트들이 실제로 제거되는 부분
+
+		void ObjectStateChange();	// 관리 중인 오브젝트들의 상태를 바꾸어주는 함수. 바뀔 오브젝트 들이 담길 풀을 순회
+		// 이건 언젠가 리소스 매니저를 넘겨줘야 하지 않을까?
+
+/// 이건 일단 보조로 두자
+		void PutStateChangeBuffer(eObjectState newstate, ParentObject* pObject);
+		void EraseObjectStateList(ParentObject* pObject);
+		// 관리 중인 오브젝트들의 상태를 바꿔주려고 할때
+		// 바로 바꿔주는것은 안되므로 이 함수를 통해 풀에 넣어두고 나중에 바꾼다.
+		// 리소스 매니저가 추가된다면 리소스 매니저로 넣어주라는 명령함수만 가지고 있는 놈이 될지도
+
+		HRESULT CreateInitialize();
+
+	public:
+		static GameProcess* s_gameEnginePointer;
+	private:
+
+		float _deltatime;		// 프레임당 시간
+		float _fixedupdatetime;	// fixedUpdate를 위한 고정 실행주기
 
 
-	std::unordered_map<ParentObject*, eObjectState > _objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
+		std::unordered_map<ParentObject*, eObjectState > _objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
+		std::unordered_map< std::string, ParentObject* > _objectNameList; // 위쪽은 내부관리를 위해 쓰는 리스트이고, 이쪽은 외부에서 오브젝트를 검색할 수 있게 만든 맵
 
-	std::unordered_set<ParentObject*> _awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
-	std::unordered_set<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
-	std::unordered_set<ParentObject*> _startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
-	std::unordered_set<ParentObject*> _updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
-	std::unordered_set<ParentObject*> _fixedUpdateObjectList;	// FixedUpdate State의 오브젝트를 가지고 있는 리스트
-	std::unordered_set<ParentObject*> _disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
-	std::unordered_set<ParentObject*> _releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
+		std::unordered_set<ParentObject*> _awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
+		std::unordered_set<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
+		std::unordered_set<ParentObject*> _startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
+		std::unordered_set<ParentObject*> _updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
+		std::unordered_set<ParentObject*> _fixedUpdateObjectList;	// FixedUpdate State의 오브젝트를 가지고 있는 리스트
+		std::unordered_set<ParentObject*> _disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
+		std::unordered_set<ParentObject*> _releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
 
-	std::unordered_set<ParentObject*> _waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
+		std::unordered_set<ParentObject*> _waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
 
-	std::vector < std::pair<eObjectState, ParentObject*>> _stateChangeBuffer;
+		std::vector < std::pair<eObjectState, ParentObject*>> _stateChangeBuffer;
 
-	std::vector <ParentScene*> _SceneList;
+		std::vector <ParentScene*> _SceneList;
 
-	SceneManager* _sceneManager;
-};
+		std::unique_ptr<IDX11Render> _renderer;
+	};
+}
 
 /// 이번의 달성 목표에 대해서 정리 해보자면
 //   1. 유니티 엔진 처럼 스크립팅 영역과 실제 엔진 구동 영역을 분리.
@@ -241,3 +257,33 @@ private:
 //	근데 난 오브젝트에게 자기가 어떤 상태인지 모르게 하고 싶어
 //	그러면 어떻게 해야 하지? start에서 update가 아니라 disable로 가게 하려면 어떻게 해야 하지???
 //	어떻게 짜야 엔진에서 부탁받은 오브젝트가 들어있는 위치를 찾아서 거기서 뺄 수 있는거지?    
+//	오브젝트 전체를 담고 있는 리스트가 지금 내가 들고 있는 오브젝트가 어떤 상태 인지 같이 들고 있도록 수정
+
+//	그래서 오브젝트리스를 언 오더드 맵으로 바꾸고 포인터를 키로 이넘을 벨류로 했다.
+//	그랬더니 검색할때 문제가 있다.
+//	이름으로 찾았더니 기껏 map을 쓰고 있는데 얘를 순회해서 찾고 있다.
+//	이거 겁나 맘에 안든다고!!!!
+//	그렇다고 검색을 string(objectname)이 아니라 Object의 포인터로 할 수는 없잖아.
+//	아예 리스트를 두개를 만들어서 검색을 두번 할까?
+//	어차피 O(1) 이잖아.
+
+/// 이상한 문제 발생
+//	오브젝트가 다른 오브젝트를 disable 시키도록 했는데, 이상하게 자기 자신을 disable 해버리는 문제를 확인
+//	심지어 이 문제는 골치아프게도 있다가 재대로 동작했다가 문제가 있다가 한다.
+//	원인이 뭔지 잘 모르겠지만, console 창 출력을 확인 한 결과 SetActive(false)를 자기자신한테 걸고 있는것 같음
+//	이름은 일단 중복되지 않는 상태라 자신 자신을 지목하는 문제는 거리가 멀어보임
+//	일단 확인 해보니 다른 오브젝트를 disable하는 상태 일때
+//	콘솔 출력에 Object is unactivated 라는 문구가 최하단에 뜨는 경우를 제외하면 모두 자기자신을 disable한다.
+//	고쳤다! string의 compare 함수는 반환 값이 bool 값이 아니라 int 값이었다.
+//	왼쪽이 작으면 음수, 같으면 0, 크다면 양수를 반환한다.
+
+///	씬에 따른 오브젝트 구분을 어떻게 할것인가?
+//
+
+/// 일단 오브젝트 관리를 위해 계속 문제가 되는 자료구조 문제부터 보자.
+
+/// 클라이언트를 분리 하면서
+//	클라이언트와 게임 프로세스를 어떻게 연결 하는가?
+//	클라이언트는 메인 엔트리에 노출하는게 맞는것 같은데 게임엔진은 어떻게 되는가?
+//	밖으로 두는게 맞는가? 안으로 묶는게 맞는가?
+//	일단 엔트리->클라->게임엔진의 형태로 짜보자

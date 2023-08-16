@@ -18,7 +18,7 @@ void SceneManager::Initialize()
 
 // ex) 	ParentScene* scene1 = new TestScene();
 // 		scene1->Initialize();
-	ParentScene* scene1 = new TestScene("test scene");
+	act::ParentScene* scene1 = new TestScene("test scene");
 	cout << "scene manager create sucessed" << endl;
 	scene1->Initialize();
 }

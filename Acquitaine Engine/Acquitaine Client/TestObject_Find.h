@@ -7,12 +7,12 @@ using namespace std;
 
 class TestComponent;
 class TestComponent1;
-class TestComponent_Find;
+class TestComponent2;
 
-class TestObject_Find :public ParentObject
+class TestObject_Find :public act::ParentObject
 {
 public:
-	TestObject_Find(string objectName, ParentScene* parentScene);
+	TestObject_Find(string objectName, act::ParentScene* parentScene);
 	virtual ~TestObject_Find();
 };
 

@@ -1,7 +1,7 @@
 #include "TestComponent 2.h"
 #include "ParentObject.h"
 
-TestComponent2::TestComponent2(string name, ParentObject* pObject)
+TestComponent2::TestComponent2(string name, act::ParentObject* pObject)
 {
 	_componentName = name;
 	_gameObject = pObject;
@@ -56,7 +56,7 @@ void TestComponent2::Update()
 {
 	cout << _gameObject->objectName << " : component2 Update is sucessed." << endl;
 
-	if (countnum < 10)
+	if (countnum < 3)
 	{
 		_gameObject->FindObject("test0").SetActive(false);
 		_gameObject->FindObject("test1").SetActive(false);
@@ -71,4 +71,5 @@ void TestComponent2::Disable()
 
 void TestComponent2::Release()
 {
+
 }

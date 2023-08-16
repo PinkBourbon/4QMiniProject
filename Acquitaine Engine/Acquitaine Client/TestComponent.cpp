@@ -1,7 +1,7 @@
 #include "TestComponent.h"
 #include "ParentObject.h"
 
-TestComponent::TestComponent(string name, ParentObject* pObject)
+TestComponent::TestComponent(string name, act::ParentObject* pObject)
 {
 	_componentName = name;
 	_gameObject = pObject;

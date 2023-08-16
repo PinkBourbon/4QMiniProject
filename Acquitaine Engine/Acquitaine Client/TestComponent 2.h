@@ -5,10 +5,10 @@
 
 class ParentObject;
 
-class TestComponent2 : public ParentComponent
+class TestComponent2 : public act::ParentComponent
 {
 public:
-	TestComponent2(string name, ParentObject* pObject);
+	TestComponent2(string name, act::ParentObject* pObject);
 	virtual ~TestComponent2();
 
 	virtual void Initialize() override;
