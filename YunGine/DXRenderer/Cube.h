@@ -24,15 +24,17 @@ private:
 	void BuildFxFromCso(ID3D11Device* device, const std::wstring& filename);
 	void GetTextureFile();
 
-	Microsoft::WRL::ComPtr<ID3DX11Effect>				m_textureboxEffect;			// ¹öÅØ½º ¼ÎÀÌ´õ ÇÈ¼¿ ¼ÎÀÌ´õ¸¦ ´ëÃ¼ÇÒ ¹«¾ğ°¡
-	Microsoft::WRL::ComPtr<ID3DX11EffectTechnique>		m_textureboxTechnique;		// Å×Å©
-	Microsoft::WRL::ComPtr<ID3DX11EffectMatrixVariable> m_textureboxMatrixVariable;	// »ó¼ö¹öÆÛ¸¦ ´ë½ÅÇÒ ¹«¾ğ°¡?
+	Microsoft::WRL::ComPtr<ID3D11InputLayout>			_textureboxInputLayout;
+
+	Microsoft::WRL::ComPtr<ID3DX11Effect>				_textureboxEffect;			// ë²„í…ìŠ¤ ì…°ì´ë” í”½ì…€ ì…°ì´ë”ë¥¼ ëŒ€ì²´í•  ë¬´ì–¸ê°€
+	Microsoft::WRL::ComPtr<ID3DX11EffectTechnique>		_textureboxTechnique;		// í…Œí¬
+	Microsoft::WRL::ComPtr<ID3DX11EffectMatrixVariable> _textureboxMatrixVariable;	// ìƒìˆ˜ë²„í¼ë¥¼ ëŒ€ì‹ í•  ë¬´ì–¸ê°€?
 
 	int indexcount = 0;
 
-	/// ÅØ½ºÃ³¸¦ À§ÇÑ ¸â¹öº¯¼ö
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_DiffuseMapSRV;
-	Microsoft::WRL::ComPtr<ID3DX11EffectShaderResourceVariable> m_DiffuseMap;
-	Microsoft::WRL::ComPtr <ID3DX11EffectMatrixVariable> m_GworldMatrixVariable;
+	/// í…ìŠ¤ì²˜ë¥¼ ìœ„í•œ ë©¤ë²„ë³€ìˆ˜
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	_diffuseMapSRV;
+	Microsoft::WRL::ComPtr<ID3DX11EffectShaderResourceVariable> _diffuseMap;
+	Microsoft::WRL::ComPtr <ID3DX11EffectMatrixVariable> _gworldMatrixVariable;
 };
 

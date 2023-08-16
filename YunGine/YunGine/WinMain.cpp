@@ -2,10 +2,10 @@
 #include "GameProcess.h"
 
 /// <summary>
-/// ¿£Áø ±âÃÊ
-/// ÇÁ·Î±×·¥ ÁøÀÔÁöÁ¡ »ý¼º
+/// ì—”ì§„ ê¸°ì´ˆ
+/// í”„ë¡œê·¸ëž¨ ì§„ìž…ì§€ì  ìƒì„±
 /// 
-/// ±æÀÒÀº ¾î¸° ¾çÀ» ±¸¿øÇØÁÖ¼¼¿ä
+/// ê¸¸ìžƒì€ ì–´ë¦° ì–‘ì„ êµ¬ì›í•´ì£¼ì„¸ìš”
 /// 
 /// 2023.06.16 -Dispact-
 /// </summary>
@@ -19,9 +19,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	// °ÔÀÓ ÁøÇà Å¬·¡½º
-// ³»ºÎ¿¡¼­ À©µµ »ý¼º°ú ¸Þ½ÃÁö ÄÝ¹éÀ» Ã³¸®ÇÑ´Ù.
-	// ¶ÇÇÑ ±×·¡ÇÈ½º ¿£Áø µîÀ» Æ÷ÇÔÇÑ´Ù.
+	// ê²Œìž„ ì§„í–‰ í´ëž˜ìŠ¤
+// ë‚´ë¶€ì—ì„œ ìœˆë„ ìƒì„±ê³¼ ë©”ì‹œì§€ ì½œë°±ì„ ì²˜ë¦¬í•œë‹¤.
+	// ë˜í•œ ê·¸ëž˜í”½ìŠ¤ ì—”ì§„ ë“±ì„ í¬í•¨í•œë‹¤.
 	GameProcess* pGameProcess = new GameProcess();
 	pGameProcess->Initialize(hInstance);
 	pGameProcess->Loop();

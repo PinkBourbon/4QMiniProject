@@ -3,11 +3,11 @@
 Axis::Axis(
 	Microsoft::WRL::ComPtr<ID3D11Device>& pDevice, 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>& pDeviceContext, 
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState>& pRasterState)	// wireRaster∑Œ πﬁ¿Ω
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState>& pRasterState)	// wireRasterÎ°ú Î∞õÏùå
 {
-	pDevice.CopyTo(m_3DDevice.GetAddressOf());
-	pDeviceContext.CopyTo(m_3DDeviceContext.GetAddressOf());
-	pRasterState.CopyTo(m_RasterState.GetAddressOf());
+	pDevice.CopyTo(_3DDevice.GetAddressOf());
+	pDeviceContext.CopyTo(_3DDeviceContext.GetAddressOf());
+	pRasterState.CopyTo(_RasterState.GetAddressOf());
 
 	ObjectSetting();
 }
@@ -41,24 +41,24 @@ void Axis::ObjectSetting()
 		D3D11_BUFFER_DESC bufferDesc;
 	bufferDesc.ByteWidth = 6 * sizeof(ColorVertex);
 	bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;	// πˆ∆€∞° ∆ƒ¿Ã«¡∂Û¿Œø° πŸ¿Œµ˘µ«¥¬ πÊπ˝Ωƒ∫∞
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;	// Î≤ÑÌçºÍ∞Ä ÌååÏù¥ÌîÑÎùºÏù∏Ïóê Î∞îÏù∏Îî©ÎêòÎäî Î∞©Î≤ïÏãùÎ≥Ñ
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 	bufferDesc.StructureByteStride = 0;
 
-	// πˆ∆€ √ ±‚»≠¥¬ ø£¡¯ø°º≠->D3DµπŸ¿ÃΩ∫∏¶ ø£¡¯ø°º≠ µÈ∞Ì¿÷±‚ ∂ßπÆø° ¡§∫∏∏∏ ≥—∞‹¡ÿ¥Ÿ.
-	// ≈ÿΩ∫√≥ «“∂ß ªÁøÎ«—¥Ÿ.
+	// Î≤ÑÌçº Ï¥àÍ∏∞ÌôîÎäî ÏóîÏßÑÏóêÏÑú->D3DÎîîÎ∞îÏù¥Ïä§Î•º ÏóîÏßÑÏóêÏÑú Îì§Í≥†ÏûàÍ∏∞ ÎïåÎ¨∏Ïóê Ï†ïÎ≥¥Îßå ÎÑòÍ≤®Ï§ÄÎã§.
+	// ÌÖçÏä§Ï≤ò Ìï†Îïå ÏÇ¨Ïö©ÌïúÎã§.
 	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = axisvertex;	// const π´»ø-> √ ±‚»≠ µ•¿Ã≈Õø° ¥Î«— ∆˜¿Œ≈Õ¿Ã¥Ÿ.
-	InitData.SysMemPitch = 0;		// ≈ÿΩ∫√≥ «— ¡Ÿ Ω√¿€ ∫Œ∫–ø°º≠ ¥Ÿ¿Ω¡Ÿ ±Ó¡ˆ¿« ∞≈∏Æ(byte)
-	InitData.SysMemSlicePitch = 0;	// «— ±Ì¿Ã ºˆ¡ÿ¿« Ω√¿€∫Œ≈Õ ¥Ÿ¿Ω ºˆ¡ÿ±Ó¡ˆ¿« ∞≈∏Æ(byte)
+	InitData.pSysMem = axisvertex;	// const Î¨¥Ìö®-> Ï¥àÍ∏∞Ìôî Îç∞Ïù¥ÌÑ∞Ïóê ÎåÄÌïú Ìè¨Ïù∏ÌÑ∞Ïù¥Îã§.
+	InitData.SysMemPitch = 0;		// ÌÖçÏä§Ï≤ò Ìïú Ï§Ñ ÏãúÏûë Î∂ÄÎ∂ÑÏóêÏÑú Îã§ÏùåÏ§Ñ ÍπåÏßÄÏùò Í±∞Î¶¨(byte)
+	InitData.SysMemSlicePitch = 0;	// Ìïú ÍπäÏù¥ ÏàòÏ§ÄÏùò ÏãúÏûëÎ∂ÄÌÑ∞ Îã§Ïùå ÏàòÏ§ÄÍπåÏßÄÏùò Í±∞Î¶¨(byte)
 
-	//D3Dø£¡¯ø°º≠ µπŸ¿ÃΩ∫∏¶ ø©±‚º≠ ≥—∞‹¡‡æﬂ«œ≥™?
-	hr = m_3DDevice->CreateBuffer
+	//D3DÏóîÏßÑÏóêÏÑú ÎîîÎ∞îÏù¥Ïä§Î•º Ïó¨Í∏∞ÏÑú ÎÑòÍ≤®Ï§òÏïºÌïòÎÇò?
+	hr = _3DDevice->CreateBuffer
 	(
 		&bufferDesc,
 		&InitData,
-		m_VertexBuffer.GetAddressOf()
+		_VertexBuffer.GetAddressOf()
 	);
 
 
@@ -86,10 +86,10 @@ void Axis::ObjectSetting()
 	indexInit.SysMemPitch = 0;
 	indexInit.SysMemSlicePitch = 0;
 
-	hr = m_3DDevice->CreateBuffer(
+	hr = _3DDevice->CreateBuffer(
 		&indexBufferDesc,
 		&indexInit,
-		m_IndexBuffer.GetAddressOf()
+		_IndexBuffer.GetAddressOf()
 	);
 
 	BuildFX();
@@ -99,57 +99,57 @@ void Axis::ObjectSetting()
 
 void Axis::ObjectUpdate(const DirectX::XMMATRIX& world, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& projection)
 {
-	m_World = world;
-	m_View = view;
-	m_Proj = projection;
+	_world = world;
+	_view = view;
+	_proj = projection;
 }
 
 
 void Axis::Render()
 {
-	// ¿‘∑¬ πËƒ° ∞¥√º º¬∆√
-	m_3DDeviceContext->IASetInputLayout(m_InputLayout.Get());
-	m_3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	// ÏûÖÎ†• Î∞∞Ïπò Í∞ùÏ≤¥ ÏÖãÌåÖ
+	_3DDeviceContext->IASetInputLayout(_InputLayout.Get());
+	_3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-	// ¿Œµ¶Ω∫πˆ∆€øÕ πˆ≈ÿΩ∫ πˆ∆€ º¬∆√
+	// Ïù∏Îç±Ïä§Î≤ÑÌçºÏôÄ Î≤ÑÌÖçÏä§ Î≤ÑÌçº ÏÖãÌåÖ
 	UINT stride = sizeof(ColorVertex);
 	UINT offset = 0;
-	m_3DDeviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), &stride, &offset);
-	// &m_axisVertexBufferøÕ AddressOf¬˜¿Ã∞° ππ¿œ±Ó-> &¥¬ √ ±‚»≠∏¶ «ÿπˆ∏∞¥Ÿ.
-	m_3DDeviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	_3DDeviceContext->IASetVertexBuffers(0, 1, _VertexBuffer.GetAddressOf(), &stride, &offset);
+	// &_axisVertexBufferÏôÄ AddressOfÏ∞®Ïù¥Í∞Ä Î≠êÏùºÍπå-> &Îäî Ï¥àÍ∏∞ÌôîÎ•º Ìï¥Î≤ÑÎ¶∞Îã§.
+	_3DDeviceContext->IASetIndexBuffer(_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-	///WVP TMµÓ¿ª º¬∆√
-	DirectX::XMMATRIX worldViewProj = m_World * m_View * m_Proj;
-	m_MatrixVariable->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
+	///WVP TMÎì±ÏùÑ ÏÖãÌåÖ
+	DirectX::XMMATRIX worldViewProj = _world * _view * _proj;
+	_MatrixVariable->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
 
-	//∑£¥ıΩ∫≈◊¿Ã∆Æ
-	m_3DDeviceContext->RSSetState(m_RasterState.Get());
+	//ÎûúÎçîÏä§ÌÖåÏù¥Ìä∏
+	_3DDeviceContext->RSSetState(_RasterState.Get());
 
-	//≈◊≈©¥–
+	//ÌÖåÌÅ¨Îãâ
 	D3DX11_TECHNIQUE_DESC techDesc;
-	m_Technique->GetDesc(&techDesc);
+	_Technique->GetDesc(&techDesc);
 
-	//∑£¥ı∆–Ω∫
+	//ÎûúÎçîÌå®Ïä§
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
-		m_Technique->GetPassByIndex(p)->Apply(0, m_3DDeviceContext.Get());
+		_Technique->GetPassByIndex(p)->Apply(0, _3DDeviceContext.Get());
 
-		m_3DDeviceContext->DrawIndexed(6, 0, 0);
+		_3DDeviceContext->DrawIndexed(6, 0, 0);
 	}
 }
 
 void Axis::BuildFX()
 {
 	HRESULT hr = S_OK;
-	//¿Ã∆Â∆Æ∏¶ æ≤¥¬∫Œ∫–¿∫ ¬˜¬˜ «ÿ∫∏¿⁄
+	//Ïù¥ÌéôÌä∏Î•º Ïì∞ÎäîÎ∂ÄÎ∂ÑÏùÄ Ï∞®Ï∞® Ìï¥Î≥¥Ïûê
 
-	/// ƒƒ∆ƒ¿œµ» ∆ƒ¿œµµ ±¶¬˙∞Ì
-	/// ƒƒ∆ƒ¿œ «œ¥¬ ∞Õµµ πÆ¡¶æ¯¿Ã µπæ∆∞®.
+	/// Ïª¥ÌååÏùºÎêú ÌååÏùºÎèÑ Í¥úÏ∞ÆÍ≥†
+	/// Ïª¥ÌååÏùº ÌïòÎäî Í≤ÉÎèÑ Î¨∏Ï†úÏóÜÏù¥ ÎèåÏïÑÍ∞ê.
 
-	UINT shaderFlag = D3DCOMPILE_ENABLE_STRICTNESS;	// Ω¶¿Ã¥ı ƒƒ∆ƒ¿œΩ√ æˆ∞›«— πÆπ˝ ∞ÀªÁ∏¶ ºˆ«‡«œµµ∑œ «œ¥¬ ƒƒ∆ƒ¿œ «√∑°±◊
+	UINT shaderFlag = D3DCOMPILE_ENABLE_STRICTNESS;	// ÏâêÏù¥Îçî Ïª¥ÌååÏùºÏãú ÏóÑÍ≤©Ìïú Î¨∏Î≤ï Í≤ÄÏÇ¨Î•º ÏàòÌñâÌïòÎèÑÎ°ù ÌïòÎäî Ïª¥ÌååÏùº ÌîåÎûòÍ∑∏
 
-#if defined( DEBUG ) || defined( _DEBUG )	// µπˆ±◊ ∏µÂø°º≠ Ω¶¿Ã¥ı ƒƒ∆ƒ¿œΩ√ µπˆ±Îø° « ø‰«— ¡§∫∏∏¶ √ﬂ∞°
-	shaderFlag |= D3D10_SHADER_DEBUG;		// √÷¿˚»≠ ∞˙¡§¿ª ∞«≥ ∂Ÿµµ∑œ º≥¡§«œ¥¬ ø™«“¿Ã¥Ÿ.
+#if defined( DEBUG ) || defined( _DEBUG )	// ÎîîÎ≤ÑÍ∑∏ Î™®ÎìúÏóêÏÑú ÏâêÏù¥Îçî Ïª¥ÌååÏùºÏãú ÎîîÎ≤ÑÍπÖÏóê ÌïÑÏöîÌïú Ï†ïÎ≥¥Î•º Ï∂îÍ∞Ä
+	shaderFlag |= D3D10_SHADER_DEBUG;		// ÏµúÏ†ÅÌôî Í≥ºÏ†ïÏùÑ Í±¥ÎÑàÎõ∞ÎèÑÎ°ù ÏÑ§Ï†ïÌïòÎäî Ïó≠Ìï†Ïù¥Îã§.
 	shaderFlag |= D3D10_SHADER_SKIP_OPTIMIZATION;
 #endif
 	ID3DBlob* compiledShader;
@@ -162,10 +162,10 @@ void Axis::BuildFX()
 
 	hr = D3DCompileFromFile(shaderFile, nullptr, nullptr, shaderEntryPoint, shaderTarget, shaderFlag, 0, &compiledShader, &compilationMsgs);
 
-	D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), 0, m_3DDevice.Get(), m_Effect.GetAddressOf());
+	D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), 0, _3DDevice.Get(), _Effect.GetAddressOf());
 
-	m_Technique = m_Effect->GetTechniqueByName("ColorTech");
-	m_MatrixVariable = m_Effect->GetVariableByName("gWorldViewProj")->AsMatrix();
+	_Technique = _Effect->GetTechniqueByName("ColorTech");
+	_MatrixVariable = _Effect->GetVariableByName("gWorldViewProj")->AsMatrix();
 }
 
 void Axis::BuildVertexLayout()
@@ -180,12 +180,12 @@ void Axis::BuildVertexLayout()
 
 	// Create the input layout
 	D3DX11_PASS_DESC passDesc;
-	m_Technique->GetPassByIndex(0)->GetDesc(&passDesc);
+	_Technique->GetPassByIndex(0)->GetDesc(&passDesc);
 
-	/// ±◊≥… º˝¿⁄ ¿˚«Ù¿÷¥¬∞‘ ∫“∆Ì«ÿº≠ ARRAYSIZE∑Œ πŸ≤ﬁ
-	/// æ∆π´ ¿«πÃ æ¯±‰ «‘
-	hr = (m_3DDevice->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), passDesc.pIAInputSignature,
-		passDesc.IAInputSignatureSize, m_InputLayout.GetAddressOf()));
+	/// Í∑∏ÎÉ• Ïà´Ïûê Ï†ÅÌòÄÏûàÎäîÍ≤å Î∂àÌé∏Ìï¥ÏÑú ARRAYSIZEÎ°ú Î∞îÍøà
+	/// ÏïÑÎ¨¥ ÏùòÎØ∏ ÏóÜÍ∏¥ Ìï®
+	hr = (_3DDevice->CreateInputLayout(vertexDesc, ARRAYSIZE(vertexDesc), passDesc.pIAInputSignature,
+		passDesc.IAInputSignatureSize, _InputLayout.GetAddressOf()));
 
 	if (FAILED(hr))
 	{

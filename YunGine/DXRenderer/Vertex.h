@@ -1,28 +1,28 @@
 #pragma once
-#include <DirectXMath.h> // ±ÍÂúÀ¸´Ï Mathµµ Æ÷ÇÔ½ÃÄÑ ¹ö¸®ÀÚ
+#include <DirectXMath.h> // ê·€ì°®ìœ¼ë‹ˆ Mathë„ í¬í•¨ì‹œì¼œ ë²„ë¦¬ì
 
 /// <summary>
-/// ¹öÅØ½ºÀÇ Æ÷Áö¼Ç°ú »ö±ò°ú À§Ä¡Á¤º¸¸¦ ´ã´Â ¹öÅØ½º
+/// ë²„í…ìŠ¤ì˜ í¬ì§€ì…˜ê³¼ ìƒ‰ê¹”ê³¼ ìœ„ì¹˜ì •ë³´ë¥¼ ë‹´ëŠ” ë²„í…ìŠ¤
 /// </summary>
 struct ColorVertex
 {
-	DirectX::XMFLOAT3 POSTION;		// 0¹ÙÀÌÆ®	-> FLOATÀÚ·áÇüÀÌ 3°³¶ó¼­ ´ÙÀ½¹ÙÀÌÆ®°¡ 12ºÎÅÍ ½ÃÀÛ
-	DirectX::XMFLOAT4 COLOR;		// 12¹ÙÀÌÆ®	
+	DirectX::XMFLOAT3 POSTION;		// 0ë°”ì´íŠ¸	-> FLOATìë£Œí˜•ì´ 3ê°œë¼ì„œ ë‹¤ìŒë°”ì´íŠ¸ê°€ 12ë¶€í„° ì‹œì‘
+	DirectX::XMFLOAT4 COLOR;		// 12ë°”ì´íŠ¸	
 };
 
-// ÅØ½ºÃ³¸¦ À§ÇÑ ¹öÅØ½º ÀÚ·áÇü ¸¸µé¾ú
+// í…ìŠ¤ì²˜ë¥¼ ìœ„í•œ ë²„í…ìŠ¤ ìë£Œí˜• ë§Œë“¤ì—ˆ
 typedef struct UvVertex
 {
-	DirectX::XMFLOAT3 POSTION;		// 0¹ÙÀÌÆ®	-> FLOATÀÚ·áÇüÀÌ 3°³¶ó¼­ ´ÙÀ½¹ÙÀÌÆ®°¡ 12ºÎÅÍ ½ÃÀÛ
-	DirectX::XMFLOAT2 UV;			// 12¹ÙÀÌÆ® ½ÃÀÛ -> UV°ªÀº 2Â÷¿ø ÁÂÇ¥°ªÀÌ¶ó¼­ FLOAT2°¡ ´õ ÀûÇÕÇÏ´Ù.
+	DirectX::XMFLOAT3 POSTION;		// 0ë°”ì´íŠ¸	-> FLOATìë£Œí˜•ì´ 3ê°œë¼ì„œ ë‹¤ìŒë°”ì´íŠ¸ê°€ 12ë¶€í„° ì‹œì‘
+	DirectX::XMFLOAT2 UV;			// 12ë°”ì´íŠ¸ ì‹œì‘ -> UVê°’ì€ 2ì°¨ì› ì¢Œí‘œê°’ì´ë¼ì„œ FLOAT2ê°€ ë” ì í•©í•˜ë‹¤.
 }UvVertex;
 
 struct UvNormalVertex
 {
-	DirectX::XMFLOAT3 position;	// ¼Ò¹®ÀÚ·Î ÇÏ´ÂÀÌÀ¯?-> ÀÌ¸§ÀÌ °ãÄ¡¸é Çò°¥¸± ¼ö µµ ÀÖÀ½
+	DirectX::XMFLOAT3 position;	// ì†Œë¬¸ìë¡œ í•˜ëŠ”ì´ìœ ?-> ì´ë¦„ì´ ê²¹ì¹˜ë©´ í—·ê°ˆë¦´ ìˆ˜ ë„ ìˆìŒ
 	DirectX::XMFLOAT3 normal;
 	DirectX::XMFLOAT2 texcoord;
-	// ÅØ½ºÃ³¸¦ ¶ç¿ì´Âµ¥ ±»ÀÌ ÇÊ¿äÇÏÁö´Â ¾ÊÁö¸¸ Á¶¸í°ú ¹°Ã¼ Ç¥¸é°£ÀÇ °¢µµ¸¦ °è»êÇÏ´Âµ¥ ÇÊ¿äÇÔ
+	// í…ìŠ¤ì²˜ë¥¼ ë„ìš°ëŠ”ë° êµ³ì´ í•„ìš”í•˜ì§€ëŠ” ì•Šì§€ë§Œ ì¡°ëª…ê³¼ ë¬¼ì²´ í‘œë©´ê°„ì˜ ê°ë„ë¥¼ ê³„ì‚°í•˜ëŠ”ë° í•„ìš”í•¨
 	//float3 PosL : POSITION;
 	//float3 NormalL : NORMAL;
 	//float2 Tex : TEXCOORD;
@@ -30,10 +30,10 @@ struct UvNormalVertex
 
 struct TexVertex
 {
-	DirectX::XMFLOAT3 position;		// 0¹ÙÀÌÆ® ¿ÀÇÁ¼Â
-	//DirectX::XMFLOAT3 normal;		// 12¹ÙÀÌÆ® ¿ÀÇÁ¼Â
-	//DirectX::XMFLOAT3 tangent;		// 24¹ÙÀÌÆ® ¿ÀÇÁ¼Â
-	DirectX::XMFLOAT2 texc;			// 36¹ÙÀÌÆ® ¿ÀÇÁ¼Â
+	DirectX::XMFLOAT3 position;		// 0ë°”ì´íŠ¸ ì˜¤í”„ì…‹
+	//DirectX::XMFLOAT3 normal;		// 12ë°”ì´íŠ¸ ì˜¤í”„ì…‹
+	//DirectX::XMFLOAT3 tangent;		// 24ë°”ì´íŠ¸ ì˜¤í”„ì…‹
+	DirectX::XMFLOAT2 texc;			// 36ë°”ì´íŠ¸ ì˜¤í”„ì…‹
 };
 
 struct ConstantBuffer
@@ -43,3 +43,29 @@ struct ConstantBuffer
 	DirectX::XMMATRIX Proj;
 };
 
+struct Vertex3
+{
+	float pos[3];
+};
+
+struct vec3
+{
+	float x;
+	float y;
+	float z;
+};
+
+struct vec2
+{
+	float x;
+	float y;
+};
+
+struct Vertex
+{
+	vec3 position;
+	vec3 normal;
+	vec2 uv;
+	vec3 binormal;
+	vec3 tangent;
+};
