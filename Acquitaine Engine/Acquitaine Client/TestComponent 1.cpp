@@ -55,7 +55,6 @@ void TestComponent1::FixedUpdate()
 void TestComponent1::Update()
 {
 	cout << _gameObject->objectName << " : component1 Update is sucessed." << endl;
-	//_gameObject->AddComponent<TestComponent2>("test", _gameObject);
 }
 
 void TestComponent1::Disable()

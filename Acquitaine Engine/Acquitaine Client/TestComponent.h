@@ -4,6 +4,7 @@
 #include "ParentComponent.h"  
 
 class ParentObject;
+class TestObject;
 
 class TestComponent : public act::ParentComponent
 {

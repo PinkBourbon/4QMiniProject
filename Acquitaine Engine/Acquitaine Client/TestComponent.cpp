@@ -1,5 +1,7 @@
 #include "TestComponent.h"
 #include "ParentObject.h"
+#include "TestObject_Find.h"
+
 
 TestComponent::TestComponent(string name, act::ParentObject* pObject)
 {
@@ -49,6 +51,8 @@ void TestComponent::Enable()
 void TestComponent::Start()
 {
 	cout << _gameObject->objectName << " : component Start is sucessed." << endl;
+	//_gameObject->AddComponent<TestComponent>("testComponent", _gameObject);
+	_gameObject->AddObject<TestObject_Find>("createTestObject");
 }
 
 void TestComponent::FixedUpdate()

@@ -1,13 +1,14 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <string>
+
+#include "ParentScene.h"
 
 using namespace std;
 
 namespace act
 {
-
-	class ParentScene;
 	class ParentComponent;
 	class TestComponent;
 
@@ -18,6 +19,13 @@ namespace act
 		virtual ~ParentObject();
 
 	public:
+		template<typename T>
+		void AddObject(string objectName)
+		{
+			cout << "Sucessed object create." << endl;
+			_includedScene->AddObject<T>(objectName);
+		}
+
 		template<typename T>
 		void AddComponent(string componentname, ParentObject* thispointer)
 		{

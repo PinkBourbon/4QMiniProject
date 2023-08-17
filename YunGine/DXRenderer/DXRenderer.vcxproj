@@ -84,11 +84,13 @@
     <IncludePath>$(SolutionDir)DXTK;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(SolutionDir)fx;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)Lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)lib</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)DXTK;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(SolutionDir)fx;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)Lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)lib</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
