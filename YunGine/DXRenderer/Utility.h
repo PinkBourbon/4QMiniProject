@@ -4,9 +4,10 @@
 //#include <codecvt>
 #include <windows.h>
 #include <iostream>
-#include <functional>
+//#include <functional>
+//#include <set>
 
-void wstostr(std::wstring wstr, std::string* outStr)
+inline void wstostr(std::wstring wstr, std::string* outStr)
 {
 	//std::wstring_convert< std::codecvt_utf8<wchar_t>, wchar_t> converter;
 	//*outStr = converter.to_bytes(wstr);
@@ -25,7 +26,7 @@ void wstostr(std::wstring wstr, std::string* outStr)
 	*outStr = str;
 }
 
-void strtowstr(std::string str, std::wstring* outWstr)
+inline void strtowstr(std::string str, std::wstring* outWstr)
 {
     //std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
     //*outWstr = converter.from_bytes(str);

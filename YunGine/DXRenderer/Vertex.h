@@ -1,5 +1,9 @@
 #pragma once
 #include <DirectXMath.h> // 귀찮으니 Math도 포함시켜 버리자
+#include <string>
+#include <vector>
+
+//import apto.math;
 
 /// <summary>
 /// 버텍스의 포지션과 색깔과 위치정보를 담는 버텍스
@@ -63,9 +67,27 @@ struct vec2
 
 struct Vertex
 {
-	vec3 position;
-	vec3 normal;
-	vec2 uv;
-	vec3 binormal;
-	vec3 tangent;
+	//apto::Vector3f pos;
+	//apto::Vector3f tex;
+	//apto::Vector3f normal;
+	//apto::Vector3f tangent;
+	//apto::Vector4f color;
+	// apto::Vector2f uv;
+	// apto::Vector3f binormal;
+
+	// UINT boneIndices[4];
+	// float boneWeights[4];
+
+	// vec3 normal;
+	// vec2 uv;
+	// vec3 binormal;
+	// vec3 tangent;
+};
+
+struct Texture 
+{
+	unsigned int id;
+	std::wstring wstrPath;
+	std::string strPath;
+
 };

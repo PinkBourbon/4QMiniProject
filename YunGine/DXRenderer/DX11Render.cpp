@@ -1,4 +1,7 @@
+#include "AssimpLoader.h"
+#include "FbxLoaderV4.h"
 #include "DX11Render.h"
+
 #include <iostream>
 #include <fstream>
 
@@ -11,8 +14,6 @@
 #include "Cube.h"
 #include "Grid.h"
 #include "Camera.h"
-
-#include "FbxLoaderV4.h"
 
 // dll로 부를때 랜더러를 만드는 함수의 주소를 가지고 있는다.
 // return을 포인터로 받아줄 수 있다.
@@ -56,7 +57,7 @@ long DX11Render::Initialize()
 {
 	HRESULT hr = S_OK;
 
-	hr = CreateHandleWindow(2560,1080);
+	hr = CreateHandleWindow(2520,1080);
 	if (FAILED(hr))
 	{
 		return false;
@@ -71,7 +72,7 @@ long DX11Render::Initialize()
 		// 워프 렌더링.
 	}
 
-	hr = CreateSwapChain((HWND)_hWnd);	// 스왑체인 생성
+	hr = CreateSwapChain(_hWnd);	// 스왑체인 생성
 	if (FAILED(hr))
 	{
 		return false;
@@ -247,6 +248,8 @@ HRESULT DX11Render::CreateHandleWindow(int windowWidth, int windowHeight)
 	// 생성된 윈도를 화면에 표시
 	ShowWindow(_hWnd, SW_SHOWNORMAL);
 	UpdateWindow(_hWnd);
+
+	return S_OK;
 }
 
 HRESULT DX11Render::CreateDevice()
@@ -520,6 +523,8 @@ HRESULT DX11Render::CreateLoader()
 	
 	//_pLoader = new FbxLoaderV4;
 
+	//_Assimp = new AssimpLoader;
+
 	return S_OK;
 }
 
@@ -527,8 +532,12 @@ HRESULT DX11Render::CreateShip()
 {
 	HRESULT hr = S_OK;
 
+
+	//Model ship = new Model(L"..\\Resource\\ship.fbx");
+
 	//_pLoader->Load(L"..//Resource//spaceship.fbx");
 
+	//_Assimp->LoadFbx(L"..//Resource//spaceship.fbx");
 
 	return S_OK;
 }

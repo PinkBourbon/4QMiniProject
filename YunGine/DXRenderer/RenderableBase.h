@@ -3,15 +3,14 @@
 #include <d3d11.h>
 #include "d3dx11effect.h"
 #include "FbxLoaderV4.h"
-// 이펙트 라이브러리
-//#pragma comment(lib, "..\\Lib\\Effects11d.lib")
-//#include "..\\DXEffect\D3dx11effect.h"
+#include <vector>
 
 #include <d3dcompiler.h>
 #include <d3dcommon.h>
 
 #include "..\\DXTK\Effects.h"
 
+#include "Vertex.h"
 
 class RenderableBase
 {
@@ -40,9 +39,12 @@ protected:
 	DirectX::XMMATRIX _view;	// 시야 변환 행렬 (카메라 뷰)
 	DirectX::XMMATRIX _proj;	// 투영 변환 행렬 (원근 / 직교)
 
-	ID3D10Blob* compiledShader = 0;
-	ID3D10Blob* compilationMsgs = 0;
+	ID3D10Blob* _compiledShader = 0;
+	ID3D10Blob* _compilationMsgs = 0;
 
 	Vertex3 _position = { 0.0f, };
+
+	std::vector<Vertex> _vertexVector;
+	std::vector<UINT> _indecies;
 
 };

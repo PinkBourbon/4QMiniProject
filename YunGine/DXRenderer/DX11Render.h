@@ -41,6 +41,7 @@ class Grid;
 class Camera;
 
 class FbxLoaderV4;
+class AssimpLoader;
 
 class DX11Render : public IDX11Render
 {
@@ -97,6 +98,12 @@ private:
 	// 시간 변수
 	float _deltaTime;
 
+	// 화면 넓이, 화면 높이
+	// 언젠가 리사이즈 할 때 필요한 변수들
+	int _scrrenWidth = 0;
+	int _scrrenHeight = 0;
+
+
 private:
 	//int mVideoCardMemory;	// 블로그에서는 있지만 어디다가 쓰는걸까?
 	//char mVideoCardDescription[128];
@@ -141,8 +148,9 @@ private:
 	Cube* _pCube;
 	Camera* _pCamera;
 
-	// 테스트용 fbx 오브젝트
+	// 테스트용 fbx 로더
 	FbxLoaderV4* _pLoader = nullptr; ///제작중
+	AssimpLoader* _Assimp = nullptr;
 
 	// 버퍼
 	ID3D11Buffer* VertexBuffer;

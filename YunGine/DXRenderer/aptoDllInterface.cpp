@@ -1,4 +1,3 @@
-#include <windows.h>
 #include "IDX11Render.h"
 #include "Renderable.h"
 
@@ -8,7 +7,6 @@ bool aptoCore::Graphics::Initialize()
 {
 	g_renderer = CreateRenderer();
 
-	//g_renderer->Initialize(GetModuleHandle(NULL));
 	g_renderer->Initialize();
 
 	return true;
