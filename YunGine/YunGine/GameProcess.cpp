@@ -52,8 +52,8 @@ HRESULT GameProcess::Initialize(HINSTANCE hInstance)
 		return S_FALSE;
 	}
 
-	m_pTimer = new GameTimer();
-	m_pTimer->Reset();
+	_timer = new GameTimer();
+	_timer->Reset();
 
 
 	return S_OK;
@@ -63,11 +63,11 @@ void GameProcess::Loop()
 {
 	while (true)
 	{
-		if (PeekMessage(&m_Msg, NULL, 0, 0, PM_REMOVE))
+		if (PeekMessage(&_msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if (m_Msg.message == WM_QUIT) break;
+			if (_msg.message == WM_QUIT) break;
 
-			DispatchMessage(&m_Msg);
+			DispatchMessage(&_msg);
 		}
 		else
 		{
@@ -83,10 +83,10 @@ void GameProcess::Update()
 {
 
 	// 매 프레임 시간을 계산한다.
-	m_pTimer->Tick();
+	_timer->Tick();
 
 	// 매 프레임의 deltaTime
-	m_pTimer->DeltaTime();
+	_timer->DeltaTime();
 
 	// 키 입력
 	if (GetAsyncKeyState(VK_RETURN))
@@ -111,7 +111,7 @@ void GameProcess::Update()
 	frameCnt++;
 
 
-	if ((m_pTimer->TotalTime() - timeElapsed) >= 1.0f)
+	if ((_timer->TotalTime() - timeElapsed) >= 1.0f)
 	{
 		// FPS 계산: 현재까지 누적된 프레임 수를 1초 동안의 시간으로 나누어 계산합니다.
 		float fps = (float)frameCnt; // fps = frameCnt / 1
@@ -126,7 +126,7 @@ void GameProcess::Update()
 	}
 
 	// 일단 대충 해놓음->랜더 update에 float deltatime을 넣음
-	renderer->Update(m_pTimer->DeltaTime());
+	_renderer->Update(_timer->DeltaTime());
 }
 
 void GameProcess::Render()
@@ -140,34 +140,34 @@ void GameProcess::Render()
 	///// 그리기를 끝낸다.
 	//renderer->EndRender();
 
-	renderer->Render();
+	_renderer->Render();
 }
 
 HRESULT GameProcess::CreateGraphicEngine()
 {
 	// dll을 직접적으로 가져오기로 결정
 	HMODULE Module = LoadLibrary(RENDER_PATH);
-	m_hModule = Module;
-	if (m_hModule == nullptr)	// dll 로드 실패
+	_hModule = Module;
+	if (_hModule == nullptr)	// dll 로드 실패
 	{
 		return S_FALSE;
 	}
 
-	renderer.reset(reinterpret_cast<IDX11Render * (*)(void)>(GetProcAddress(m_hModule, "CreateRenderer"))());
+	_renderer.reset(reinterpret_cast<IDX11Render * (*)(void)>(GetProcAddress(_hModule, "CreateRenderer"))());
 
 	// using CreateRenderer = IDX11Render(*)();
 
 	// CreateRenderer createRenderer = reinterpret_cast<CreateRenderer>(GetProcAddress(m_hModule, "CreateRenderer"));
-	if (renderer == nullptr)
+	if (_renderer == nullptr)
 	{
 		// 함수 가져오기 실패 처리
-		FreeLibrary(m_hModule);
+		FreeLibrary(_hModule);
 		return S_FALSE;
 	}
 	else
 	{
 		// 구체적인 내부 구현이 없으므로 사용할 수 없는 것이다.
-		renderer->Initialize(hInstance);
+		_renderer->Initialize();
 	}
 
 	return S_OK;
@@ -176,12 +176,12 @@ HRESULT GameProcess::CreateGraphicEngine()
 HRESULT GameProcess::DeleteGraphicEngine()
 {
 	// unique_ptr이라서 굳이 명시적으로 해제하지 않아도 될꺼같아
-	renderer->Finalize();
+	_renderer->Finalize();
 	// typedef void (*DeleteRendererFunc)(IDX11Render*);
 	// DeleteRendererFunc deleteRenderer = reinterpret_cast<DeleteRendererFunc>(GetProcAddress(m_hModule, "DeleteRenderer"));
-	renderer.release();
+	_renderer.release();
 
-	FreeLibrary(m_hModule);
+	FreeLibrary(_hModule);
 
 	return S_OK;
 }

@@ -46,6 +46,5 @@ private:
 	vec3 ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCount);
 	vec2 ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCount);
 
-	int a;
 };
 

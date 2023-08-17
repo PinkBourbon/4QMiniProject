@@ -30,20 +30,20 @@ private:
 	// 공통적인 설정
 
 	// 화면의 크기
-	const int m_ScreenWidth = 1920;
-	const int m_ScreenHeight = 1080;
+	const int _screenWidth = 1920;
+	const int _screenHeight = 1080;
 
 	// 윈도 관련
-	HWND hWnd;
-	MSG m_Msg;
+	HWND _hWnd;
+	MSG _msg;
 	
 	// 그래픽스 엔진
-	HMODULE m_hModule;
-	HINSTANCE hInstance;
-	std::unique_ptr<IDX11Render> renderer;
+	HMODULE _hModule;
+	HINSTANCE _hInstance;
+	std::unique_ptr<IDX11Render> _renderer;
 	
 	// 게임 타이머
-	GameTimer* m_pTimer;
+	GameTimer* _timer;
 
 public:
 	// 게임용 윈도 프레임웍을 초기화한다.
