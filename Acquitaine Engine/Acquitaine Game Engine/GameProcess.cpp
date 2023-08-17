@@ -18,11 +18,15 @@ namespace act
 	void GameProcess::GameProcessInitialize()
 {
 		s_gameEnginePointer = this;
+<<<<<<< HEAD
 #ifdef YUNJINDLLEXPORT
 		bool ret = aptoCore::Graphics::Initialize();
 #else
 		CreateInitialize();
 #endif
+=======
+		bool ret = aptoCore::Graphics::Initialize();
+>>>>>>> pr/16
 
 
 		cout << "Engine Initialized sucess" << endl;
@@ -30,11 +34,15 @@ namespace act
 
 	void GameProcess::Finalize()
 	{
+<<<<<<< HEAD
 #ifdef YUNJINDLLEXPORT
 		aptoCore::Graphics::Finalize();
 #else
 		
 #endif	
+=======
+		aptoCore::Graphics::Finalize();
+>>>>>>> pr/16
 	}
 
 	void GameProcess::RunningGameProcess(double deltaTime)
@@ -71,7 +79,11 @@ namespace act
 
 	void GameProcess::AddScene(ParentScene* pscene)
 	{
+<<<<<<< HEAD
 		_SceneList.push_back(pscene);
+=======
+		_sceneList.push_back(pscene);
+>>>>>>> pr/16
 	}
 
 	void GameProcess::ChangeObjectState(ParentObject* pobject, bool state)
@@ -196,32 +208,56 @@ namespace act
 			{
 				case eObjectState::AWAKE:
 				{
+<<<<<<< HEAD
 					_awakeObjectList.insert(buff.second);
+=======
+					_awakeObjectList.push_back(buff.second);
+>>>>>>> pr/16
 					_objectList.find(buff.second)->second = eObjectState::AWAKE;
 				}break;
 				case eObjectState::ENABLE:
 				{
+<<<<<<< HEAD
 					_enableObjectList.insert(buff.second);
+=======
+					_enableObjectList.push_back(buff.second);
+>>>>>>> pr/16
 					_objectList.find(buff.second)->second = eObjectState::ENABLE;
 				}break;
 				case eObjectState::START:
 				{
+<<<<<<< HEAD
 					_startObjectList.insert(buff.second);
+=======
+					_startObjectList.push_back(buff.second);
+>>>>>>> pr/16
 					_objectList.find(buff.second)->second = eObjectState::START;
 				}break;
 				case eObjectState::UPDATE:
 				{
+<<<<<<< HEAD
 					_updateObjectList.insert(buff.second);
+=======
+					_updateObjectList.push_back(buff.second);
+>>>>>>> pr/16
 					_objectList.find(buff.second)->second = eObjectState::UPDATE;
 				}break;
 				case eObjectState::DISABLE:
 				{
+<<<<<<< HEAD
 					_disableObjectList.insert(buff.second);
+=======
+					_disableObjectList.push_back(buff.second);
+>>>>>>> pr/16
 					_objectList.find(buff.second)->second = eObjectState::DISABLE;
 				}break;
 				case eObjectState::RELEASE:
 				{
+<<<<<<< HEAD
 					_releaseObjectList.insert(buff.second);
+=======
+					_releaseObjectList.push_back(buff.second);
+>>>>>>> pr/16
 					_objectList.find(buff.second)->second = eObjectState::RELEASE;
 				}break;
 				default:
@@ -247,10 +283,24 @@ namespace act
 	void GameProcess::EraseObjectStateList(ParentObject* pObject)
 	{
 		std::unordered_map<ParentObject*, eObjectState>::iterator temp = _objectList.find(pObject);
+<<<<<<< HEAD
+=======
+
+		auto tempfunc = [this](std::vector<ParentObject*>& vec, ParentObject* pObject)
+		{
+			std::vector<ParentObject*>::iterator iter;
+			for (iter = vec.begin(); iter != vec.end(); ++iter)
+				if (*iter == pObject)
+					return iter;
+		};
+		/// fkaekfh qnsflgkrls goTwlaks
+
+>>>>>>> pr/16
 		switch (temp->second)
 		{
 			case eObjectState::AWAKE:
 			{
+<<<<<<< HEAD
 				_awakeObjectList.erase(_awakeObjectList.find(temp->first));
 			}break;
 			case eObjectState::ENABLE:
@@ -272,6 +322,29 @@ namespace act
 			case eObjectState::RELEASE:
 			{
 				_releaseObjectList.erase(_releaseObjectList.find(temp->first));
+=======
+				_awakeObjectList.erase(tempfunc(_awakeObjectList, pObject));
+			}break;
+			case eObjectState::ENABLE:
+			{
+				_enableObjectList.erase(tempfunc(_enableObjectList, pObject));
+			}break;
+			case eObjectState::START:
+			{
+				_startObjectList.erase(tempfunc(_startObjectList, pObject));
+			}break;
+			case eObjectState::UPDATE:
+			{
+				_updateObjectList.erase(tempfunc(_updateObjectList, pObject));
+			}break;
+			case eObjectState::DISABLE:
+			{
+				_disableObjectList.erase(tempfunc(_disableObjectList, pObject));
+			}break;
+			case eObjectState::RELEASE:
+			{
+				_releaseObjectList.erase(tempfunc(_releaseObjectList, pObject));
+>>>>>>> pr/16
 			}break;
 			default:
 			{
@@ -279,6 +352,7 @@ namespace act
 			}break;
 		}
 	}
+<<<<<<< HEAD
 
 	HRESULT GameProcess::CreateInitialize()
 {
@@ -305,5 +379,7 @@ namespace act
 		return S_OK;
 	}
 
+=======
+>>>>>>> pr/16
 	GameProcess* GameProcess::s_gameEnginePointer;
 }

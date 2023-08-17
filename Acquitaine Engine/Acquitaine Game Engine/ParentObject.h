@@ -1,11 +1,15 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <string>
+
+#include "ParentScene.h"
 
 using namespace std;
 
 namespace act
 {
+<<<<<<< HEAD
 
 	class ParentScene;
 	class ParentComponent;
@@ -53,6 +57,60 @@ namespace act
 		virtual void Phsics();
 		virtual void Render();
 
+=======
+	class ParentComponent;
+	class TestComponent;
+
+	class ParentObject
+	{
+	public:
+		ParentObject();
+		virtual ~ParentObject();
+
+	public:
+		template<typename T>
+		void AddObject(string objectName)
+		{
+			cout << "Sucessed object create." << endl;
+			_includedScene->AddObject<T>(objectName);
+		}
+
+		template<typename T>
+		void AddComponent(string componentname, ParentObject* thispointer)
+		{
+			ParentComponent* temp = new T(componentname, thispointer);
+			_componentList.push_back(temp);
+		}
+
+		template<typename T>
+		ParentComponent* GetComponentPointer()
+		{
+			for (auto pComponent : _componentList)
+			{
+				if (typeid(pComponent) == typeid(T))
+				{
+					return pComponent;
+				}
+			}
+			return nullptr;
+		}
+
+		vector<ParentComponent*> GetComponentlist();
+		void RemoveComponent();
+		void SetActive(bool state);
+		ParentObject& FindObject(std::string objectname);
+		void Delete();
+
+		//private:
+	public:
+		virtual void Initialize();
+		virtual void Finalize();
+
+		virtual void InputEvent();
+		virtual void Phsics();
+		virtual void Render();
+
+>>>>>>> pr/16
 	public:
 		virtual void Awake();
 		virtual void Enable();

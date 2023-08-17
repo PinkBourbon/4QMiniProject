@@ -55,6 +55,7 @@ void MainProcess::Finalize()
 {
 	_gameprocess->Finalize();
 	delete _gameprocess;
+	delete _gameClient;
 }
 
 LRESULT CALLBACK MainProcess::WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

@@ -89,8 +89,11 @@ namespace act
 		// 바로 바꿔주는것은 안되므로 이 함수를 통해 풀에 넣어두고 나중에 바꾼다.
 		// 리소스 매니저가 추가된다면 리소스 매니저로 넣어주라는 명령함수만 가지고 있는 놈이 될지도
 
+<<<<<<< HEAD
 		HRESULT CreateInitialize();
 
+=======
+>>>>>>> pr/16
 	public:
 		static GameProcess* s_gameEnginePointer;
 	private:
@@ -102,6 +105,7 @@ namespace act
 		std::unordered_map<ParentObject*, eObjectState > _objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
 		std::unordered_map< std::string, ParentObject* > _objectNameList; // 위쪽은 내부관리를 위해 쓰는 리스트이고, 이쪽은 외부에서 오브젝트를 검색할 수 있게 만든 맵
 
+<<<<<<< HEAD
 		std::unordered_set<ParentObject*> _awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
 		std::unordered_set<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
 		std::unordered_set<ParentObject*> _startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
@@ -109,14 +113,27 @@ namespace act
 		std::unordered_set<ParentObject*> _fixedUpdateObjectList;	// FixedUpdate State의 오브젝트를 가지고 있는 리스트
 		std::unordered_set<ParentObject*> _disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
 		std::unordered_set<ParentObject*> _releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
+=======
+		std::vector<ParentObject*> _awakeObjectList;	// Awake State의 오브젝트를 가지고 있는 리스트
+		std::vector<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
+		std::vector<ParentObject*> _startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
+		std::vector<ParentObject*> _updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
+		std::vector<ParentObject*> _fixedUpdateObjectList;	// FixedUpdate State의 오브젝트를 가지고 있는 리스트
+		std::vector<ParentObject*> _disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
+		std::vector<ParentObject*> _releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
+>>>>>>> pr/16
 
 		std::unordered_set<ParentObject*> _waitingObjectList; // 추가되기 위해 대기중인 오브젝트를 가지고 있는 리스트
 
 		std::vector < std::pair<eObjectState, ParentObject*>> _stateChangeBuffer;
 
+<<<<<<< HEAD
 		std::vector <ParentScene*> _SceneList;
 
 		std::unique_ptr<IDX11Render> _renderer;
+=======
+		std::vector <ParentScene*> _sceneList;
+>>>>>>> pr/16
 	};
 }
 
