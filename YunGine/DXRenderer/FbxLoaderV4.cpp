@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 std::vector<Vertex> vertices;
-std::vector<unsigned int> indices;
+std::vector<UINT> indices;
 
 //std::unordered_map<Vertex, unsigned int> indexMapping;
 
@@ -146,7 +146,7 @@ void FbxLoaderV4::ProcessControlPoint(FbxMesh* mesh)
 
 void FbxLoaderV4::InsertVertex(const vec3& position, const vec3& normal, const vec2& uv, const vec3& binormal, const vec3& tangent)
 {
-	Vertex vertex = { position, normal, uv, binormal, tangent };
+	//Vertex vertex = { position, normal, uv, binormal, tangent };
 	//auto lookup = indexMapping.find(vertex);
 	//if (lookup != indexMapping.end())
 	//{

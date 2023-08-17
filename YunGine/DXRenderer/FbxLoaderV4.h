@@ -1,6 +1,4 @@
 #pragma once
-
-#include <windows.h>
 #include <fbxsdk.h>
 
 #include "Vertex.h"
