@@ -2,7 +2,10 @@
 #include <windows.h>
 #include "Timer.h"
 
-class GameProcess;
+namespace act {
+	class GameProcess;
+}
+class SceneManager;
 
 class MainProcess
 {
@@ -20,7 +23,8 @@ private:
 	HANDLE _consoleHandle;
 
 	//게임엔진
-	GameProcess* _gameprocess;
+	act::GameProcess* _gameprocess;
+	SceneManager* _gameClient;
 
 	// 시간과 관련된 부분
 	Timer* _timer;

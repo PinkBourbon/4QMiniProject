@@ -10,7 +10,7 @@ import aptoCore.Graphics;
 
 import aptoCore.rawData;
 
-bool isResize = false;
+bool g_isResized = false;
 
 int main()
 {
@@ -36,10 +36,9 @@ int main()
 
 	aptoCore::Graphics::Initialize();
 
-	if (!isResize)
+	if (!g_isResized)
 	{
-		aptoCore::Graphics::Resize(1920, 1080);
-		isResize = !isResize;
+		g_isResized = aptoCore::Graphics::Resize(1920, 1080);
 	}
 
 	while (aptoCore::Graphics::isRunEngine())

@@ -6,37 +6,42 @@
 
 using namespace std;
 
-struct IObject;
-
-class ParentScene
+namespace act
 {
-public:
-	ParentScene();
-	virtual ~ParentScene();
-public:
-	virtual void Initialize();
-	void Finalize();
+	struct IObject;
 
-public:
-	template<typename T>
-	void AddObject(string objectName)
+	class ParentScene
 	{
-		cout << "Sucessed object create." << endl;
-		_gameProcess->CreateObjects<T>(objectName, this);
-	}
+	public:
+		ParentScene();
+		virtual ~ParentScene();
+	public:
+		virtual void Initialize();
+		void Finalize();
 
-	void ChangeObjectState(ParentObject* pObject, bool state);
+	public:
+		template<typename T>
+		void AddObject(string objectName)
+		{
+			cout << "Sucessed object create." << endl;
+			_gameProcess->CreateObjects<T>(objectName, this);
+		}
 
-	ParentObject& FindObject(std::string objectname);
+		void ChangeObjectState(ParentObject* pObject, bool state);
 
-protected:
-	string _SceneName;
-	vector<IObject*>  _inControlObjects;
-	GameProcess* const _gameProcess;
-	// 이걸 이렇게 쓴 이유? 씬은 구조상 엔진에 접근 할 수 밖에 없는데
-	// 굳이 씬마다 포인터를 일일이 재 지정 할 필요는 없을것 같고
-	// 동시에 다른 게임 프로세스가 생성되거나 할당되는건 말이 안되므로 const로 설정.
-};
+		ParentObject& FindObject(std::string objectname);
+
+		void DeleteObject(ParentObject* pObject);
+
+	protected:
+		string _SceneName;
+		vector<IObject*>  _inControlObjects;
+		GameProcess* const _gameProcess;
+		// 이걸 이렇게 쓴 이유? 씬은 구조상 엔진에 접근 할 수 밖에 없는데
+		// 굳이 씬마다 포인터를 일일이 재 지정 할 필요는 없을것 같고
+		// 동시에 다른 게임 프로세스가 생성되거나 할당되는건 말이 안되므로 const로 설정.
+	};
+}
 
 /// Scene 도입
 //  이전 프로젝트에선 이 Scene이 게임오브젝트나 엔진과 완전히 분리되어 따로 SceneManager에 의해 따로 돌아가는 형태 였지만

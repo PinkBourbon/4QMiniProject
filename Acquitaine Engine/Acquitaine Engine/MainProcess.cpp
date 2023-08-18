@@ -1,7 +1,9 @@
 #include "MainProcess.h"
 #include "GameProcess.h"
+#include "SceneManager.h"
 
 #pragma comment (lib,"Acquitaine Game Engine.lib")
+#pragma comment(lib, "Acquitaine Game Client.lib")
 
 constexpr int windowLength = 1280;
 constexpr int windowHeight = 720;
@@ -15,12 +17,14 @@ HRESULT MainProcess::Initialize(HINSTANCE hInstance)
  	AllocConsole();
 	FILE* _tempFile;
 	freopen_s(&_tempFile, "CONOUT$", "w", stdout);
-		
 	_deltatime = 0;
 	_timer = new Timer();
 	
-	_gameprocess = new GameProcess();
-	_gameprocess->Initialize();
+	_gameprocess = new act::GameProcess();
+	_gameprocess->GameProcessInitialize();
+
+	_gameClient = new SceneManager();
+	_gameClient->Initialize();
 
 	///
  	return S_OK;
@@ -50,6 +54,8 @@ void MainProcess::Loop()
 void MainProcess::Finalize()
 {
 	_gameprocess->Finalize();
+	delete _gameprocess;
+	delete _gameClient;
 }
 
 LRESULT CALLBACK MainProcess::WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

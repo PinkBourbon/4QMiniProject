@@ -135,30 +135,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="API.h" />
     <ClInclude Include="GameProcess.h" />
+    <ClInclude Include="importGraphics.h" />
     <ClInclude Include="ParentComponent.h" />
     <ClInclude Include="ParentObject.h" />
     <ClInclude Include="ParentScene.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="TestComponent 1.h" />
-    <ClInclude Include="TestComponent 2.h" />
-    <ClInclude Include="TestComponent.h" />
-    <ClInclude Include="TestObject.h" />
-    <ClInclude Include="TestObject_Find.h" />
-    <ClInclude Include="TestScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="API.cpp" />
     <ClCompile Include="GameProcess.cpp" />
     <ClCompile Include="ParentComponent.cpp" />
     <ClCompile Include="ParentObject.cpp" />
     <ClCompile Include="ParentScene.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="TestComponent 1.cpp" />
-    <ClCompile Include="TestComponent 2.cpp" />
-    <ClCompile Include="TestComponent.cpp" />
-    <ClCompile Include="TestObject.cpp" />
-    <ClCompile Include="TestObject_FInd.cpp" />
-    <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

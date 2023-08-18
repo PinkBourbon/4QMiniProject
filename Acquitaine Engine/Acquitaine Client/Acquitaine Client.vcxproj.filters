@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Scene\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent 1.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent 2.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TestComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TestObject_FInd.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Scene\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent 1.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent 2.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TestComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObject_Find.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{1856ce31-46ca-4391-9f02-66d74e4a4c77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\SceneManager">
+      <UniqueIdentifier>{ddbc6574-d4da-4f06-8aa4-14c8f882dca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{1aa2957e-0e7b-4717-bb9e-c01d00ee003a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{6193c0d7-030d-4190-afa2-715305c0b589}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
