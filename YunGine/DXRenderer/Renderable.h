@@ -23,6 +23,9 @@ public:
 	std::string vertexShaderFilePath;
 	std::string pixelShaderFilePath;
 
+	// tr
+
+
 private:
 	__int64 handle;
 };

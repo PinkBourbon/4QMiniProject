@@ -9,4 +9,3 @@ public:
 	TestScene(string SceneName);
 	virtual ~TestScene();
 };
-

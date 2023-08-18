@@ -5,7 +5,7 @@ namespace act
 {
 
 	ParentComponent::ParentComponent()
-		: _gameObject(nullptr), _isEnabled(true)
+		: _gameObject(nullptr), _isEnabled(true), _componentName("name is empty.")
 	{
 
 	}

@@ -1,13 +1,13 @@
 #include "GameProcess.h"
 
-import aptoCore.Graphics;
+//import aptoCore.Graphics;
 
 GameProcess::~GameProcess()
 {
 
 }
 
-HRESULT GameProcess::Initialize(HINSTANCE hInstance)
+HRESULT GameProcess::MyInitialize(HINSTANCE hInstance)
 {
 	/// Win32 관련
 	// 윈도 클래스
@@ -126,7 +126,7 @@ void GameProcess::Update()
 	}
 
 	// 일단 대충 해놓음->랜더 update에 float deltatime을 넣음
-	_renderer->Update(_timer->DeltaTime());
+	//_renderer->Update(_timer->DeltaTime());
 }
 
 void GameProcess::Render()
@@ -140,35 +140,38 @@ void GameProcess::Render()
 	///// 그리기를 끝낸다.
 	//renderer->EndRender();
 
-	_renderer->Render();
+	//_renderer->Render();
+	::Render(_timer->DeltaTime());
 }
 
 HRESULT GameProcess::CreateGraphicEngine()
 {
 	// dll을 직접적으로 가져오기로 결정
-	HMODULE Module = LoadLibrary(RENDER_PATH);
-	_hModule = Module;
-	if (_hModule == nullptr)	// dll 로드 실패
-	{
-		return S_FALSE;
-	}
-
-	_renderer.reset(reinterpret_cast<IDX11Render * (*)(void)>(GetProcAddress(_hModule, "CreateRenderer"))());
-
-	// using CreateRenderer = IDX11Render(*)();
-
-	// CreateRenderer createRenderer = reinterpret_cast<CreateRenderer>(GetProcAddress(m_hModule, "CreateRenderer"));
-	if (_renderer == nullptr)
-	{
-		// 함수 가져오기 실패 처리
-		FreeLibrary(_hModule);
-		return S_FALSE;
-	}
-	else
-	{
-		// 구체적인 내부 구현이 없으므로 사용할 수 없는 것이다.
-		_renderer->Initialize();
-	}
+	//HMODULE Module = LoadLibrary(RENDER_PATH);
+	//_hModule = Module;
+	//if (_hModule == nullptr)	// dll 로드 실패
+	//{
+	//	return S_FALSE;
+	//}
+	//
+	//_renderer.reset(reinterpret_cast<IDX11Render * (*)(void)>(GetProcAddress(_hModule, "CreateRenderer"))());
+	//
+	//// using CreateRenderer = IDX11Render(*)();
+	//
+	//// CreateRenderer createRenderer = reinterpret_cast<CreateRenderer>(GetProcAddress(m_hModule, "CreateRenderer"));
+	//if (_renderer == nullptr)
+	//{
+	//	// 함수 가져오기 실패 처리
+	//	FreeLibrary(_hModule);
+	//	return S_FALSE;
+	//}
+	//else
+	//{
+	//	// 구체적인 내부 구현이 없으므로 사용할 수 없는 것이다.
+	//	_renderer->Initialize();
+	//}
+	bool succes = Initialize();
+	//_renderer.reset(CreateRenderer());
 
 	return S_OK;
 }
@@ -176,12 +179,14 @@ HRESULT GameProcess::CreateGraphicEngine()
 HRESULT GameProcess::DeleteGraphicEngine()
 {
 	// unique_ptr이라서 굳이 명시적으로 해제하지 않아도 될꺼같아
-	_renderer->Finalize();
+	//_renderer->Finalize();
 	// typedef void (*DeleteRendererFunc)(IDX11Render*);
 	// DeleteRendererFunc deleteRenderer = reinterpret_cast<DeleteRendererFunc>(GetProcAddress(m_hModule, "DeleteRenderer"));
-	_renderer.release();
+	//_renderer.release();
 
-	FreeLibrary(_hModule);
+	//FreeLibrary(_hModule);
+
+	::Finalize();
 
 	return S_OK;
 }

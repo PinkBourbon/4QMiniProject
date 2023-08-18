@@ -18,11 +18,9 @@ namespace act
 	void GameProcess::GameProcessInitialize()
 {
 		s_gameEnginePointer = this;
-#ifdef YUNJINDLLEXPORT
+
 		bool ret = aptoCore::Graphics::Initialize();
-#else
-		CreateInitialize();
-#endif
+
 
 
 		cout << "Engine Initialized sucess" << endl;
@@ -30,11 +28,7 @@ namespace act
 
 	void GameProcess::Finalize()
 	{
-#ifdef YUNJINDLLEXPORT
 		aptoCore::Graphics::Finalize();
-#else
-		
-#endif	
 	}
 
 	void GameProcess::RunningGameProcess(double deltaTime)
@@ -71,7 +65,7 @@ namespace act
 
 	void GameProcess::AddScene(ParentScene* pscene)
 	{
-		_SceneList.push_back(pscene);
+		_sceneList.push_back(pscene);
 	}
 
 	void GameProcess::ChangeObjectState(ParentObject* pobject, bool state)
@@ -196,32 +190,32 @@ namespace act
 			{
 				case eObjectState::AWAKE:
 				{
-					_awakeObjectList.insert(buff.second);
+					_awakeObjectList.push_back(buff.second);
 					_objectList.find(buff.second)->second = eObjectState::AWAKE;
 				}break;
 				case eObjectState::ENABLE:
 				{
-					_enableObjectList.insert(buff.second);
+					_enableObjectList.push_back(buff.second);
 					_objectList.find(buff.second)->second = eObjectState::ENABLE;
 				}break;
 				case eObjectState::START:
 				{
-					_startObjectList.insert(buff.second);
+					_startObjectList.push_back(buff.second);
 					_objectList.find(buff.second)->second = eObjectState::START;
 				}break;
 				case eObjectState::UPDATE:
 				{
-					_updateObjectList.insert(buff.second);
+					_updateObjectList.push_back(buff.second);
 					_objectList.find(buff.second)->second = eObjectState::UPDATE;
 				}break;
 				case eObjectState::DISABLE:
 				{
-					_disableObjectList.insert(buff.second);
+					_disableObjectList.push_back(buff.second);
 					_objectList.find(buff.second)->second = eObjectState::DISABLE;
 				}break;
 				case eObjectState::RELEASE:
 				{
-					_releaseObjectList.insert(buff.second);
+					_releaseObjectList.push_back(buff.second);
 					_objectList.find(buff.second)->second = eObjectState::RELEASE;
 				}break;
 				default:
@@ -247,62 +241,47 @@ namespace act
 	void GameProcess::EraseObjectStateList(ParentObject* pObject)
 	{
 		std::unordered_map<ParentObject*, eObjectState>::iterator temp = _objectList.find(pObject);
+
+		auto tempfunc = [this](std::vector<ParentObject*>& vec, ParentObject* pObject)
+		{
+			std::vector<ParentObject*>::iterator iter;
+			for (iter = vec.begin(); iter != vec.end(); ++iter)
+				if (*iter == pObject)
+					return iter;
+		};
+		/// fkaekfh qnsflgkrls goTwlaks
+
 		switch (temp->second)
 		{
 			case eObjectState::AWAKE:
 			{
-				_awakeObjectList.erase(_awakeObjectList.find(temp->first));
+				_awakeObjectList.erase(tempfunc(_awakeObjectList, pObject));
 			}break;
 			case eObjectState::ENABLE:
 			{
-				_enableObjectList.erase(_enableObjectList.find(temp->first));
+				_enableObjectList.erase(tempfunc(_enableObjectList, pObject));
 			}break;
 			case eObjectState::START:
 			{
-				_startObjectList.erase(_startObjectList.find(temp->first));
+				_startObjectList.erase(tempfunc(_startObjectList, pObject));
 			}break;
 			case eObjectState::UPDATE:
 			{
-				_updateObjectList.erase(_updateObjectList.find(temp->first));
+				_updateObjectList.erase(tempfunc(_updateObjectList, pObject));
 			}break;
 			case eObjectState::DISABLE:
 			{
-				_disableObjectList.erase(_disableObjectList.find(temp->first));
+				_disableObjectList.erase(tempfunc(_disableObjectList, pObject));
 			}break;
 			case eObjectState::RELEASE:
 			{
-				_releaseObjectList.erase(_releaseObjectList.find(temp->first));
+				_releaseObjectList.erase(tempfunc(_releaseObjectList, pObject));
 			}break;
 			default:
 			{
 
 			}break;
 		}
-	}
-
-	HRESULT GameProcess::CreateInitialize()
-{
-		HMODULE Module = LoadLibrary(RENDER_PATH);
-		if (Module == nullptr)
-		{
-			return S_FALSE;
-		}
-
-		_renderer.reset(reinterpret_cast<IDX11Render * (*)(void)>(GetProcAddress(Module, "CreateRenderer"))());
-
-		if (_renderer == nullptr)
-		{
-			// 함수 가져오기 실패 처리
-			FreeLibrary(Module);
-			return S_FALSE;
-		}
-		else
-		{
-			// 구체적인 내부 구현이 없으므로 사용할 수 없는 것이다.
-			_renderer->Initialize(hinstanse);
-		}
-
-		return S_OK;
 	}
 
 	GameProcess* GameProcess::s_gameEnginePointer;

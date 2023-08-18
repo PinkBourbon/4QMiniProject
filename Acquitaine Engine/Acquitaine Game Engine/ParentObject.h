@@ -1,13 +1,14 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <string>
+
+#include "ParentScene.h"
 
 using namespace std;
 
 namespace act
 {
-
-	class ParentScene;
 	class ParentComponent;
 	class TestComponent;
 
@@ -18,6 +19,13 @@ namespace act
 		virtual ~ParentObject();
 
 	public:
+		template<typename T>
+		void AddObject(string objectName)
+		{
+			cout << "Sucessed object create." << endl;
+			_includedScene->AddObject<T>(objectName);
+		}
+
 		template<typename T>
 		void AddComponent(string componentname, ParentObject* thispointer)
 		{
@@ -71,7 +79,6 @@ namespace act
 
 	protected:
 		static int _objectIDs;					// 이건... 생성자가 호출 될 때마다 자동으로 1씩 더해진다. 그리고 그걸 ID로 삼는다.
-
 
 		/// 오브젝트의 기초 정보가 저장되어 있는 부분
 		int _objectID;							// 실제 이 오브젝트를 구분하는 용도로 쓰일 ID

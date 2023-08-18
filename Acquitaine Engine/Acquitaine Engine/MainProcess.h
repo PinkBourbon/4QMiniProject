@@ -11,7 +11,7 @@ class MainProcess
 {
 public:
 	HRESULT Initialize(HINSTANCE hInstance);
-	void Loop();
+	void Loop();   
 	void Finalize();
 
 	static LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
