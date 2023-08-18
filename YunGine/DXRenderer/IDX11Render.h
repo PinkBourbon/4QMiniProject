@@ -5,9 +5,9 @@
 struct Renderable;
 
 #ifdef YUNGINEDLLEXPORT
-#define YUNGINEDLL __declspec(dllexport)
+#define YUNGINEDLL extern"C" __declspec(dllexport)
 #else
-#define YUNGINEDLL __declspec(dllimport)
+#define YUNGINEDLL extern"C" __declspec(dllimport)
 #endif
 
 class IDX11Render abstract
@@ -28,20 +28,15 @@ public:
 };
 
 // dll외부에서 사용가능한 함수라고 알려주는 것
-extern "C" YUNGINEDLL IDX11Render * CreateRenderer();
-extern "C" YUNGINEDLL void DeleteRenderer(IDX11Render * renderer);
+YUNGINEDLL IDX11Render* CreateRenderer();
+YUNGINEDLL void DeleteRenderer(IDX11Render* renderer);
 
 // 용훈이형의 인터페이스에 맞췄음
 
-namespace aptoCore
-{
-	namespace Graphics 
-	{
-		YUNGINEDLL bool Initialize();
-		YUNGINEDLL void Finalize();
-		YUNGINEDLL void Render(float deltaTime);
-		YUNGINEDLL bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight);
-		YUNGINEDLL void RegisterObject(Renderable& object);
-		YUNGINEDLL void DeregisterObject(Renderable& object);
-	}
-}
+
+YUNGINEDLL bool Initialize();
+YUNGINEDLL void Finalize();
+YUNGINEDLL void Render(float deltaTime);
+YUNGINEDLL bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight);
+YUNGINEDLL void RegisterObject(Renderable& object);
+YUNGINEDLL void DeregisterObject(Renderable& object);

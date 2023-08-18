@@ -139,6 +139,9 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source File\Object\Model</Filter>
     </ClCompile>
+    <ClCompile Include="RenderableBase.cpp">
+      <Filter>Source File\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Basic.fx">

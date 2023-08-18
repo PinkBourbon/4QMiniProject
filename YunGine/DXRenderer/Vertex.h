@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-//import apto.math;
+import apto.math;
 
 /// <summary>
 /// 버텍스의 포지션과 색깔과 위치정보를 담는 버텍스
@@ -57,6 +57,14 @@ struct vec3
 	float x;
 	float y;
 	float z;
+
+	bool operator==(const vec3& other) const
+	{
+		return x == other.x &&
+			y == other.y &&
+			z == other.z;
+	}
+	vec3() : x(0.0f), y(0.0f), z(0.0f) {}
 };
 
 struct vec2
@@ -67,13 +75,13 @@ struct vec2
 
 struct Vertex
 {
-	//apto::Vector3f pos;
-	//apto::Vector3f tex;
-	//apto::Vector3f normal;
-	//apto::Vector3f tangent;
-	//apto::Vector4f color;
-	// apto::Vector2f uv;
-	// apto::Vector3f binormal;
+	apto::Vector3f pos;
+	apto::Vector3f tex;
+	apto::Vector3f normal;
+	apto::Vector3f tangent;
+	apto::Vector4f color;
+	apto::Vector2f uv;
+	apto::Vector3f binormal;
 
 	// UINT boneIndices[4];
 	// float boneWeights[4];
