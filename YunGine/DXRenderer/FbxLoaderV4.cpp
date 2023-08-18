@@ -34,6 +34,7 @@ bool FbxLoaderV4::Release()
 
 bool FbxLoaderV4::Load(std::wstring filename, Model* outModel)
 {
+
 	// 매니저 생성
 	_manager = FbxManager::Create();
 
@@ -61,7 +62,7 @@ bool FbxLoaderV4::Load(std::wstring filename, Model* outModel)
 	LoadNodeRecursive(_rootNode);
 
 	// 메쉬 불러오기
-	LoadMesh(_mesh);
+	LoadMesh(_mesh,outModel);
 
 	// 삼각형 개수 얻기
 	_mesh->GetMeshEdgeCount();
@@ -108,10 +109,10 @@ void FbxLoaderV4::LoadNodeRecursive(FbxNode* node)
 }
 
 
-void FbxLoaderV4::LoadMesh(FbxMesh* mesh)
+void FbxLoaderV4::LoadMesh(FbxMesh* mesh,Model* outModel)
 {
 	unsigned int count = mesh->GetControlPointsCount();
-	positions = new vec3[count];
+	_positions = new vec3[count];
 
 	for (unsigned int i = 0; i < count; ++i)
 	{
@@ -121,7 +122,7 @@ void FbxLoaderV4::LoadMesh(FbxMesh* mesh)
 		position.y = static_cast<float>(mesh->GetControlPointAt(i).mData[1]);
 		position.z = static_cast<float>(mesh->GetControlPointAt(i).mData[2]);
 
-		positions[i] = position;
+		_positions[i] = position;
 	}
 
 	unsigned int vertexCount = 0;
@@ -132,8 +133,8 @@ void FbxLoaderV4::LoadMesh(FbxMesh* mesh)
 		for (unsigned int j = 0; j < 3; j++)
 		{
 			int controlPointIndex = mesh->GetPolygonVertex(i, j);
+			///outModel
 			
-
 		}
 	}
 }
@@ -448,3 +449,14 @@ vec2 FbxLoaderV4::ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCounter
 
 	return result;
 }
+
+//ID3D11Buffer FbxLoaderV4::GetVertices(Model* outmmodel)
+//{
+//
+//	return 
+//}
+//
+//ID3D11Buffer FbxLoaderV4::GetIndecies(Model* outmmodel)
+//{
+//
+//}

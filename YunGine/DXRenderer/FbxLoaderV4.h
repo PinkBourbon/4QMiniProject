@@ -13,6 +13,7 @@
 #endif
 
 class Model;
+class ID3D11Buffer;
 
 class FbxLoaderV4
 {
@@ -37,7 +38,7 @@ private:
 
 	void SceneSetting();
 	void LoadNodeRecursive(FbxNode* node);
-	void LoadMesh(FbxMesh* mesh);
+	void LoadMesh(FbxMesh* mesh,Model* outModel);
 	void ProcessControlPoint(FbxMesh* mesh);
 	void InsertVertex(const vec3& position, const vec3& normal, const vec2& uv, const vec3& binormal, const vec3& tangent);
 
@@ -46,9 +47,10 @@ private:
 	vec3 ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCount);
 	vec2 ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCount);
 
-private:
-	vec3* positions;
+	vec3* _positions;
 
-
+public:
+	//ID3D11Buffer GetVertices(Model* outmmodel);
+	//ID3D11Buffer GetIndecies(Model* outmmodel);
 };
 

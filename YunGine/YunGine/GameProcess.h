@@ -4,9 +4,6 @@
 #include "..\\DXRenderer\\IDX11Render.h"	// dll에 있는 헤더 쓰겠다
 #include "GameTimer.h"
 
-//#pragma comment(lib, "DXRenderer.lib")					// 이 lib를 쓰겠다
-
-
 #ifdef _DEBUG
 #define RENDER_PATH L"..\\x64\\Debug\\DXRenderer.dll"
 #pragma comment(lib, "..\\x64\\Debug\\DXRenderer.lib")		// 이 lib를 쓰겠다
