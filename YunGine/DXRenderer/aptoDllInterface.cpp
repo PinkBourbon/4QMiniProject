@@ -3,7 +3,7 @@
 
 IDX11Render* g_renderer;
 
-bool aptoCore::Graphics::Initialize()
+bool Initialize()
 {
 	g_renderer = CreateRenderer();
 
@@ -12,32 +12,33 @@ bool aptoCore::Graphics::Initialize()
 	return true;
 }
 
-void aptoCore::Graphics::Finalize()
+void Finalize()
 {
 	g_renderer->Finalize();
 	DeleteRenderer(g_renderer);
 }
 
 
-void aptoCore::Graphics::Render(float deltaTime)
+void Render(float deltaTime)
 {
+	g_renderer->Update(deltaTime);
 	g_renderer->Render();
 }
 
 
-bool aptoCore::Graphics::Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight)
+bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight)
 {
 	return false;
 }
 
 
-void aptoCore::Graphics::RegisterObject(Renderable& object)
+void RegisterObject(Renderable& object)
 {
 
 }
 
 
-void aptoCore::Graphics::DeregisterObject(Renderable& object)
+void DeregisterObject(Renderable& object)
 {
 
 }

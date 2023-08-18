@@ -1,6 +1,7 @@
 #include "FbxLoaderV4.h"
 #include "Utility.h"
 
+#include "Model.h"
 #include "Vertex.h"
 #include <vector>
 #include <unordered_map>
@@ -31,13 +32,15 @@ bool FbxLoaderV4::Release()
 	return true;
 }
 
-bool FbxLoaderV4::Load(std::wstring filename)
+bool FbxLoaderV4::Load(std::wstring filename, Model* outModel)
 {
 	// 매니저 생성
 	_manager = FbxManager::Create();
 
 	// 설정 객체 생성
 	FbxIOSettings* ios = FbxIOSettings::Create(_manager, IOSROOT);
+	ios->SetBoolProp(IMP_FBX_MATERIAL, true);
+
 	_manager->SetIOSettings(ios);
 	
 	// 파일 변환
@@ -51,18 +54,14 @@ bool FbxLoaderV4::Load(std::wstring filename)
 	// 씬 가져오기, importer 초기화 되면 파일에서 씬을 가져오기 위해 씬 컨테이너 생성
 	_scene = FbxScene::Create(_manager, "scene");
 	_importer->Import(_scene);
-	FbxDocument* document= _importer->GetDocument();
-	int rootMemberCount = document->GetRootMemberCount();
-
-	std::wcout << rootMemberCount << std::endl;
 
 	SceneSetting();
 
-	// 씬의 루트노드 설정
-	_rootNode = _scene->GetRootNode();
-
 	// 노드 가져오기
 	LoadNodeRecursive(_rootNode);
+
+	// 메쉬 불러오기
+	LoadMesh(_mesh);
 
 	// 삼각형 개수 얻기
 	_mesh->GetMeshEdgeCount();
@@ -75,6 +74,9 @@ bool FbxLoaderV4::Load(std::wstring filename)
 
 void FbxLoaderV4::SceneSetting()
 {
+	// 씬의 루트노드 설정
+	_rootNode = _scene->GetRootNode();
+
 	// 좌표축 가져오기
 	_sceneAxisSystem = _scene->GetGlobalSettings().GetAxisSystem();
 
@@ -105,11 +107,42 @@ void FbxLoaderV4::LoadNodeRecursive(FbxNode* node)
 	}
 }
 
+
+void FbxLoaderV4::LoadMesh(FbxMesh* mesh)
+{
+	unsigned int count = mesh->GetControlPointsCount();
+	positions = new vec3[count];
+
+	for (unsigned int i = 0; i < count; ++i)
+	{
+		vec3 position;
+
+		position.x = static_cast<float>(mesh->GetControlPointAt(i).mData[0]);
+		position.y = static_cast<float>(mesh->GetControlPointAt(i).mData[1]);
+		position.z = static_cast<float>(mesh->GetControlPointAt(i).mData[2]);
+
+		positions[i] = position;
+	}
+
+	unsigned int vertexCount = 0;
+	unsigned int triCount = mesh->GetPolygonCount();
+
+	for (unsigned int i = 0; i < triCount; i++)
+	{
+		for (unsigned int j = 0; j < 3; j++)
+		{
+			int controlPointIndex = mesh->GetPolygonVertex(i, j);
+			
+
+		}
+	}
+}
+
 void FbxLoaderV4::ProcessControlPoint(FbxMesh* mesh)
 {
 	unsigned int count = mesh->GetControlPointsCount();
 
-	vec3 position = { 0.f, };
+	vec3 position;
 	_position = new vec3[count];
 
 	for (unsigned int i = 0; i < count; ++i)
@@ -167,7 +200,7 @@ vec3 FbxLoaderV4::ReadNormal(const FbxMesh* mesh, int controlPointIndex, int ver
 	{
 		const FbxGeometryElementNormal* vertexNormal = mesh->GetElementNormal(0);
 
-		vec3 result = {0.0f, };
+		vec3 result;
 
 		switch (vertexNormal->GetMappingMode())
 		{
@@ -225,7 +258,7 @@ vec3 FbxLoaderV4::ReadNormal(const FbxMesh* mesh, int controlPointIndex, int ver
 vec3 FbxLoaderV4::ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
 {
 	FbxGeometryElementBinormal* vertexBinormal = mesh->GetElementBinormal(0);
-	vec3 result = { 0.0f, 0.0f,0.0f};
+	vec3 result; 
 
 	if (vertexBinormal == nullptr)
 	{
@@ -293,7 +326,7 @@ vec3 FbxLoaderV4::ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexC
 vec3 FbxLoaderV4::ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
 {
 	FbxGeometryElementTangent* vertexTangent = mesh->GetElementTangent(0);
-	vec3 result = { 0.0f, };
+	vec3 result;
 
 	if (vertexTangent == nullptr)
 	{
