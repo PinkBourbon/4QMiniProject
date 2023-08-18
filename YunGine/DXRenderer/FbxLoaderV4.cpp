@@ -32,7 +32,7 @@ bool FbxLoaderV4::Release()
 	return true;
 }
 
-bool FbxLoaderV4::Load(std::wstring filename, Model* outModel)
+void FbxLoaderV4::Load(std::wstring filename, Model* outModel)
 {
 
 	// 매니저 생성
@@ -43,7 +43,7 @@ bool FbxLoaderV4::Load(std::wstring filename, Model* outModel)
 	ios->SetBoolProp(IMP_FBX_MATERIAL, true);
 
 	_manager->SetIOSettings(ios);
-	
+
 	// 파일 변환
 	std::string temp;
 	wstostr(filename, &temp);
@@ -62,15 +62,9 @@ bool FbxLoaderV4::Load(std::wstring filename, Model* outModel)
 	LoadNodeRecursive(_rootNode);
 
 	// 메쉬 불러오기
-	LoadMesh(_mesh,outModel);
+	LoadMesh(_mesh, outModel);
 
-	// 삼각형 개수 얻기
-	_mesh->GetMeshEdgeCount();
-	ProcessControlPoint(_mesh);
-
-	Release();
-
-	return false;
+	_importer->Destroy();
 }
 
 void FbxLoaderV4::SceneSetting()
@@ -108,15 +102,14 @@ void FbxLoaderV4::LoadNodeRecursive(FbxNode* node)
 	}
 }
 
-
-void FbxLoaderV4::LoadMesh(FbxMesh* mesh,Model* outModel)
+void FbxLoaderV4::LoadMesh(FbxMesh* mesh, Model* outModel)
 {
 	unsigned int count = mesh->GetControlPointsCount();
-	_positions = new vec3[count];
+	_positions = new MyVertex[count];
 
 	for (unsigned int i = 0; i < count; ++i)
 	{
-		vec3 position;
+		MyVertex position;
 
 		position.x = static_cast<float>(mesh->GetControlPointAt(i).mData[0]);
 		position.y = static_cast<float>(mesh->GetControlPointAt(i).mData[1]);
@@ -133,138 +126,97 @@ void FbxLoaderV4::LoadMesh(FbxMesh* mesh,Model* outModel)
 		for (unsigned int j = 0; j < 3; j++)
 		{
 			int controlPointIndex = mesh->GetPolygonVertex(i, j);
-			///outModel
-			
-		}
-	}
-}
-
-void FbxLoaderV4::ProcessControlPoint(FbxMesh* mesh)
-{
-	unsigned int count = mesh->GetControlPointsCount();
-
-	vec3 position;
-	_position = new vec3[count];
-
-	for (unsigned int i = 0; i < count; ++i)
-	{
-		position.x = static_cast<float>(mesh->GetControlPointAt(i).mData[0]);
-		position.y = static_cast<float>(mesh->GetControlPointAt(i).mData[1]);
-		position.z = static_cast<float>(mesh->GetControlPointAt(i).mData[2]);
-	}
-
-	//unsigned int triangleCount = mesh->GetPolygonCount();
-	unsigned int triangleCount = mesh->GetPolygonVertexCount();
-	unsigned int vertexCount = 0;	// 정점의 개수
-
-	for (unsigned int i = 0; i < triangleCount; ++i)
-	{
-		for (unsigned int j = 0; j < 3; ++j)
-		{
-			int controlPointIndex = _mesh->GetPolygonVertex(i, j);
-
-			vec3& position = _position[controlPointIndex];
-
-			vec3 normal = ReadNormal(_mesh, controlPointIndex, vertexCount);
-			vec3 binormal = ReadBinormal(_mesh, controlPointIndex, vertexCount);
-			vec3 tangent = ReadTangent(_mesh, controlPointIndex, vertexCount);
-
-			vec2 uv = ReadUV(_mesh, controlPointIndex, mesh->GetTextureUVIndex(i,j));
-
-			//InsertVertex(position, normal, uv, binormal, tangent);
+			_Vertices.emplace_back(Vertex());
+			_Vertices[i * 3 + j].pos = _positions[controlPointIndex];
+			_Vertices[i * 3 + j].normal = ReadNormal(mesh, controlPointIndex, vertexCount);
+			_Vertices[i * 3 + j].uv = ReadUV(mesh, controlPointIndex, mesh->GetTextureUVIndex(i, j));
+			_Vertices[i * 3 + j].binormal = ReadBinormal(mesh, controlPointIndex, vertexCount);
+			_Vertices[i * 3 + j].tangent = ReadTangent(mesh, controlPointIndex, vertexCount);
 
 			vertexCount++;
+
 		}
+		_Indecies.push_back(i * 3);
+		_Indecies.push_back(i * 3 + 1);
+		_Indecies.push_back(i * 3 + 2);
 	}
+
+	delete[] _positions;
+	_positions = nullptr;
+
 }
 
-void FbxLoaderV4::InsertVertex(const vec3& position, const vec3& normal, const vec2& uv, const vec3& binormal, const vec3& tangent)
-{
-	//Vertex vertex = { position, normal, uv, binormal, tangent };
-	//auto lookup = indexMapping.find(vertex);
-	//if (lookup != indexMapping.end())
-	//{
-	//	indices.push_back(lookup->second);
-	//}
-	//else
-	//{
-	//	unsigned int index = vertices.size();
-	//	indexMapping[vertex] = index;
-	//	indices.push_back(index);
-	//	vertices.push_back(vertex);
-	//}
-}
-
-vec3 FbxLoaderV4::ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCounter)
+MyVertex FbxLoaderV4::ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCounter)
 {
 	if (mesh->GetElementNormalCount() < 1)
 	{
-		const FbxGeometryElementNormal* vertexNormal = mesh->GetElementNormal(0);
-
-		vec3 result;
-
-		switch (vertexNormal->GetMappingMode())
-		{
-			case FbxGeometryElement::eByControlPoint:
-				switch (vertexNormal->GetReferenceMode())
-				{
-					case FbxGeometryElement::eDirect:
-					{
-						result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(controlPointIndex).mData[0]);
-						result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(controlPointIndex).mData[1]);
-						result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(controlPointIndex).mData[2]);
-					}
-					break;
-
-					case FbxGeometryElement::eIndexToDirect:
-					{
-						int index = vertexNormal->GetIndexArray().GetAt(controlPointIndex); // 인덱스를 얻어온다.
-						result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[0]);
-						result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[1]);
-						result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[2]);
-					}
-					break;
-					break;
-				}
-
-			case FbxGeometryElement::eByPolygonVertex:
-				// polygon vertex mapping
-				switch (vertexNormal->GetReferenceMode())
-				{
-					case FbxGeometryElement::eDirect:
-					{
-						result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCounter).mData[0]);
-						result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCounter).mData[1]);
-						result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCounter).mData[2]);
-					}
-					break;
-
-					case FbxGeometryElement::eIndexToDirect:
-					{
-						int index = vertexNormal->GetIndexArray().GetAt(vertexCounter); // 인덱스를 얻어온다.
-						result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[0]);
-						result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[1]);
-						result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[2]);
-					}
-					break;
-					break;
-				}
-				return result;
-		}
-
+		std::cout << "No Normals" << std::endl;
 	}
+
+	const FbxGeometryElementNormal* vertexNormal = mesh->GetElementNormal(0);
+
+	MyVertex result;
+
+	switch (vertexNormal->GetMappingMode())
+	{
+		case FbxGeometryElement::eByControlPoint:
+			switch (vertexNormal->GetReferenceMode())
+			{
+				case FbxGeometryElement::eDirect:
+				{
+					result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(controlPointIndex).mData[0]);
+					result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(controlPointIndex).mData[1]);
+					result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(controlPointIndex).mData[2]);
+				}
+				break;
+
+				case FbxGeometryElement::eIndexToDirect:
+				{
+					int index = vertexNormal->GetIndexArray().GetAt(controlPointIndex); // 인덱스를 얻어온다.
+					result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[0]);
+					result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[1]);
+					result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[2]);
+				}
+				break;
+			}
+			break;
+
+		case FbxGeometryElement::eByPolygonVertex:
+			// polygon vertex mapping
+			switch (vertexNormal->GetReferenceMode())
+			{
+				case FbxGeometryElement::eDirect:
+				{
+					result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCounter).mData[0]);
+					result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCounter).mData[1]);
+					result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCounter).mData[2]);
+				}
+				break;
+
+				case FbxGeometryElement::eIndexToDirect:
+				{
+					int index = vertexNormal->GetIndexArray().GetAt(vertexCounter); // 인덱스를 얻어온다.
+					result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[0]);
+					result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[1]);
+					result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[2]);
+				}
+				break;
+			}
+			break;
+	}
+	return result;
 
 }
 
-vec3 FbxLoaderV4::ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
+MyVertex FbxLoaderV4::ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
 {
 	FbxGeometryElementBinormal* vertexBinormal = mesh->GetElementBinormal(0);
-	vec3 result; 
-
-	if (vertexBinormal == nullptr)
+	if (!vertexBinormal || vertexBinormal->GetMappingMode() == FbxGeometryElement::eNone)
 	{
-		return result;
+		return MyVertex();
 	}
+
+	MyVertex result;
 
 	/// 이부분에서 null
 	/// null이 나오는 이유-> 가져오려고 하는 정보가 fbx파일에 없을시에는 null값이 나옴
@@ -324,15 +276,16 @@ vec3 FbxLoaderV4::ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexC
 	return result;
 }
 
-vec3 FbxLoaderV4::ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
+MyVertex FbxLoaderV4::ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
 {
 	FbxGeometryElementTangent* vertexTangent = mesh->GetElementTangent(0);
-	vec3 result;
 
-	if (vertexTangent == nullptr)
+	if (!vertexTangent || vertexTangent->GetMappingMode() == FbxGeometryElement::eNone)
 	{
-		return result;
+		return MyVertex();
 	}
+
+	MyVertex result;
 
 	switch (vertexTangent->GetMappingMode())
 	{
@@ -389,74 +342,24 @@ vec3 FbxLoaderV4::ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCo
 	return result;
 }
 
-vec2 FbxLoaderV4::ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
+MyTexture FbxLoaderV4::ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCounter)
 {
-	FbxGeometryElementUV* vertexUV = mesh->GetElementUV(0);
-	vec2 result = { 0.0f, };
+	const FbxGeometryElementUV* texture = mesh->GetElementUV(0);
 
-	if (vertexUV == nullptr)
+	if (!texture || texture->GetMappingMode() == FbxGeometryElement::eNone)
 	{
-		return result;
+		return MyTexture();
 	}
 
-	switch (vertexUV->GetMappingMode())
-	{
-		case FbxGeometryElement::eByControlPoint:
-			switch (vertexUV->GetReferenceMode())
-			{
-				case FbxGeometryElement::eDirect:
-				{
-					result.x = static_cast<float>(vertexUV->GetDirectArray().GetAt(controlPointIndex).mData[0]);
-					result.y = static_cast<float>(vertexUV->GetDirectArray().GetAt(controlPointIndex).mData[1]);
-				}
-				break;
+	FbxVector2 uv = mesh->GetElementUV()->GetDirectArray().GetAt(vertexCounter);
 
-				case FbxGeometryElement::eIndexToDirect:
-				{
-					int index = vertexUV->GetIndexArray().GetAt(controlPointIndex);
-					result.x = static_cast<float>(vertexUV->GetDirectArray().GetAt(index).mData[0]);
-					result.y = static_cast<float>(vertexUV->GetDirectArray().GetAt(index).mData[1]);
-				}
-				break;
-				default:
-					break;
-			}
-			break;
+	MyTexture result;
 
-		case FbxGeometryElement::eByPolygonVertex:
-			switch (vertexUV->GetReferenceMode())
-			{
-				case FbxGeometryElement::eDirect:
-				{
-					result.x = static_cast<float>(vertexUV->GetDirectArray().GetAt(vertexCounter).mData[0]);
-					result.y = static_cast<float>(vertexUV->GetDirectArray().GetAt(vertexCounter).mData[1]);
-				}
-				break;
-
-				case FbxGeometryElement::eIndexToDirect:
-				{
-					int index = vertexUV->GetIndexArray().GetAt(vertexCounter);
-					result.x = static_cast<float>(vertexUV->GetDirectArray().GetAt(index).mData[0]);
-					result.y = static_cast<float>(vertexUV->GetDirectArray().GetAt(index).mData[1]);
-				}
-				break;
-
-				default:
-					break;
-			}
-			break;
-	}
+	result.u = static_cast<float>(texture->GetDirectArray().GetAt(vertexCounter).mData[0]);
+	result.v = 1.0f - static_cast<float>(texture->GetDirectArray().GetAt(vertexCounter).mData[1]);
 
 	return result;
+
 }
 
-//ID3D11Buffer FbxLoaderV4::GetVertices(Model* outmmodel)
-//{
-//
-//	return 
-//}
-//
-//ID3D11Buffer FbxLoaderV4::GetIndecies(Model* outmmodel)
-//{
-//
-//}
+

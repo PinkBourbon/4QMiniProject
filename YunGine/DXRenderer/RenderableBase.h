@@ -46,7 +46,7 @@ protected:
 	ID3D10Blob* _compiledShader = 0;
 	ID3D10Blob* _compilationMsgs = 0;
 
-	Vertex3 _position = { 0.0f, };
+	MyVertex _position;
 
 	// D3D쪽에서 쓰는 버퍼가있으므로 굳이필요하지않음
 	//std::vector<Vertex> _vertexVector;

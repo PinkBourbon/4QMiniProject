@@ -36,6 +36,14 @@ void Model::Load(std::wstring filePath)
 void Model::ObjectSetting()
 {
 	// Init
+	HRESULT hr = S_OK;
+
+	// 만드는 순서
+	// shaderResource -> GeometryBuffer -> Effect -> VertexLayout
+	BuildFX();
+
+
+
 }
 
 void Model::BuildFX()
@@ -43,7 +51,7 @@ void Model::BuildFX()
 
 }
 
-void Model::BuildVertexLayout()
+void Model::GetTextureFile()
 {
 
 }
@@ -53,7 +61,8 @@ void Model::BuildFxFromCso(ID3D11Device* device, const std::wstring& filename)
 
 }
 
-void Model::GetTextureFile()
+void Model::BuildVertexLayout()
 {
 
 }
+
