@@ -1,11 +1,11 @@
 #pragma once
-//#define YUNJINDLLEXPORT
+#define YUNJINDLLEXPORT
 
 #ifdef YUNJINDLLEXPORT
-<<<<<<< HEAD
-import aptoCore.Graphics;
-#else
+#pragma comment (lib, "DXRenderer.lib")
 #include "../../YunGine/DXRenderer/IDX11Render.h"
+#else
+import aptoCore.Graphics;
 #endif
 
 #ifdef _DEBUG
@@ -13,16 +13,3 @@ import aptoCore.Graphics;
 #else 
 #define RENDER_PATH L"DXRenderer.dll"
 #endif
-=======
-#include "../../YunGine/DXRenderer/IDX11Render.h"
-#else
-import aptoCore.Graphics;
-#pragma comment (lib, "DXRenderer.lib")
-#endif
-
-// #ifdef _DEBUG
-// #define RENDER_PATH L"..\\lib\\DXRenderer.dll"
-// #else 
-// #define RENDER_PATH L"DXRenderer.dll"
-// #endif
->>>>>>> pr/16
