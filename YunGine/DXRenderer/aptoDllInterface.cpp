@@ -34,7 +34,7 @@ bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight)
 
 void RegisterObject(Renderable& object)
 {
-
+	
 }
 
 

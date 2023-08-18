@@ -23,7 +23,7 @@ public:
 	std::string vertexShaderFilePath;
 	std::string pixelShaderFilePath;
 
-
+	// tr
 
 
 private:

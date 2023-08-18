@@ -35,7 +35,7 @@ void Model::Load(std::wstring filePath)
 
 void Model::ObjectSetting()
 {
-
+	// Init
 }
 
 void Model::BuildFX()
