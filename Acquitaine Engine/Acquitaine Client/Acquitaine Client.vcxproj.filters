@@ -2,62 +2,80 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>Scene\SceneManager</Filter>
+      <Filter>Test\Scene\SceneManager</Filter>
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Test\Scene</Filter>
     </ClCompile>
     <ClCompile Include="TestComponent 1.cpp">
-      <Filter>Component</Filter>
+      <Filter>Test\Component</Filter>
     </ClCompile>
     <ClCompile Include="TestComponent 2.cpp">
-      <Filter>Component</Filter>
+      <Filter>Test\Component</Filter>
     </ClCompile>
     <ClCompile Include="TestComponent.cpp">
-      <Filter>Component</Filter>
+      <Filter>Test\Component</Filter>
     </ClCompile>
     <ClCompile Include="TestObject.cpp">
-      <Filter>Object</Filter>
+      <Filter>Test\Object</Filter>
     </ClCompile>
     <ClCompile Include="TestObject_FInd.cpp">
-      <Filter>Object</Filter>
+      <Filter>Test\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
-      <Filter>Scene\SceneManager</Filter>
+      <Filter>Test\Scene\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h">
-      <Filter>Scene</Filter>
+      <Filter>Test\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TestComponent 1.h">
-      <Filter>Component</Filter>
+      <Filter>Test\Component</Filter>
     </ClInclude>
     <ClInclude Include="TestComponent 2.h">
-      <Filter>Component</Filter>
+      <Filter>Test\Component</Filter>
     </ClInclude>
     <ClInclude Include="TestComponent.h">
-      <Filter>Component</Filter>
+      <Filter>Test\Component</Filter>
     </ClInclude>
     <ClInclude Include="TestObject_Find.h">
-      <Filter>Object</Filter>
+      <Filter>Test\Object</Filter>
     </ClInclude>
     <ClInclude Include="TestObject.h">
-      <Filter>Object</Filter>
+      <Filter>Test\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Component\Transform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{1856ce31-46ca-4391-9f02-66d74e4a4c77}</UniqueIdentifier>
+    <Filter Include="Test">
+      <UniqueIdentifier>{dbe8e2ef-60d6-41b9-ad5f-4736b6e68245}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\SceneManager">
-      <UniqueIdentifier>{ddbc6574-d4da-4f06-8aa4-14c8f882dca8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component">
+    <Filter Include="Test\Component">
       <UniqueIdentifier>{1aa2957e-0e7b-4717-bb9e-c01d00ee003a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object">
+    <Filter Include="Test\Scene">
+      <UniqueIdentifier>{1856ce31-46ca-4391-9f02-66d74e4a4c77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test\Scene\SceneManager">
+      <UniqueIdentifier>{ddbc6574-d4da-4f06-8aa4-14c8f882dca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test\Object">
       <UniqueIdentifier>{6193c0d7-030d-4190-afa2-715305c0b589}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{f7a06771-f167-4fc9-a2cf-24ea420abbb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{cfa8612f-40e2-4afa-8ada-16665c8aa5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Render">
+      <UniqueIdentifier>{508ccf38-edd0-4d5c-b9a1-463281dcd618}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

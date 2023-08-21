@@ -20,7 +20,7 @@ namespace aptoCore
 		}
 
 	protected:
-		std::string key;
+		std::wstring key;
 		void* data;
 	};
 

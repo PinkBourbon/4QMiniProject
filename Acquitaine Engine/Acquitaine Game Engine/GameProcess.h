@@ -33,7 +33,7 @@ namespace act
 		GameProcess();
 		~GameProcess();
 	public:
-		void GameProcessInitialize();			// 프로그램을 시작할때의 전처리
+		void Initialize();			// 프로그램을 시작할때의 전처리
 		void Finalize();			// 프로그램을 종료할때의 후처리
 		void RunningGameProcess(double deltaTime);	// 이 함수 내에서 생명주기 함수들이 순서대로 실행된다.
 

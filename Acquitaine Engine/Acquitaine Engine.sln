@@ -9,6 +9,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Acquitaine Engine", "Acquit
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Acquitaine Game Engine", "Acquitaine Game Engine\Acquitaine Game Engine.vcxproj", "{4D7CDE76-B2EC-4BD2-90CF-49E1EC46714B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87EFCDB8-583E-47B8-8EA1-675326BE8A38} = {87EFCDB8-583E-47B8-8EA1-675326BE8A38}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AptoGraphics", "..\Apto\AptoGraphics\Apto Graphics.vcxproj", "{81E3570D-8A42-4C33-8DF5-67823B66E00E}"
 EndProject

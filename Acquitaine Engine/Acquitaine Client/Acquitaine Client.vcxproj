@@ -26,6 +26,7 @@
     <ClCompile Include="TestObject.cpp" />
     <ClCompile Include="TestObject_FInd.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h" />
@@ -35,6 +36,15 @@
     <ClInclude Include="TestObject.h" />
     <ClInclude Include="TestObject_Find.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="TransformComponent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Apto\AptoGraphics\Apto Graphics.vcxproj">
+      <Project>{81e3570d-8a42-4c33-8df5-67823b66e00e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Apto\AptoMath\Apto Math.vcxproj">
+      <Project>{ad83a6c0-1a44-4522-8db9-e88a6805f670}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -130,6 +140,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Acquitaine Game Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +160,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Acquitaine Game Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

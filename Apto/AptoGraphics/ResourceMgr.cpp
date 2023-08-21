@@ -14,7 +14,7 @@ namespace aptoCore
 		resource->key = builder.key;
 		if (resources.find(builder.key) == resources.end())
 		{
-			std::string typeName;
+			std::wstring typeName;
 			data = builder(&typeName);
 			resources[builder.key] = { data, typeName };
 			//resources.emplace(builder.key, {data, typeName});
