@@ -29,11 +29,6 @@ void TestComponent::InputEvent()
 
 }
 
-void TestComponent::Render()
-{
-
-}
-
 void TestComponent::Phsics()
 {
 

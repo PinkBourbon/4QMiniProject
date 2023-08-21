@@ -1,6 +1,8 @@
 #pragma once
 #include "ParentComponent.h"
-#include "../../YunGine/DXRenderer/Renderable.h"
+#include "importGraphics.h"
+
+import aptoCore.Renderable;
 
 class RenderComponent : public act::ParentComponent
 {
@@ -19,6 +21,6 @@ public:
 	virtual void Release() override;
 
 private:
-	Renderable* renderObject;
+	aptoCore::Renderable* renderObject;
 };
 

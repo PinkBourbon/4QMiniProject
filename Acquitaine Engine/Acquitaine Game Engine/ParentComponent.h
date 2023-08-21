@@ -17,7 +17,6 @@ namespace act
 		virtual void Initialize();
 		virtual void Finalize();
 		virtual void InputEvent();
-		virtual void Render();
 		virtual void Phsics();
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 

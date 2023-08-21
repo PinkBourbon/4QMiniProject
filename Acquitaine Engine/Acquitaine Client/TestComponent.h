@@ -15,7 +15,6 @@ public:
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 	virtual void InputEvent() override;
-	virtual void Render() override;
 	virtual void Phsics()override;
 	//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 

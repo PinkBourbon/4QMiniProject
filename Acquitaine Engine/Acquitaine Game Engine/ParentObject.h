@@ -58,7 +58,6 @@ namespace act
 
 		virtual void InputEvent();
 		virtual void Phsics();
-		virtual void Render();
 
 	public:
 		virtual void Awake();
