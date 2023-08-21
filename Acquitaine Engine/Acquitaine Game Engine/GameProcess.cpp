@@ -8,27 +8,26 @@ namespace act
 {
 
 	GameProcess::GameProcess()
+		:_deltatime(0), _fixedupdatetime(0)
 	{
 	}
 
 	GameProcess::~GameProcess()
 	{
+
 	}
 
-	void GameProcess::GameProcessInitialize()
+	void GameProcess::Initialize()
 {
 		s_gameEnginePointer = this;
 
-		bool ret = aptoCore::Graphics::Initialize();
-
-
-
+		bool ret = ::Initialize();
 		cout << "Engine Initialized sucess" << endl;
 	}
 
 	void GameProcess::Finalize()
 	{
-		aptoCore::Graphics::Finalize();
+		::Finalize();
 	}
 
 	void GameProcess::RunningGameProcess(double deltaTime)
@@ -159,6 +158,7 @@ namespace act
 		{
 			pObject.first->Render();
 		}
+		::Render(_deltatime);
 	}
 
 	void GameProcess::Disable()

@@ -34,19 +34,20 @@ namespace act
 		}
 
 		template<typename T>
-		ParentComponent* GetComponentPointer()
+		T* GetComponentPointer()
 		{
 			for (auto pComponent : _componentList)
 			{
-				if (typeid(pComponent) == typeid(T))
+				T* childComponent = dynamic_cast<T*>(pComponent);
+				if (childComponent != nullptr)
 				{
-					return pComponent;
+					return childComponent;
 				}
 			}
 			return nullptr;
 		}
 
-		vector<ParentComponent*> GetComponentlist();
+		vector<ParentComponent*>& GetComponentlist();
 		void RemoveComponent();
 		void SetActive(bool state);
 		ParentObject& FindObject(std::string objectname);
