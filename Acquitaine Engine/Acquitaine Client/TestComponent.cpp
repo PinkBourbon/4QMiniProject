@@ -3,7 +3,7 @@
 #include "TestObject_Find.h"
 
 
-TestComponent::TestComponent(string name, act::ParentObject* pObject)
+TestComponent::TestComponent(std::string name, act::ParentObject* pObject)
 {
 	_componentName = name;
 	_gameObject = pObject;
@@ -16,7 +16,7 @@ TestComponent::~TestComponent()
 
 void TestComponent::Initialize()
 {
-	cout << _gameObject->objectName << " : component Initialize is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component Initialize is sucessed." << std::endl;
 }
 
 void TestComponent::Finalize()
@@ -45,12 +45,12 @@ void TestComponent::Awake()
 
 void TestComponent::Enable()
 {
-	cout << _gameObject->objectName << " : component1 Enable is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component1 Enable is sucessed." << std::endl;
 }
 
 void TestComponent::Start()
 {
-	cout << _gameObject->objectName << " : component Start is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component Start is sucessed." << std::endl;
 	//_gameObject->AddComponent<TestComponent>("testComponent", _gameObject);
 	_gameObject->AddObject<TestObject_Find>("createTestObject");
 }
@@ -61,12 +61,12 @@ void TestComponent::FixedUpdate()
 
 void TestComponent::Update()
 {
-	cout << _gameObject->objectName << " : component Update is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component Update is sucessed." << std::endl;
 }
 
 void TestComponent::Disable()
 {
-	cout << _gameObject->objectName << " : component2 Disable is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component2 Disable is sucessed." << std::endl;
 }
 
 void TestComponent::Release()

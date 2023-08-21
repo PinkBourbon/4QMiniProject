@@ -6,6 +6,6 @@ class TestObject;
 class TestScene : public act::ParentScene
 {
 public:
-	TestScene(string SceneName);
+	TestScene(std::string SceneName);
 	virtual ~TestScene();
 };

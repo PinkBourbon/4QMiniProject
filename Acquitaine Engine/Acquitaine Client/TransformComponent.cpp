@@ -1,6 +1,6 @@
 #include "TransformComponent.h"
 
-TransformComponent::TransformComponent(string componentname, act::ParentObject* pObject)
+TransformComponent::TransformComponent(std::string componentname, act::ParentObject* pObject)
 {
 	_gameObject = pObject;
 	_componentName = "Transform";
@@ -9,6 +9,7 @@ TransformComponent::TransformComponent(string componentname, act::ParentObject* 
 
 TransformComponent::~TransformComponent()
 {
+	delete _transform;
 }
 
 void TransformComponent::Awake()
@@ -38,7 +39,7 @@ void TransformComponent::Disable()
 
 void TransformComponent::Release()
 {
-	delete _transform;
+
 }
 
 /// 트렌스폼 객체를 받아야 할때 사용 할 수 있는 함수. 포인터를 반환.

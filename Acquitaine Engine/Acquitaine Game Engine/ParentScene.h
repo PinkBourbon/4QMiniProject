@@ -4,8 +4,6 @@
 
 #include "GameProcess.h"
 
-using namespace std;
-
 namespace act
 {
 	struct IObject;
@@ -21,9 +19,9 @@ namespace act
 
 	public:
 		template<typename T>
-		void AddObject(string objectName)
+		void AddObject(std::string objectName)
 		{
-			cout << "Sucessed object create." << endl;
+			std::cout << "Sucessed object create." << std::endl;
 			_gameProcess->CreateObjects<T>(objectName, this);
 		}
 
@@ -34,8 +32,8 @@ namespace act
 		void DeleteObject(ParentObject* pObject);
 
 	protected:
-		string _SceneName;
-		vector<IObject*>  _inControlObjects;
+		std::string _SceneName;
+		std::vector<IObject*>  _inControlObjects;
 		GameProcess* const _gameProcess;
 		// 이걸 이렇게 쓴 이유? 씬은 구조상 엔진에 접근 할 수 밖에 없는데
 		// 굳이 씬마다 포인터를 일일이 재 지정 할 필요는 없을것 같고

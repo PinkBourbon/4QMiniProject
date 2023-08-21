@@ -9,7 +9,7 @@ class TestObject;
 class TestComponent : public act::ParentComponent
 {
 public:
-	TestComponent(string name, act::ParentObject* pObject);
+	TestComponent(std::string name, act::ParentObject* pObject);
 	virtual ~TestComponent();
 
 	virtual void Initialize() override;

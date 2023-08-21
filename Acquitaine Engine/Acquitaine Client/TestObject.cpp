@@ -4,7 +4,7 @@
 #include "TestComponent 2.h"
 #include "TransformComponent.h"
 
-TestObject::TestObject(string objectName, act::ParentScene* parentScene)
+TestObject::TestObject(std::string objectName, act::ParentScene* parentScene)
 {
 	this->objectName = objectName;
 	this->_includedScene = parentScene;

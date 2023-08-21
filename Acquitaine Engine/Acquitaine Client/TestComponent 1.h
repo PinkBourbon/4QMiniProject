@@ -9,7 +9,7 @@ class ParentComponent2;
 class TestComponent1 : public act::ParentComponent
 {
 public:
-	TestComponent1(string name, act::ParentObject* pObject);
+	TestComponent1(std::string name, act::ParentObject* pObject);
 	virtual ~TestComponent1();
 
 	//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
