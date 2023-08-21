@@ -129,7 +129,13 @@ void DX11Render::Update(float deltaTime)
 
 	_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
 	_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	
+	/// Vector내의 큐브 요소 사용
 	//_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	for (auto& cube : _cubeVector)
+	{
+		cube->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	}
 
 }
 
@@ -179,10 +185,16 @@ void DX11Render::DrawObject()
 
 	_pAxis->Render();
 	_pGrid->Render();
+
+	/// Vector내의 큐브 요소 사용
 	//_pCube->Render();
+	for (auto& cube : _cubeVector)
+	{
+		cube->Render();
+	}
 
 	// fbx에있는 버텍스를받아서 그려야함
-	 // _pSpaceShip->Render();
+	// _pSpaceShip->Render();
 
 	// 레스터라이저 상태 설정 
 	_p3DDeviceContext->RSSetState(0);
@@ -204,7 +216,6 @@ void DX11Render::Finalize()
 {
 
 }
-
 
 HRESULT DX11Render::CreateHandleWindow(int windowWidth, int windowHeight)
 {
@@ -526,8 +537,7 @@ void DX11Render::RegisterObject(aptoCore::Renderable& object)
 		// 2. RawData를 내가 쓸 수 있는 DX11 객체로 변환(Model)
 		DataConversion();
 		// 3. DX11 객체 관리
-	}
-
+	} 
 }
 
 void DX11Render::DeregisterObject(aptoCore::Renderable& object)

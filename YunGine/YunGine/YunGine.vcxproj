@@ -149,6 +149,11 @@
     <ClInclude Include="GameProcess.h" />
     <ClInclude Include="GameTimer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Apto\AptoGraphics\Apto Graphics.vcxproj">
+      <Project>{81e3570d-8a42-4c33-8df5-67823b66e00e}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

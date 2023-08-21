@@ -1,7 +1,5 @@
 #include "GameProcess.h"
 
-//import aptoCore.Graphics;
-
 GameProcess::~GameProcess()
 {
 
@@ -9,52 +7,29 @@ GameProcess::~GameProcess()
 
 HRESULT GameProcess::MyInitialize(HINSTANCE hInstance)
 {
-	/// Win32 관련
-	// 윈도 클래스
-	// 
-	// 멀티바이트에서 유니코드로 넘어오면서 char* 에러가 났는데
-	// 이런식으로 형변환을 해도 될까?
-	//wchar_t szAppName[] = L"YJD3Ddemo Engine";
-	//WNDCLASS wndclass;
-
-	//wndclass.style = CS_HREDRAW | CS_VREDRAW;
-	//wndclass.lpfnWndProc = GameProcess::WndProc;
-	//wndclass.cbClsExtra = 0;
-	//wndclass.cbWndExtra = 0;
-	//wndclass.hInstance = hInstance;
-	//wndclass.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
-	//wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	//wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-	//wndclass.lpszMenuName = NULL;
-	//wndclass.lpszClassName = szAppName;
-
-	//// 윈도 클래스 등록
-	//RegisterClass(&wndclass);
-
-	//// 윈도 생성
-	//hWnd = CreateWindow(
-	//	// 멀티바이트에서 유니코드로 넘어오면서 char* 에러가 났는데
-	//	// 이런식으로 형변환을 해도 될까?
-	//	szAppName,
-	//	szAppName,
-	//	WS_OVERLAPPEDWINDOW,
-	//	100, 100, m_ScreenWidth, m_ScreenHeight,
-	//	NULL, NULL, hInstance, NULL);
-
-	//if (!hWnd) return S_FALSE;
-
-	//// 생성된 윈도를 화면에 표시
-	//ShowWindow(hWnd, SW_SHOWNORMAL);
-	//UpdateWindow(hWnd);
-
+	
 	if (CreateGraphicEngine() == S_FALSE)
 	{
 		return S_FALSE;
 	}
 
+	::RegisterObject(testCube.renderable);
+	MyCube testCube1;
+	::RegisterObject(testCube1.renderable);
+	MyCube testCube2;
+	::RegisterObject(testCube2.renderable);
+	MyCube testCube3;
+	::RegisterObject(testCube3.renderable);
+	MyCube testCube4;
+	::RegisterObject(testCube4.renderable);
+
+	testCube1.transform.SetPosition(1.0f, 2.0f, 3.0f);
+	testCube2.transform.SetPosition(2.0f, 4.0f, 6.0f);
+	testCube3.transform.SetPosition(3.0f, 6.0f, 9.0f);
+	testCube4.transform.SetPosition(4.0f, 8.0f, 10.0f);
+
 	_timer = new GameTimer();
 	_timer->Reset();
-
 
 	return S_OK;
 }

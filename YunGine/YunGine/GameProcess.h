@@ -20,6 +20,27 @@
 /// 23.06.16 -Dispact-
 /// </summary>
 
+
+
+import aptoCore.Renderable;
+import apto.Transform;
+
+class MyCube
+{
+public:
+	MyCube()
+	{
+		renderable.MeshFilePath = "Cube";
+		renderable.objectTransform = &transform;
+	}
+public:
+
+	aptoCore::Renderable renderable;
+	apto::Transform transform;
+
+};
+
+
 class GameProcess
 {
 public:
@@ -40,7 +61,6 @@ private:
 	// 그래픽스 엔진
 	HMODULE _hModule;
 	HINSTANCE _hInstance;
-	//std::unique_ptr<IDX11Render> _renderer;
 	
 	// 게임 타이머
 	GameTimer* _timer;
@@ -63,6 +83,8 @@ public:
 
 	// 메시지 핸들러 (윈도 콜백)
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+	MyCube testCube;
 
 };
 
