@@ -1,6 +1,6 @@
 #include "TransformComponent.h"
 
-TransformComponent::TransformComponent(string componentname, act::ParentObject* pObject)
+TransformComponent::TransformComponent(std::string componentname, act::ParentObject* pObject)
 {
 	_gameObject = pObject;
 	_componentName = "Transform";

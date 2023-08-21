@@ -2,7 +2,7 @@
 #include "TestObject.h"
 #include "TestObject_Find.h"
 
-TestScene::TestScene(string SceneName)
+TestScene::TestScene(std::string SceneName)
 {
 	this->_SceneName = SceneName;
 
