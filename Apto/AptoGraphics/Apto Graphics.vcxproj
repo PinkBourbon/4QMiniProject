@@ -165,6 +165,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DX11Global.h" />
     <ClInclude Include="IBuilder.h" />
     <ClInclude Include="KeyFrameData.h" />
     <ClInclude Include="Mesh.h" />

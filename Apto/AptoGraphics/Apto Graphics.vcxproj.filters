@@ -59,6 +59,9 @@
     <ClInclude Include="KeyFrameData.h">
       <Filter>Resource</Filter>
     </ClInclude>
+    <ClInclude Include="DX11Global.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

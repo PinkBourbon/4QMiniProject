@@ -27,7 +27,7 @@ namespace aptoCore
 		{
 			for (const auto& [key, value] : resources)
 			{
-				printf("%s, 주소 : 0x%p, refcount : %d\n", value.typeName.c_str(), value.data, value.refCount);
+				wprintf(L"%s, 주소 : 0x%p, refcount : %d\n", value.typeName.c_str(), value.data, value.refCount);
 			}
 		}
 
@@ -35,11 +35,11 @@ namespace aptoCore
 		struct ManagedData
 		{
 			ManagedData() : data(nullptr), refCount(0) {}
-			ManagedData(void* data, const std::string& typeName) : data(data), refCount(1), typeName(typeName) {}
+			ManagedData(void* data, const std::wstring& typeName) : data(data), refCount(1), typeName(typeName) {}
 
 			void* data;
 			int refCount;
-			std::string typeName;
+			std::wstring typeName;
 
 			void* GetData()
 			{
@@ -58,7 +58,7 @@ namespace aptoCore
 			}
 		};
 
-		std::unordered_map<std::string, ManagedData> resources;
+		std::unordered_map<std::wstring, ManagedData> resources;
 		std::mutex mutex;
 	};
 
