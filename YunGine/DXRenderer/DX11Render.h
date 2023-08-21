@@ -150,7 +150,7 @@ private:
 	// 오브젝트
 	Axis* _pAxis;
 	Grid* _pGrid;
-	std::vector<Cube*> _cubes;
+	std::vector<Cube*> _cubeVector;
 	Camera* _pCamera;
 
 	// 테스트용 fbx 로더
