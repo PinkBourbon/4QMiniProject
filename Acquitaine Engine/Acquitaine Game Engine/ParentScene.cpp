@@ -17,7 +17,7 @@ namespace act
 	void ParentScene::Initialize()
 	{
 		_gameProcess->AddScene(this);
-		cout << "scene create sucessed" << endl;
+		std::cout << "scene create sucessed" << std::endl;
 	}
 
 	void ParentScene::Finalize()

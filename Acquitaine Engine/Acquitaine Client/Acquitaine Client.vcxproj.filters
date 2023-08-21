@@ -25,6 +25,7 @@
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
+    <ClCompile Include="RenderComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -51,6 +52,7 @@
     <ClInclude Include="TransformComponent.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
+    <ClInclude Include="RenderComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Test">

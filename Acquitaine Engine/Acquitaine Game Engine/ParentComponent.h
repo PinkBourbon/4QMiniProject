@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 
-using namespace std;
-
 namespace act
 {
 
@@ -35,7 +33,7 @@ namespace act
 		virtual void SetGameObject(ParentObject* parentObject);
 
 	protected:
-		string _componentName;		// 컴포넌트의 이름
+		std::string _componentName;		// 컴포넌트의 이름
 		ParentObject* _gameObject;	// 내가 소속된 오브젝트
 		bool _isEnabled;			// 컴포넌트가 활성화 되어 있는지? 아닌지.
 

@@ -7,7 +7,7 @@ using Transform = apto::Transform;
 class TransformComponent:public act::ParentComponent
 {
 public:
-	TransformComponent(string componentname, act::ParentObject* pObject);
+	TransformComponent(std::string componentname, act::ParentObject* pObject);
 	virtual ~TransformComponent();
 
 	virtual void Awake() override;

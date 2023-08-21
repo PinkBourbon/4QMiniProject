@@ -3,11 +3,11 @@
 #include "ParentObject.h"
 #include "TransformComponent.h"
 
-TestComponent1::TestComponent1(string name, act::ParentObject* pObject)
+TestComponent1::TestComponent1(std::string name, act::ParentObject* pObject)
 {
 	_componentName = name;
 	_gameObject = pObject;
-	cout << _gameObject->objectName << " : component1 Initialize is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component1 Initialize is sucessed." << std::endl;
 }
 
 TestComponent1::~TestComponent1()
@@ -21,12 +21,12 @@ void TestComponent1::Awake()
 
 void TestComponent1::Enable()
 {
-	cout << _gameObject->objectName << " : component1 Enable is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component1 Enable is sucessed." << std::endl;
 }
 
 void TestComponent1::Start()
 {
-	cout << _gameObject->objectName << " : component1 Start is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component1 Start is sucessed." << std::endl;
 	TransformComponent* tempcomp = _gameObject->GetComponentPointer<TransformComponent>();
 	tempcomp->SetPosition(12.0f, 8.0f, 10.0f);
 }
@@ -37,16 +37,16 @@ void TestComponent1::FixedUpdate()
 
 void TestComponent1::Update()
 {
-	cout << _gameObject->objectName << " : component1 Update is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component1 Update is sucessed." << std::endl;
 	//_gameObject->AddComponent<TestComponent2>("test", _gameObject);
 	TransformComponent* tempcomp = _gameObject->GetComponentPointer<TransformComponent>();
 	tempcomp->SetPosition(tempcomp->GetPosition().x+1, 8.0f, 10.0f);
-	cout << tempcomp->GetPosition().x << " " << tempcomp->GetPosition().y << " " << tempcomp->GetPosition().z << " " << endl;
+	std::cout << tempcomp->GetPosition().x << " " << tempcomp->GetPosition().y << " " << tempcomp->GetPosition().z << " " << std::endl;
 }
 
 void TestComponent1::Disable()
 {
-	cout << _gameObject->objectName << " : component2 Disable is sucessed." << endl;
+	std::cout << _gameObject->objectName << " : component2 Disable is sucessed." << std::endl;
 	_gameObject->SetActive(true);
 }
 

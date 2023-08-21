@@ -22,7 +22,7 @@ namespace act
 		s_gameEnginePointer = this;
 
 		bool ret = ::Initialize();
-		cout << "Engine Initialized sucess" << endl;
+		std::cout << "Engine Initialized sucess" << std::endl;
 	}
 
 	void GameProcess::Finalize()
@@ -32,7 +32,7 @@ namespace act
 
 	void GameProcess::RunningGameProcess(double deltaTime)
 	{
-		cout << endl << "Engine is working" << endl << endl;
+		std::cout << std::endl << "Engine is working" << std::endl << std::endl;
 
 		float fixedupdateTimeRate = 0;
 
@@ -235,7 +235,7 @@ namespace act
 
 	void GameProcess::PutStateChangeBuffer(eObjectState newstate, ParentObject* pObject)
 	{
-		_stateChangeBuffer.push_back(make_pair(newstate, pObject));
+		_stateChangeBuffer.push_back(std::make_pair(newstate, pObject));
 	}
 
 	void GameProcess::EraseObjectStateList(ParentObject* pObject)
