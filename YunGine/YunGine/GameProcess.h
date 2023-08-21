@@ -5,11 +5,11 @@
 #include "GameTimer.h"
 
 #ifdef _DEBUG
-#define RENDER_PATH L"..\\x64\\Debug\\DXRenderer.dll"
-#pragma comment(lib, "..\\x64\\Debug\\DXRenderer.lib")		// 이 lib를 쓰겠다
-#else
-#define RENDER_PATH L"DXRenderer.dll"
-#pragma comment(lib, "..\\x64\\Release\\DXRenderer.lib")		// 이 lib를 쓰겠다
+#define RENDER_PATH L"..\\x64\\debug\\DXRenderer.dll"
+#pragma comment(lib, "..\\x64\\debug\\DXRenderer.lib")		// 이 lib를 쓰겠다
+#else					
+#define RENDER_PATH L"..\\x64\\release\\DXRenderer.dl"
+#pragma comment(lib, "..\\x64\\release\\DXRenderer.lib")		// 이 lib를 쓰겠다
 #endif // _DEBUG
 
 /// <summary>

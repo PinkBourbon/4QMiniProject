@@ -1,5 +1,6 @@
 #pragma once
 #include <fbxsdk.h>
+#include <vector>
 #include "Vertex.h"
 
 #ifdef _DEBUG
@@ -13,7 +14,8 @@
 #endif
 
 class Model;
-class ID3D11Buffer;
+class Renderable;
+struct ID3D11Buffer;
 
 class FbxLoaderV4
 {
@@ -23,34 +25,43 @@ public:
 
 	bool Release();
 
-	bool Load(std::wstring filename, Model* outModel);
+	void Load(std::string MeshFilePath);
 
 private:
 	FbxManager* _manager = nullptr;
 	FbxScene* _scene = nullptr;
-	FbxImporter* _importer = nullptr;
+	::FbxImporter* _importer = nullptr;
 
 	FbxNode* _rootNode = nullptr;
 	FbxMesh* _mesh = nullptr;
 
 	FbxAxisSystem _sceneAxisSystem;
-	vec3* _position = nullptr;
+	MyVertex* _position = nullptr;
 
 	void SceneSetting();
 	void LoadNodeRecursive(FbxNode* node);
-	void LoadMesh(FbxMesh* mesh,Model* outModel);
-	void ProcessControlPoint(FbxMesh* mesh);
-	void InsertVertex(const vec3& position, const vec3& normal, const vec2& uv, const vec3& binormal, const vec3& tangent);
+	void LoadMesh(FbxMesh* meshl);
 
-	vec3 ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCount);
-	vec3 ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexCount);
-	vec3 ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCount);
-	vec2 ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCount);
+	MyVertex ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCount);
+	MyVertex ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexCount);
+	MyVertex ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCount);
+	MyTexture ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCount);
 
-	vec3* _positions;
+	MyVertex* _positions;
 
 public:
-	//ID3D11Buffer GetVertices(Model* outmmodel);
-	//ID3D11Buffer GetIndecies(Model* outmmodel);
+	std::vector<Vertex> _Vertices;
+	std::vector<unsigned int>	_Indecies;
+
+	std::vector<Vertex>& GetVertices()
+	{
+		return _Vertices;
+	}
+
+	std::vector<unsigned int>& GetIndecis()
+	{
+		return _Indecies;
+	}
+
 };
 

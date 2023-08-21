@@ -27,6 +27,7 @@ export namespace aptoCore
 
 		DrawType drawType;
 		MeshType meshType;
+		std::string objectName;
 		std::string MeshFilePath;
 		std::string TextureFilePath;
 		std::string NormalMapFilePath;

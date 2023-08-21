@@ -15,9 +15,9 @@ using namespace std;
 #pragma comment(lib, "d3dcompiler.lib") 
 // 이펙트 라이브러리
 #ifdef _DEBUG
-#pragma comment(lib, "..\\Lib\\Effects11d.lib")
+#pragma comment(lib, "..\\Lib\\Debug\\Effects11d.lib")
 #else
-#pragma  comment(lib, "..\\Lib\\Effects11.lib")
+#pragma  comment(lib, "..\\Lib\\Release\\Effects11.lib")
 #endif
 
 /// 릴리즈 모드에서 RuntimeLibrary에 대해 불일치가 검색되었습니다. 에러가 발생중
@@ -42,6 +42,7 @@ class Camera;
 
 class FbxLoaderV4;
 class AssimpLoader;
+class Model;
 
 class DX11Render : public IDX11Render
 {
@@ -67,6 +68,10 @@ public:
 
 	HRESULT InitVB();
 
+	// 오브젝트 등록
+	virtual void RegisterObject(aptoCore::Renderable& object) override;
+	virtual void DeregisterObject(aptoCore::Renderable& object) override;
+
 	virtual void Finalize() override;
 
 private:
@@ -89,8 +94,9 @@ private:
 	HRESULT CreateAxis();
 
 	// 테스트용
-	HRESULT CreateLoader();
 	HRESULT CreateShip();
+	void LoadFbx(aptoCore::Renderable& object);
+	void DataConversion();
 
 	// 메시지 핸들러 (윈도 콜백)
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -102,7 +108,6 @@ private:
 	// 언젠가 리사이즈 할 때 필요한 변수들
 	int _scrrenWidth = 0;
 	int _scrrenHeight = 0;
-
 
 private:
 	//int mVideoCardMemory;	// 블로그에서는 있지만 어디다가 쓰는걸까?
@@ -145,7 +150,7 @@ private:
 	// 오브젝트
 	Axis* _pAxis;
 	Grid* _pGrid;
-	Cube* _pCube;
+	std::vector<Cube*> _cubes;
 	Camera* _pCamera;
 
 	// 테스트용 fbx 로더

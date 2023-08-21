@@ -1,12 +1,12 @@
-#include "AssimpLoader.h"
-#include "FbxLoaderV4.h"
-#include "DX11Render.h"
-
 #include <iostream>
 #include <fstream>
 
 #include <d3dcompiler.h>
 #include <d3dcommon.h>
+
+//#include "AssimpLoader.h"
+#include "FbxLoaderV4.h"
+#include "DX11Render.h"
 
 #include "Vertex.h"
 
@@ -14,6 +14,9 @@
 #include "Cube.h"
 #include "Grid.h"
 #include "Camera.h"
+#include "Model.h"
+
+import aptoCore.Renderable;
 
 // dll로 부를때 랜더러를 만드는 함수의 주소를 가지고 있는다.
 // return을 포인터로 받아줄 수 있다.
@@ -34,7 +37,7 @@ DX11Render::DX11Render()
 	IndexBuffer(nullptr),
 	_deltaTime(0.0f),
 	_pAxis(nullptr),
-	_pCube(nullptr),
+	_cubeVector(),
 	_pGrid(nullptr),
 	_pCamera(nullptr),
 	_worldMatrix
@@ -90,12 +93,6 @@ long DX11Render::Initialize()
 		return false;
 	}
 
-	hr = CreateLoader();
-	if (FAILED(hr))
-	{
-		return false;
-	}
-
 	hr = CreateObject();	// 오브젝트들을 모두 여기서 만든다.
 	if (FAILED(hr))
 	{
@@ -132,7 +129,7 @@ void DX11Render::Update(float deltaTime)
 
 	_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
 	_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
-	_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	//_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
 
 }
 
@@ -182,10 +179,10 @@ void DX11Render::DrawObject()
 
 	_pAxis->Render();
 	_pGrid->Render();
-	_pCube->Render();
+	//_pCube->Render();
 
 	// fbx에있는 버텍스를받아서 그려야함
-	// _pSpaceShip->Render();
+	 // _pSpaceShip->Render();
 
 	// 레스터라이저 상태 설정 
 	_p3DDeviceContext->RSSetState(0);
@@ -493,7 +490,6 @@ HRESULT DX11Render::CreateCube()
 {
 	HRESULT hr = S_OK;
 
-	_pCube = new Cube(_p3DDevice, _p3DDeviceContext, _pSolidRasterState);
 
 	return S_OK;
 }
@@ -516,30 +512,55 @@ HRESULT DX11Render::CreateAxis()
 	return S_OK;
 }
 
-
-HRESULT DX11Render::CreateLoader()
+void DX11Render::RegisterObject(aptoCore::Renderable& object)
 {
-	HRESULT hr = S_OK;
-	
-	//_pLoader = new FbxLoaderV4;
+	if (object.MeshFilePath == "Cube")
+	{
+		// 중복되는 것 확인안하고 넣기
+		_cubeVector.push_back(new Cube(_p3DDevice, _p3DDeviceContext, _pSolidRasterState, object.objectName));
+	}
+	else
+	{
+		// 1. Renderable을 읽고 RawData로 변환 (fbx)
+		LoadFbx(object);
+		// 2. RawData를 내가 쓸 수 있는 DX11 객체로 변환(Model)
+		DataConversion();
+		// 3. DX11 객체 관리
+	}
 
-	//_Assimp = new AssimpLoader;
+}
 
-	return S_OK;
+void DX11Render::DeregisterObject(aptoCore::Renderable& object)
+{
+
 }
 
 HRESULT DX11Render::CreateShip()
 {
 	HRESULT hr = S_OK;
 
-
-	//Model ship = new Model(L"..\\Resource\\ship.fbx");
+	//Model* ship = new Model(L"..\\Resource\\spaceship.fbx");
 
 	//_pLoader->Load(L"..//Resource//spaceship.fbx");
 
 	//_Assimp->LoadFbx(L"..//Resource//spaceship.fbx");
 
 	return S_OK;
+}
+
+
+void DX11Render::LoadFbx(aptoCore::Renderable& object)
+{
+	std::string filepath = object.MeshFilePath;
+	FbxLoaderV4* loader = new FbxLoaderV4;
+	loader->Load(filepath);
+	delete loader;
+}
+
+
+void DX11Render::DataConversion()
+{
+
 }
 
 LRESULT CALLBACK DX11Render::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

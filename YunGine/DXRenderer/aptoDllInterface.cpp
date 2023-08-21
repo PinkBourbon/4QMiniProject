@@ -32,13 +32,13 @@ bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight)
 }
 
 
-void RegisterObject(Renderable& object)
+YUNGINEDLL void RegisterObject(aptoCore::Renderable& object)
 {
-	
+	g_renderer->RegisterObject(object);
 }
 
 
-void DeregisterObject(Renderable& object)
+YUNGINEDLL void DeregisterObject(aptoCore::Renderable& object)
 {
-
+	g_renderer->DeregisterObject(object);
 }

@@ -48,9 +48,6 @@
     <Filter Include="Source File\Util">
       <UniqueIdentifier>{3b4803be-e03f-4f59-95f3-283d8563ee3f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source File\FBXLoader\Assimp">
-      <UniqueIdentifier>{de6a07f3-ad04-4217-9e27-a629218ea019}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source File\Object\Model">
       <UniqueIdentifier>{0925dbf3-96a4-4553-acf9-41d183515552}</UniqueIdentifier>
     </Filter>
@@ -101,9 +98,6 @@
     <ClInclude Include="FbxLoaderV4.h">
       <Filter>Source File\FBXLoader\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="AssimpLoader.h">
-      <Filter>Source File\FBXLoader\Assimp</Filter>
-    </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Source File\Object\Model</Filter>
     </ClInclude>
@@ -132,9 +126,6 @@
     </ClCompile>
     <ClCompile Include="FbxLoaderV4.cpp">
       <Filter>Source File\FBXLoader\SDK</Filter>
-    </ClCompile>
-    <ClCompile Include="AssimpLoader.cpp">
-      <Filter>Source File\FBXLoader\Assimp</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source File\Object\Model</Filter>
