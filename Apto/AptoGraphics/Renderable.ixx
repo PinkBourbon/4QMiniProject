@@ -2,7 +2,7 @@ module;
 #include <string>
 export module aptoCore.Renderable;
 
-namespace apto
+export namespace apto
 {
 	class Transform;
 }
