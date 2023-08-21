@@ -9,6 +9,7 @@ TransformComponent::TransformComponent(std::string componentname, act::ParentObj
 
 TransformComponent::~TransformComponent()
 {
+	delete _transform;
 }
 
 void TransformComponent::Awake()
@@ -38,7 +39,7 @@ void TransformComponent::Disable()
 
 void TransformComponent::Release()
 {
-	delete _transform;
+
 }
 
 /// 트렌스폼 객체를 받아야 할때 사용 할 수 있는 함수. 포인터를 반환.
