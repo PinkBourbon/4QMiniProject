@@ -8,6 +8,7 @@ using namespace std;
 class TestComponent;
 class TestComponent1;
 class TestComponent_Find;
+class TransformComponent;
 
 class TestObject :public act::ParentObject
 {

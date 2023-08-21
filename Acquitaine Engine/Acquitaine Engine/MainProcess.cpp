@@ -21,7 +21,7 @@ HRESULT MainProcess::Initialize(HINSTANCE hInstance)
 	_timer = new Timer();
 	
 	_gameprocess = new act::GameProcess();
-	_gameprocess->GameProcessInitialize();
+	_gameprocess->Initialize();
 
 	_gameClient = new SceneManager();
 	_gameClient->Initialize();
