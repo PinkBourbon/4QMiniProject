@@ -28,7 +28,7 @@ export namespace apto
 		constexpr Matrix4f& operator=(Matrix4f&&) noexcept = default;
 		~Matrix4f() noexcept = default;
 
-		//operator DirectX::XMMATRIX() const noexcept;
+		operator DirectX::XMMATRIX() const noexcept;
 
 		Matrix4f& operator*=(const Matrix4f& rhs) noexcept
 		{
