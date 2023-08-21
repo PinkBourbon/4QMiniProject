@@ -51,7 +51,7 @@ void Cube::Render()
 	_3DDeviceContext->IASetIndexBuffer(_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
 	///WVP TM등을 셋팅
-	//_world = this->transform->GetMatrix4f();
+	_world = this->transform->GetMatrix4f();
 	DirectX::XMMATRIX worldViewProj = _world * _view * _proj;
 
 	_textureboxMatrixVariable->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
