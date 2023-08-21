@@ -5,10 +5,11 @@
 
 import apto.math;
 import apto.util.Time;
-import apto.graphics.Camera;
+//import apto.graphics.Camera;
 import aptoCore.Graphics;
-
 import aptoCore.rawData;
+
+import apto;
 
 bool g_isResized = false;
 
@@ -35,6 +36,10 @@ int main()
 	std::wcout << node.mesh->indices.size() << std::endl;
 
 	aptoCore::Graphics::Initialize();
+
+	apto::Transform tr;
+
+	std::wcout << tr.GetPosition().x << std::endl;
 
 	if (!g_isResized)
 	{

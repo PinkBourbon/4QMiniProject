@@ -20,7 +20,7 @@ namespace aptoCore
 		virtual void* operator()(std::wstring* typeName) const final
 		{
 			int wstringLength = MultiByteToWideChar(CP_UTF8, 0, typeid(Derived).name(), -1, nullptr, 0);
-			typeName->resize(wstringLength + 1);
+			typeName->resize(wstringLength);
 			MultiByteToWideChar(CP_UTF8, 0, typeid(Derived).name(), -1, typeName->data(), wstringLength);
 
 			return build();
