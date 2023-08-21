@@ -14,7 +14,8 @@
 #endif
 
 class Model;
-class ID3D11Buffer;
+class Renderable;
+struct ID3D11Buffer;
 
 class FbxLoaderV4
 {
@@ -24,12 +25,12 @@ public:
 
 	bool Release();
 
-	void Load(std::wstring filename, Model* outModel);
+	void Load(std::string MeshFilePath);
 
 private:
 	FbxManager* _manager = nullptr;
 	FbxScene* _scene = nullptr;
-	FbxImporter* _importer = nullptr;
+	::FbxImporter* _importer = nullptr;
 
 	FbxNode* _rootNode = nullptr;
 	FbxMesh* _mesh = nullptr;
@@ -39,7 +40,7 @@ private:
 
 	void SceneSetting();
 	void LoadNodeRecursive(FbxNode* node);
-	void LoadMesh(FbxMesh* mesh,Model* outModel);
+	void LoadMesh(FbxMesh* meshl);
 
 	MyVertex ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCount);
 	MyVertex ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexCount);

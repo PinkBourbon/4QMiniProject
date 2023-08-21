@@ -170,7 +170,7 @@ HRESULT GameProcess::CreateGraphicEngine()
 	//	// 구체적인 내부 구현이 없으므로 사용할 수 없는 것이다.
 	//	_renderer->Initialize();
 	//}
-	bool succes = Initialize();
+	bool succes = ::Initialize();
 	//_renderer.reset(CreateRenderer());
 
 	return S_OK;

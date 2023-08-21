@@ -23,18 +23,19 @@ FbxLoaderV4::~FbxLoaderV4()
 
 bool FbxLoaderV4::Release()
 {
-	_mesh->Destroy();
-
-	_scene->Destroy();
-	_importer->Destroy();
-	_manager->Destroy();
+	if (_manager)
+	{
+		_manager->Destroy();
+	}
+	// _mesh->Destroy();
+	// _scene->Destroy();
+	// _importer->Destroy();
 
 	return true;
 }
 
-void FbxLoaderV4::Load(std::wstring filename, Model* outModel)
+void FbxLoaderV4::Load(std::string MeshFilePath)
 {
-
 	// 매니저 생성
 	_manager = FbxManager::Create();
 
@@ -45,12 +46,12 @@ void FbxLoaderV4::Load(std::wstring filename, Model* outModel)
 	_manager->SetIOSettings(ios);
 
 	// 파일 변환
-	std::string temp;
-	wstostr(filename, &temp);
+	//std::string temp;
+	//wstostr(filename, &temp);
 
 	// 임포터 생성
-	_importer = FbxImporter::Create(_manager, "");
-	_importer->Initialize(temp.c_str(), -1, ios); // 임포터 초기화
+	_importer = fbxsdk::FbxImporter::Create(_manager, "");
+	bool ret = _importer->Initialize(MeshFilePath.c_str()); // 임포터 초기화
 
 	// 씬 가져오기, importer 초기화 되면 파일에서 씬을 가져오기 위해 씬 컨테이너 생성
 	_scene = FbxScene::Create(_manager, "scene");
@@ -62,7 +63,7 @@ void FbxLoaderV4::Load(std::wstring filename, Model* outModel)
 	LoadNodeRecursive(_rootNode);
 
 	// 메쉬 불러오기
-	LoadMesh(_mesh, outModel);
+	LoadMesh(_mesh);
 
 	_importer->Destroy();
 }
@@ -85,7 +86,7 @@ void FbxLoaderV4::SceneSetting()
 
 void FbxLoaderV4::LoadNodeRecursive(FbxNode* node)
 {
-	FbxNodeAttribute* nodeAttribute = node->GetNodeAttribute();
+	FbxNodeAttribute* nodeAttribute = node->GetNodeAttribute();		/// null
 	if (nodeAttribute)
 	{
 		if (nodeAttribute->GetAttributeType() == FbxNodeAttribute::eMesh)
@@ -102,36 +103,36 @@ void FbxLoaderV4::LoadNodeRecursive(FbxNode* node)
 	}
 }
 
-void FbxLoaderV4::LoadMesh(FbxMesh* mesh, Model* outModel)
+void FbxLoaderV4::LoadMesh(FbxMesh* meshl)
 {
-	unsigned int count = mesh->GetControlPointsCount();
+	unsigned int count = meshl->GetControlPointsCount();
 	_positions = new MyVertex[count];
 
 	for (unsigned int i = 0; i < count; ++i)
 	{
 		MyVertex position;
 
-		position.x = static_cast<float>(mesh->GetControlPointAt(i).mData[0]);
-		position.y = static_cast<float>(mesh->GetControlPointAt(i).mData[1]);
-		position.z = static_cast<float>(mesh->GetControlPointAt(i).mData[2]);
+		position.x = static_cast<float>(meshl->GetControlPointAt(i).mData[0]);
+		position.y = static_cast<float>(meshl->GetControlPointAt(i).mData[1]);
+		position.z = static_cast<float>(meshl->GetControlPointAt(i).mData[2]);
 
 		_positions[i] = position;
 	}
 
 	unsigned int vertexCount = 0;
-	unsigned int triCount = mesh->GetPolygonCount();
+	unsigned int triCount = meshl->GetPolygonCount();
 
 	for (unsigned int i = 0; i < triCount; i++)
 	{
 		for (unsigned int j = 0; j < 3; j++)
 		{
-			int controlPointIndex = mesh->GetPolygonVertex(i, j);
+			int controlPointIndex = meshl->GetPolygonVertex(i, j);
 			_Vertices.emplace_back(Vertex());
 			_Vertices[i * 3 + j].pos = _positions[controlPointIndex];
-			_Vertices[i * 3 + j].normal = ReadNormal(mesh, controlPointIndex, vertexCount);
-			_Vertices[i * 3 + j].uv = ReadUV(mesh, controlPointIndex, mesh->GetTextureUVIndex(i, j));
-			_Vertices[i * 3 + j].binormal = ReadBinormal(mesh, controlPointIndex, vertexCount);
-			_Vertices[i * 3 + j].tangent = ReadTangent(mesh, controlPointIndex, vertexCount);
+			_Vertices[i * 3 + j].normal = ReadNormal(meshl, controlPointIndex, vertexCount);
+			_Vertices[i * 3 + j].uv = ReadUV(meshl, controlPointIndex, meshl->GetTextureUVIndex(i, j));
+			_Vertices[i * 3 + j].binormal = ReadBinormal(meshl, controlPointIndex, vertexCount);
+			_Vertices[i * 3 + j].tangent = ReadTangent(meshl, controlPointIndex, vertexCount);
 
 			vertexCount++;
 

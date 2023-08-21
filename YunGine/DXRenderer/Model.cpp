@@ -29,7 +29,7 @@ void Model::Render()
 void Model::Load(std::wstring filePath)
 {
 	FbxLoaderV4* loader = new FbxLoaderV4;
-	loader->Load(filePath, this);
+	//loader->Load(filePath, this);
 	delete loader;
 }
 
@@ -40,9 +40,11 @@ void Model::ObjectSetting()
 
 	// 만드는 순서
 	// shaderResource -> GeometryBuffer -> Effect -> VertexLayout
-	BuildFX();
 
-
+	// BuildFX();
+	// GetTextureFile();
+	// BuildFxFromCso();
+	// BuildVertexLayout();
 
 }
 

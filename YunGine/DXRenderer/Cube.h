@@ -2,18 +2,26 @@
 #include <iostream>
 #include "RenderableBase.h"
 
+import apto.Transform;
+
 class Cube final : public RenderableBase
 {
 public:
 	Cube(
 		Microsoft::WRL::ComPtr<ID3D11Device>& pDevice,
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext>& pDeviceContext,
-		Microsoft::WRL::ComPtr<ID3D11RasterizerState>& pRasterState);
+		Microsoft::WRL::ComPtr<ID3D11RasterizerState>& pRasterState,
+		std::string& name
+	);
 	~Cube();
 
 	virtual void Update() override;
 	virtual void ObjectUpdate(const DirectX::XMMATRIX& world, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& projection) override;
 	virtual void Render() override;
+
+	// 이름
+	std::string name;
+	apto::Transform* transform;
 
 private:
 	virtual void ObjectSetting() override;
@@ -36,5 +44,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	_diffuseMapSRV;
 	Microsoft::WRL::ComPtr<ID3DX11EffectShaderResourceVariable> _diffuseMap;
 	Microsoft::WRL::ComPtr <ID3DX11EffectMatrixVariable> _gworldMatrixVariable;
+
 };
 

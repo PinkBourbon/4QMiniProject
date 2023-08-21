@@ -60,7 +60,7 @@ namespace aptoCore::Graphics
 
 	bool Initialize()
 {
-		HWND g_hwnd = InitializeWindow(g_displayWidth, g_displayHeight);
+		g_hwnd = InitializeWindow(g_displayWidth, g_displayHeight);
 
 		D3D_FEATURE_LEVEL maxSupportedFeatureLevel = D3D_FEATURE_LEVEL_9_1;
 
