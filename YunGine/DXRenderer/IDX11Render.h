@@ -2,7 +2,10 @@
 //#include <string>
 #include <windows.h>
 
-struct Renderable;
+namespace aptoCore
+{
+	struct Renderable;
+}
 
 #ifdef YUNGINEDLLEXPORT
 #define YUNGINEDLL extern"C" __declspec(dllexport)
@@ -17,6 +20,9 @@ public:
 	virtual ~IDX11Render() {};	// 인터페이스 소멸자는 virtual로
 
 	virtual long Initialize() abstract;
+	// 오브젝트 등록
+	virtual void RegisterObject(aptoCore::Renderable& object) abstract;
+	virtual void DeregisterObject(aptoCore::Renderable& object) abstract;
 
 	virtual void Update(float deltaTime) abstract;
 	virtual void Render() abstract;
@@ -38,5 +44,5 @@ YUNGINEDLL bool Initialize();
 YUNGINEDLL void Finalize();
 YUNGINEDLL void Render(float deltaTime);
 YUNGINEDLL bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight);
-YUNGINEDLL void RegisterObject(Renderable& object);
-YUNGINEDLL void DeregisterObject(Renderable& object);
+YUNGINEDLL void RegisterObject(aptoCore::Renderable& object);
+YUNGINEDLL void DeregisterObject(aptoCore::Renderable& object);

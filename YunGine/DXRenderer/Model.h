@@ -17,11 +17,17 @@ private:
 
 	virtual void ObjectSetting() override;
 
+	HRESULT CreateDevice();
+	HRESULT CreateSwapChain();
+	HRESULT CreateBackBuffer();
+	HRESULT CreateRaster();
+
 	void BuildFX();
+	void GetTextureFile();
+	void BuildFxFromCso(ID3D11Device* device, const std::wstring& filename);
 	void BuildVertexLayout();
 
-	void BuildFxFromCso(ID3D11Device* device, const std::wstring& filename);
-	void GetTextureFile();
-
+	unsigned int _fbxVertexCount;
+	unsigned int _fbxIndexCount;
 };
 

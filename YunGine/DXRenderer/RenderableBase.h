@@ -36,8 +36,11 @@ protected:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout>			_InputLayout;		// 엔진에서 이걸 알아야 할까?->여기서 해주면된다.
 
 	Microsoft::WRL::ComPtr<ID3DX11Effect>				_Effect;			// 버텍스 셰이더 픽셀 셰이더를 대체할 무언가
-	Microsoft::WRL::ComPtr<ID3DX11EffectTechnique>		_Technique;		// 테크
+	Microsoft::WRL::ComPtr<ID3DX11EffectTechnique>		_Technique;			// 테크
 	Microsoft::WRL::ComPtr<ID3DX11EffectMatrixVariable>	_MatrixVariable;	// 상수버퍼를 대신할 무언가?
+
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> _CurrRasterState;		// 레스터스테이트
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> _SolidRasterState;
 
 	DirectX::XMMATRIX _world;	// 월드 변환 행렬 (로컬 -> 월드)
 	DirectX::XMMATRIX _view;	// 시야 변환 행렬 (카메라 뷰)
@@ -46,7 +49,7 @@ protected:
 	ID3D10Blob* _compiledShader = 0;
 	ID3D10Blob* _compilationMsgs = 0;
 
-	Vertex3 _position = { 0.0f, };
+	MyVertex _position;
 
 	// D3D쪽에서 쓰는 버퍼가있으므로 굳이필요하지않음
 	//std::vector<Vertex> _vertexVector;

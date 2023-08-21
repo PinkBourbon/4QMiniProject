@@ -47,24 +47,32 @@ struct ConstantBuffer
 	DirectX::XMMATRIX Proj;
 };
 
-struct Vertex3
-{
-	float pos[3];
-};
-
-struct vec3
+struct MyVertex
 {
 	float x;
 	float y;
 	float z;
 
-	bool operator==(const vec3& other) const
+	bool operator==(const MyVertex& other) const
 	{
 		return x == other.x &&
 			y == other.y &&
 			z == other.z;
 	}
-	vec3() : x(0.0f), y(0.0f), z(0.0f) {}
+	MyVertex() : x(0.0f), y(0.0f), z(0.0f) {}
+};
+
+struct MyTexture
+{
+	float u;
+	float v;
+
+	bool operator==(const MyTexture& other) const
+	{
+		return u == other.u &&
+			v == other.v;
+	}
+	MyTexture() : u(0.0f), v(0.0f) {}
 };
 
 struct vec2
@@ -75,21 +83,28 @@ struct vec2
 
 struct Vertex
 {
-	apto::Vector3f pos;
-	apto::Vector3f tex;
-	apto::Vector3f normal;
-	apto::Vector3f tangent;
-	apto::Vector4f color;
-	apto::Vector2f uv;
-	apto::Vector3f binormal;
+	//apto::Vector3f pos;
+	//apto::Vector3f tex;
+	//apto::Vector3f normal;
+	//apto::Vector3f tangent;
+	//apto::Vector4f color;
+	//apto::Vector2f uv;
+	//apto::Vector3f binormal;
 
-	// UINT boneIndices[4];
-	// float boneWeights[4];
+	MyVertex pos;
+	MyVertex normal;
+	MyTexture uv;
+	MyVertex binormal;
+	MyVertex tangent;
 
-	// vec3 normal;
-	// vec2 uv;
-	// vec3 binormal;
-	// vec3 tangent;
+	bool operator==(const Vertex& other) const
+	{
+		return pos == other.pos &&
+			normal == other.normal &&
+			uv == other.uv &&
+			binormal == other.binormal &&
+			tangent == other.tangent;
+	}
 };
 
 struct Texture 
