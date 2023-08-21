@@ -9,8 +9,9 @@ Cube::Cube(
 	Microsoft::WRL::ComPtr<ID3D11Device>& pDevice, 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>& pDeviceContext, 
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>& pRasterState,
-	std::string& name
-	) : name(name)
+	std::string& name,
+	apto::Transform* transform
+	) : name(name), transform(transform)
 {
 	pDevice.CopyTo(_3DDevice.GetAddressOf());
 	pDeviceContext.CopyTo(_3DDeviceContext.GetAddressOf());

@@ -13,20 +13,25 @@ HRESULT GameProcess::MyInitialize(HINSTANCE hInstance)
 		return S_FALSE;
 	}
 
+	// 오브젝트 등록
 	::RegisterObject(testCube.renderable);
-	MyCube testCube1;
 	::RegisterObject(testCube1.renderable);
-	MyCube testCube2;
 	::RegisterObject(testCube2.renderable);
-	MyCube testCube3;
 	::RegisterObject(testCube3.renderable);
-	MyCube testCube4;
 	::RegisterObject(testCube4.renderable);
 
 	testCube1.transform.SetPosition(1.0f, 2.0f, 3.0f);
 	testCube2.transform.SetPosition(2.0f, 4.0f, 6.0f);
 	testCube3.transform.SetPosition(3.0f, 6.0f, 9.0f);
 	testCube4.transform.SetPosition(4.0f, 8.0f, 10.0f);
+
+	// 테스팅
+	::RegisterObject(myTest.renderable);
+	myTest.transform.SetPosition(0.0f, 0.0f, 0.0f);
+
+
+	// 지우기
+	::DeregisterObject(testCube.renderable);
 
 	_timer = new GameTimer();
 	_timer->Reset();
@@ -46,13 +51,15 @@ void GameProcess::Loop()
 		}
 		else
 		{
+			// Y축 기준 회전
+			testCube1.transform.AddRotation({ 0.0f, 1.0f, 0.0f }, 1.0f);
+
 			Update();
 			Render();
 		}
 
 	}
 }
-
 
 void GameProcess::Update()
 {

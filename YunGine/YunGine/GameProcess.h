@@ -20,8 +20,6 @@
 /// 23.06.16 -Dispact-
 /// </summary>
 
-
-
 import aptoCore.Renderable;
 import apto.Transform;
 
@@ -37,7 +35,19 @@ public:
 
 	aptoCore::Renderable renderable;
 	apto::Transform transform;
+};
 
+class Test
+{
+public:
+	Test()
+	{
+		renderable.MeshFilePath = "..\\Resource\\SpaceShip.fbx";
+		renderable.objectTransform = &transform;
+	}
+
+	aptoCore::Renderable renderable;
+	apto::Transform transform;
 };
 
 
@@ -85,6 +95,11 @@ public:
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	MyCube testCube;
+	MyCube testCube1;
+	MyCube testCube2;
+	MyCube testCube3;
+	MyCube testCube4;
 
+	Test myTest;
 };
 

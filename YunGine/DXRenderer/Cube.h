@@ -11,7 +11,8 @@ public:
 		Microsoft::WRL::ComPtr<ID3D11Device>& pDevice,
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext>& pDeviceContext,
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState>& pRasterState,
-		std::string& name
+		std::string& name,
+		apto::Transform* transform
 	);
 	~Cube();
 
