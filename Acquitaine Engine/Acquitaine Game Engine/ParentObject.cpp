@@ -21,8 +21,8 @@ namespace act
 	{
 	}
 
-	vector<ParentComponent*> ParentObject::GetComponentlist()
-	{
+	std::vector<ParentComponent*>& ParentObject::GetComponentlist()
+{
 		return _componentList;
 	}
 

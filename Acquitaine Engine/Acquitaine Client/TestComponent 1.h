@@ -12,11 +12,6 @@ public:
 	TestComponent1(string name, act::ParentObject* pObject);
 	virtual ~TestComponent1();
 
-	virtual void Initialize() override;
-	virtual void Finalize() override;
-	virtual void InputEvent() override;
-	virtual void Render() override;
-	virtual void Phsics()override;
 	//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 
 	virtual void Awake() override;
