@@ -2,7 +2,6 @@
 #include "ParentComponent.h"
 
 import apto.Transform;
-using Transform = apto::Transform;
 
 class TransformComponent:public act::ParentComponent
 {
@@ -20,7 +19,7 @@ public:
 	virtual void Disable() override;
 	virtual void Release() override;
 
-	Transform* GetTransform();
+	apto::Transform* GetTransform();
 
 	///	이 아래는 apto.transform을 캡슐링 해놓은 함수들
 	void SetPosition(float x, float y, float z);
@@ -36,6 +35,6 @@ public:
 	apto::Vector4f GetScale(); 
 
 private:
-	Transform* _transform;
+	apto::Transform* _transform;
 };
 

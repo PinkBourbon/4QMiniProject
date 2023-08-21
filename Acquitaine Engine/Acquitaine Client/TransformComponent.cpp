@@ -4,7 +4,7 @@ TransformComponent::TransformComponent(std::string componentname, act::ParentObj
 {
 	_gameObject = pObject;
 	_componentName = "Transform";
-	_transform = new Transform();
+	_transform = new apto::Transform();
 }
 
 TransformComponent::~TransformComponent()
@@ -43,7 +43,7 @@ void TransformComponent::Release()
 }
 
 /// 트렌스폼 객체를 받아야 할때 사용 할 수 있는 함수. 포인터를 반환.
-Transform* TransformComponent::GetTransform()
+apto::Transform* TransformComponent::GetTransform()
 {
 	return _transform;
 }

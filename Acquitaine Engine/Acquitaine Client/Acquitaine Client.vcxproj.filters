@@ -28,7 +28,9 @@
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Component\Render</Filter>
     </ClCompile>
-    <ClCompile Include="CameraComponent.cpp" />
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -58,7 +60,9 @@
     <ClInclude Include="RenderComponent.h">
       <Filter>Component\Render</Filter>
     </ClInclude>
-    <ClInclude Include="CameraComponent.h" />
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Test">

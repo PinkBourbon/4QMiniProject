@@ -5,7 +5,7 @@ import apto.graphics.Camera;
 class CameraComponent : public act::ParentComponent
 {
 public:
-	CameraComponent();
+	CameraComponent(std::string componentname, act::ParentObject* pObject);
 	~CameraComponent();
 
 public:
@@ -21,6 +21,17 @@ public:
 
 	/////////// 아래는 카메라를 캡슐링 한거 /////////// 
 
+	void SetPosition(float x, float y, float z);
+	void AddPosition(float x, float y, float z);
+	void SetRotation(float x, float y, float z);
+	void AddRotationAxis(const apto::Vector3f& axis, float radian);
+	void LookAt(float x, float y, float z);
+	void SetPropeties(float viewportWidth, float viewportHeight, float fovDegree = 60.f, float nearZ = 0.1f, float farZ = 10000.f);
 
+	void SetOrthographic();
+	void SetPerspective();
+
+private:
+	apto::Camera* _camera;
 };
 
