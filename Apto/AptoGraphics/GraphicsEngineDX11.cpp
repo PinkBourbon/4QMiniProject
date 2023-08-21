@@ -1,7 +1,7 @@
 module;
 #include <windows.h>
 #include <d3d11_4.h>
-#include <dxgi1_6.h>
+//#include <dxgi1_6.h>
 #include <DirectXColors.h>
 
 #if defined(DEBUG) || defined(_DEBUG)

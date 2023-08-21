@@ -29,7 +29,7 @@ namespace aptoCore
 	struct MeshBuilder : public IBuilder<Mesh>
 	{
 	public:
-		MeshBuilder(const std::string filePath) : IBuilder<Mesh>(filePath) {};
+		MeshBuilder(const std::wstring filePath) : IBuilder<Mesh>(filePath) {};
 
 		virtual void* build() const override;
 	};

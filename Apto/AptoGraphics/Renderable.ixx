@@ -2,6 +2,11 @@ module;
 #include <string>
 export module aptoCore.Renderable;
 
+namespace apto
+{
+	class Transform;
+}
+
 export namespace aptoCore
 {
 	struct Renderable
@@ -17,6 +22,8 @@ export namespace aptoCore
 			SkinnedMesh,
 			StaticMesh
 		};
+
+		apto::Transform* objectTransform;
 
 		DrawType drawType;
 		MeshType meshType;
