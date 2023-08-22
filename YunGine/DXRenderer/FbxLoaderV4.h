@@ -42,7 +42,7 @@ private:
 	void LoadNodeRecursive(FbxNode* node);
 	void LoadMesh(FbxMesh* meshl);
 
-	MyVertex ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCount);
+	MyVertex ReadNormal(const fbxsdk::FbxMesh* mesh, int controlPointIndex, int vertexCount);
 	MyVertex ReadBinormal(FbxMesh* mesh, int controlPointIndex, int vertexCount);
 	MyVertex ReadTangent(FbxMesh* mesh, int controlPointIndex, int vertexCount);
 	MyTexture ReadUV(FbxMesh* mesh, int controlPointIndex, int vertexCount);

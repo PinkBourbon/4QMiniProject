@@ -32,7 +32,6 @@ public:
 		renderable.objectTransform = &transform;
 	}
 public:
-
 	aptoCore::Renderable renderable;
 	apto::Transform transform;
 };
@@ -42,14 +41,14 @@ class Test
 public:
 	Test()
 	{
-		renderable.MeshFilePath = "..\\Resource\\SpaceShip.fbx";
+		renderable.MeshFilePath = "..\\Resource\\eyeball\\eyeball.fbx";
+		renderable.objectName = "eyeball";
 		renderable.objectTransform = &transform;
 	}
 
 	aptoCore::Renderable renderable;
 	apto::Transform transform;
 };
-
 
 class GameProcess
 {
