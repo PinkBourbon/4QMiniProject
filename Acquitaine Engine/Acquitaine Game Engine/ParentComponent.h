@@ -10,6 +10,7 @@ namespace act
 	{
 	public:
 		ParentComponent();
+		ParentComponent(std::string componentname, act::ParentObject* pObject);
 		virtual ~ParentComponent();
 
 		//private:

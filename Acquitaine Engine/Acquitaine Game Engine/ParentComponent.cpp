@@ -10,6 +10,12 @@ namespace act
 
 	}
 
+	ParentComponent::ParentComponent(std::string componentname, act::ParentObject* pObject)
+		: _gameObject(pObject), _isEnabled(true), _componentName(componentname)
+	{
+
+	}
+
 	ParentComponent::~ParentComponent()
 	{
 
