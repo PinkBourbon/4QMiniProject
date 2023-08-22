@@ -32,6 +32,9 @@ public:
 	void SetOrthographic();
 	void SetPerspective();
 
+	/// 카메라를 내보내는 방법
+	apto::Camera* GetCamera();
+
 private:
 	apto::Camera* _camera;
 };
