@@ -1,6 +1,7 @@
 #pragma once
 #include "ParentComponent.h"
 import apto.graphics.Camera;
+import apto.math;
 
 class CameraComponent : public act::ParentComponent
 {
