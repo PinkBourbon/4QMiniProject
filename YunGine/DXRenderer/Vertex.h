@@ -114,3 +114,15 @@ struct Texture
 	std::string strPath;
 
 };
+
+struct MeshData
+{
+	std::vector<Vertex> Vertex;
+	std::vector<unsigned int> Index;
+};
+
+struct FBXData
+{
+	MeshData* meshData;
+	// AnimationData;
+};

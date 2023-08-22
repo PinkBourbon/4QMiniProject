@@ -51,7 +51,7 @@ void FbxLoaderV4::Load(std::string MeshFilePath)
 
 	// 임포터 생성
 	_importer = fbxsdk::FbxImporter::Create(_manager, "");
-	bool ret = _importer->Initialize(MeshFilePath.c_str()); // 임포터 초기화
+	bool ret = _importer->Initialize(MeshFilePath.c_str(),-1,ios); // 임포터 초기화
 
 	// 씬 가져오기, importer 초기화 되면 파일에서 씬을 가져오기 위해 씬 컨테이너 생성
 	_scene = FbxScene::Create(_manager, "scene");
@@ -87,6 +87,7 @@ void FbxLoaderV4::SceneSetting()
 void FbxLoaderV4::LoadNodeRecursive(FbxNode* node)
 {
 	FbxNodeAttribute* nodeAttribute = node->GetNodeAttribute();		/// null
+	
 	if (nodeAttribute)
 	{
 		if (nodeAttribute->GetAttributeType() == FbxNodeAttribute::eMesh)
@@ -142,14 +143,12 @@ void FbxLoaderV4::LoadMesh(FbxMesh* meshl)
 		_Indecies.push_back(i * 3 + 2);
 	}
 
-	std::cout << vertexCount << std::endl;
-
 	delete[] _positions;
 	_positions = nullptr;
 
 }
 
-MyVertex FbxLoaderV4::ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCounter)
+MyVertex FbxLoaderV4::ReadNormal(const fbxsdk::FbxMesh* mesh, int controlPointIndex, int vertexCount)
 {
 	if (mesh->GetElementNormalCount() < 1)
 	{
@@ -190,15 +189,15 @@ MyVertex FbxLoaderV4::ReadNormal(const FbxMesh* mesh, int controlPointIndex, int
 			{
 				case FbxGeometryElement::eDirect:
 				{
-					result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCounter).mData[0]);
-					result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCounter).mData[1]);
-					result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCounter).mData[2]);
+					result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCount).mData[0]);
+					result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCount).mData[1]);
+					result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(vertexCount).mData[2]);
 				}
 				break;
 
 				case FbxGeometryElement::eIndexToDirect:
 				{
-					int index = vertexNormal->GetIndexArray().GetAt(vertexCounter); // 인덱스를 얻어온다.
+					int index = vertexNormal->GetIndexArray().GetAt(vertexCount); // 인덱스를 얻어온다.
 					result.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[0]);
 					result.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[1]);
 					result.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[2]);

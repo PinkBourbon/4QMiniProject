@@ -12,6 +12,9 @@
 
 #include "Vertex.h"
 
+import aptoCore.Renderable;
+import apto.Transform;
+
 class RenderableBase
 {
 public:
@@ -50,6 +53,9 @@ protected:
 	ID3D10Blob* _compilationMsgs = 0;
 
 	MyVertex _position;
+
+	aptoCore::Renderable* renderable;
+	apto::Transform* transform;
 
 	// D3D쪽에서 쓰는 버퍼가있으므로 굳이필요하지않음
 	//std::vector<Vertex> _vertexVector;

@@ -51,6 +51,9 @@
     <Filter Include="Source File\Object\Model">
       <UniqueIdentifier>{0925dbf3-96a4-4553-acf9-41d183515552}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source File\Util\InputSystem">
+      <UniqueIdentifier>{15166902-28c2-40a6-948b-86bcb1981d54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX11Render.h">
@@ -101,6 +104,7 @@
     <ClInclude Include="Model.h">
       <Filter>Source File\Object\Model</Filter>
     </ClInclude>
+    <ClInclude Include="InputSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11Render.cpp">
@@ -132,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="RenderableBase.cpp">
       <Filter>Source File\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Source File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

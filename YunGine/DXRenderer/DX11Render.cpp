@@ -568,9 +568,9 @@ HRESULT DX11Render::CreateShip()
 
 void DX11Render::LoadFbx(aptoCore::Renderable& object)
 {
-	std::string filepath = object.MeshFilePath;
 	FbxLoaderV4* loader = new FbxLoaderV4;
-	loader->Load(filepath);
+	loader->Load(object.MeshFilePath);
+
 	delete loader;
 }
 
