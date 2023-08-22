@@ -8,6 +8,10 @@ class RenderComponent : public act::ParentComponent
 {
 public:
 	RenderComponent(std::string componentname, act::ParentObject* pObject);
+	RenderComponent(std::string componentname, act::ParentObject* pObject
+		, aptoCore::Renderable::DrawType drawType, aptoCore::Renderable::MeshType meshType
+		, std::string MeshFilePath, std::string TextureFilePath, std::string NormalMapFilePath
+		, std::string vertexShaderFilePath, std::string pixelShaderFilePath);
 	virtual ~RenderComponent();
 
 	virtual void Awake() override;
