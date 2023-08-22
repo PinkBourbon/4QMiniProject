@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TestComponent 1.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="TestComponent 1.h" />

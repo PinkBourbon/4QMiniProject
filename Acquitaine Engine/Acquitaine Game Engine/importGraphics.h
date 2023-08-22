@@ -2,7 +2,7 @@
 #define YUNJINDLLEXPORT
 
 #ifdef YUNJINDLLEXPORT
-#pragma comment (lib, "DXRenderer.lib")
+#pragma comment (lib, "../x64/Debug/DXRenderer.lib")
 #include "../../YunGine/DXRenderer/IDX11Render.h"
 #else
 import aptoCore.Graphics;

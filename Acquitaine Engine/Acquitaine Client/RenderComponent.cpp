@@ -1,12 +1,11 @@
 #include "RenderComponent.h"
-#include "importGraphics.h"
 
 RenderComponent::RenderComponent(std::string componentname, act::ParentObject* pObject)
 {
-	renderObject = new Renderable();
+	renderObject = new aptoCore::Renderable();
 
-	renderObject->drawType = Renderable::DrawType::Solid;
-	renderObject->meshType = Renderable::MeshType::StaticMesh;
+	renderObject->drawType = aptoCore::Renderable::DrawType::Solid;
+	renderObject->meshType = aptoCore::Renderable::MeshType::StaticMesh;
 	renderObject->MeshFilePath = "";
 	renderObject->TextureFilePath = "";
 	renderObject->NormalMapFilePath = "";

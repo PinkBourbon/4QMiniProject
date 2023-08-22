@@ -52,10 +52,6 @@ namespace act
 	{
 	}
 
-	void ParentComponent::Render()
-	{
-	}
-
 	void ParentComponent::Phsics()
 	{
 	}

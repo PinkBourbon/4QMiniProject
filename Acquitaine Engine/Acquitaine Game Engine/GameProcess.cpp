@@ -154,10 +154,6 @@ namespace act
 
 	void GameProcess::Render()
 	{
-		for (auto pObject : _objectList)
-		{
-			pObject.first->Render();
-		}
 		::Render(_deltatime);
 	}
 

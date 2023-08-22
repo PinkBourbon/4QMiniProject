@@ -25,7 +25,12 @@
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="RenderComponent.cpp" />
+    <ClCompile Include="RenderComponent.cpp">
+      <Filter>Component\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>Component\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -52,7 +57,12 @@
     <ClInclude Include="TransformComponent.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="RenderComponent.h" />
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Component\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Component\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Test">
@@ -78,6 +88,9 @@
     </Filter>
     <Filter Include="Component\Render">
       <UniqueIdentifier>{508ccf38-edd0-4d5c-b9a1-463281dcd618}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Camera">
+      <UniqueIdentifier>{6b1737fd-6419-4413-a04c-dfcf4b00abf5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -114,17 +114,6 @@ namespace act
 		}
 	}
 
-	void ParentObject::Render()
-	{
-		for (auto pComponent : _componentList)
-		{
-			if (isEnabled)
-			{
-				pComponent->Render();
-			}
-		}
-	}
-
 	void ParentObject::SetActive(bool state)
 	{
 		_includedScene->ChangeObjectState(this, state);
