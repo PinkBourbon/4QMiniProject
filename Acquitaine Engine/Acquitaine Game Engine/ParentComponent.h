@@ -17,19 +17,19 @@ namespace act
 		virtual void Initialize();
 		virtual void Finalize();
 		virtual void InputEvent();
-		virtual void Phsics();
 		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 
 		virtual void Awake();
 		virtual void Enable();
 		virtual void Start();
-		virtual void FixedUpdate();
+		virtual void RateUpdate();
 		virtual void Update();
 
 		virtual void Disable();
 		virtual void Release();
 
 		virtual void SetGameObject(ParentObject* parentObject);
+		virtual ParentObject& GetGameObject();
 
 	protected:
 		std::string _componentName;		// 컴포넌트의 이름

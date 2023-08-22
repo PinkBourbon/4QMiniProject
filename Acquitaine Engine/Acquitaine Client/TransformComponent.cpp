@@ -25,7 +25,7 @@ void TransformComponent::Start()
 {
 }
 
-void TransformComponent::FixedUpdate()
+void TransformComponent::RateUpdate()
 {
 }
 

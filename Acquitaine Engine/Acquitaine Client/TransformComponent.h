@@ -13,7 +13,7 @@ public:
 	virtual void Enable() override;
 	virtual void Start() override;
 
-	virtual void FixedUpdate() override;
+	virtual void RateUpdate() override;
 	virtual void Update() override;
 
 	virtual void Disable() override;

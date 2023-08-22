@@ -31,7 +31,7 @@ void RenderComponent::Start()
 {
 }
 
-void RenderComponent::FixedUpdate()
+void RenderComponent::RateUpdate()
 {
 }
 

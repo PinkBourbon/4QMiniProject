@@ -21,7 +21,7 @@ namespace act
 		AWAKE,
 		ENABLE,
 		START,
-		FIXEDUPDATE,
+		RATEUPDATE,
 		UPDATE,
 		DISABLE,
 		RELEASE
@@ -71,8 +71,8 @@ namespace act
 		void Start();			// 두번째로 실행되는 함수 - 최초 단 한번만 실행되는 내용이 들어가는 부분.
 		// 컨텐츠 스크립트상의 변수는 여기서 초기화 되어도 상관은 없는데, 실제 오브젝트 초기화는 여기서 하지 말것.
 		void InputEvent();		// 키, 마우스 등을 인풋 받는 위치
-		float FixedUpdate();	// fixedupdatetime을 기반으로 물리연산을 위해 반복 실행되는 업데이트 함수
 		void Update();			// 프레임을 기준으로 메 프레임마다 반복 실행되는 업데이트 함수
+		void RateUpdate();		// 위와 동일하지만 update보다 늦게 실행되는 update
 
 		void Render();			// 그래픽스가 실제로 랜더링 되는 부분
 
@@ -94,7 +94,6 @@ namespace act
 	private:
 
 		float _deltatime;		// 프레임당 시간
-		float _fixedupdatetime;	// fixedUpdate를 위한 고정 실행주기
 
 
 		std::unordered_map<ParentObject*, eObjectState > _objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
@@ -104,7 +103,7 @@ namespace act
 		std::vector<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
 		std::vector<ParentObject*> _startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
 		std::vector<ParentObject*> _updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
-		std::vector<ParentObject*> _fixedUpdateObjectList;	// FixedUpdate State의 오브젝트를 가지고 있는 리스트
+		std::vector<ParentObject*> _RateUpdateObjectList;	// RateUpdate State의 오브젝트를 가지고 있는 리스트
 		std::vector<ParentObject*> _disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
 		std::vector<ParentObject*> _releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
 

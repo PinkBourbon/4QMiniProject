@@ -57,14 +57,13 @@ namespace act
 		virtual void Finalize();
 
 		virtual void InputEvent();
-		virtual void Phsics();
 
 	public:
 		virtual void Awake();
 		virtual void Enable();
 		virtual void Start();
 
-		virtual void FixedUpdate();
+		virtual void RateUpdate();
 		virtual void Update();
 
 

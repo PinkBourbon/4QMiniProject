@@ -90,19 +90,11 @@ namespace act
 	{
 	}
 
-	void ParentObject::FixedUpdate()
+	void ParentObject::RateUpdate()
 	{
 		for (auto pComponent : _componentList)
 		{
-			pComponent->FixedUpdate();
-		}
-	}
-
-	void ParentObject::Phsics()
-	{
-		for (auto pComponent : _componentList)
-		{
-			pComponent->Phsics();
+			pComponent->RateUpdate();
 		}
 	}
 

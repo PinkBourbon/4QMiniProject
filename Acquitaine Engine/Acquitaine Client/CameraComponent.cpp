@@ -25,7 +25,7 @@ void CameraComponent::Start()
 {
 }
 
-void CameraComponent::FixedUpdate()
+void CameraComponent::RateUpdate()
 {
 }
 

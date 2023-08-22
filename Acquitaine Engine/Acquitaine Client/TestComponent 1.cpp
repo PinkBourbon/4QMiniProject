@@ -31,7 +31,7 @@ void TestComponent1::Start()
 	tempcomp->SetPosition(12.0f, 8.0f, 10.0f);
 }
 
-void TestComponent1::FixedUpdate()
+void TestComponent1::RateUpdate()
 {
 }
 

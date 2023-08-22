@@ -8,7 +8,7 @@ namespace act
 {
 
 	GameProcess::GameProcess()
-		:_deltatime(0), _fixedupdatetime(0)
+		:_deltatime(0)
 	{
 	}
 
@@ -34,8 +34,6 @@ namespace act
 	{
 		std::cout << std::endl << "Engine is working" << std::endl << std::endl;
 
-		float fixedupdateTimeRate = 0;
-
 		/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		ObjectStateChange();
 
@@ -47,8 +45,8 @@ namespace act
 
 		// 인풋 입력, 물리연산, 업데이트
 		InputEvent(); /// 얘는 스크립팅 할때 보이지 않게 할것.
-		while (fixedupdateTimeRate > FixedUpdate());	//물리연산이 들어간 부분. 실행시간이 fixedupdatetime보다 작다면 픽스드 업데이트를 반복 실행한다.
 		Update();
+		RateUpdate();
 
 		Render();	/// 얘는 스크립팅 할때 보이지 않게 할것.
 
@@ -132,16 +130,12 @@ namespace act
 		}
 	}
 
-	float GameProcess::FixedUpdate()
-	{
-		///물리연산이 실행되는 부분이고, 실행 시간을 초단위로 반환하도록 구성
-		for (auto pObject : _fixedUpdateObjectList)
+	void GameProcess::RateUpdate()
+{
+		for (auto pObject : _RateUpdateObjectList)
 		{
-			pObject->FixedUpdate();
-			pObject->Phsics();
+			pObject->RateUpdate();
 		}
-
-		return 0.0;
 	}
 
 	void GameProcess::Update()
@@ -204,6 +198,11 @@ namespace act
 					_updateObjectList.push_back(buff.second);
 					_objectList.find(buff.second)->second = eObjectState::UPDATE;
 				}break;
+				case eObjectState::RATEUPDATE:
+				{
+					_RateUpdateObjectList.push_back(buff.second);
+					_objectList.find(buff.second)->second = eObjectState::UPDATE;
+				}break;
 				case eObjectState::DISABLE:
 				{
 					_disableObjectList.push_back(buff.second);
@@ -260,6 +259,10 @@ namespace act
 			case eObjectState::START:
 			{
 				_startObjectList.erase(tempfunc(_startObjectList, pObject));
+			}break;
+			case eObjectState::RATEUPDATE:
+			{
+				_RateUpdateObjectList.erase(tempfunc(_RateUpdateObjectList, pObject));
 			}break;
 			case eObjectState::UPDATE:
 			{
