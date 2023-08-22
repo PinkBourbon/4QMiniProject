@@ -60,7 +60,7 @@ long DX11Render::Initialize()
 {
 	HRESULT hr = S_OK;
 
-	hr = CreateHandleWindow(2520,1080);
+	hr = CreateHandleWindow(2520, 1080);
 	if (FAILED(hr))
 	{
 		return false;
@@ -129,7 +129,13 @@ void DX11Render::Update(float deltaTime)
 
 	_pAxis->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
 	_pGrid->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+
+	/// Vector내의 큐브 요소 사용
 	//_pCube->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	for (auto& cube : _cubeVector)
+	{
+		cube->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	}
 
 }
 
@@ -147,7 +153,7 @@ void DX11Render::Render()
 
 void DX11Render::BeginRender(float red, float green, float blue, float alpha)
 {
-	float color[4] = {0.0f,};
+	float color[4] = { 0.0f, };
 
 	// Setup the color to clear the buffer to.
 	color[0] = red;	// r
@@ -179,10 +185,16 @@ void DX11Render::DrawObject()
 
 	_pAxis->Render();
 	_pGrid->Render();
+
+	/// Vector내의 큐브 요소 사용
 	//_pCube->Render();
+	for (auto& cube : _cubeVector)
+	{
+		cube->Render();
+	}
 
 	// fbx에있는 버텍스를받아서 그려야함
-	 // _pSpaceShip->Render();
+	// _pSpaceShip->Render();
 
 	// 레스터라이저 상태 설정 
 	_p3DDeviceContext->RSSetState(0);
@@ -204,7 +216,6 @@ void DX11Render::Finalize()
 {
 
 }
-
 
 HRESULT DX11Render::CreateHandleWindow(int windowWidth, int windowHeight)
 {
@@ -517,7 +528,7 @@ void DX11Render::RegisterObject(aptoCore::Renderable& object)
 	if (object.MeshFilePath == "Cube")
 	{
 		// 중복되는 것 확인안하고 넣기
-		_cubeVector.push_back(new Cube(_p3DDevice, _p3DDeviceContext, _pSolidRasterState, object.objectName));
+		_cubeVector.push_back(new Cube(_p3DDevice, _p3DDeviceContext, _pSolidRasterState, object.objectName, object.objectTransform));
 	}
 	else
 	{
@@ -527,12 +538,19 @@ void DX11Render::RegisterObject(aptoCore::Renderable& object)
 		DataConversion();
 		// 3. DX11 객체 관리
 	}
-
 }
 
 void DX11Render::DeregisterObject(aptoCore::Renderable& object)
 {
-
+	for (auto& cube : _cubeVector)
+	{
+		if (cube->name == object.objectName)
+		{
+			cube = _cubeVector[_cubeVector.size() - 1];
+			_cubeVector.pop_back();
+			break;
+		}
+	}
 }
 
 HRESULT DX11Render::CreateShip()
@@ -548,7 +566,6 @@ HRESULT DX11Render::CreateShip()
 	return S_OK;
 }
 
-
 void DX11Render::LoadFbx(aptoCore::Renderable& object)
 {
 	std::string filepath = object.MeshFilePath;
@@ -556,7 +573,6 @@ void DX11Render::LoadFbx(aptoCore::Renderable& object)
 	loader->Load(filepath);
 	delete loader;
 }
-
 
 void DX11Render::DataConversion()
 {

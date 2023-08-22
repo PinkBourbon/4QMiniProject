@@ -3,12 +3,15 @@
 #include "Cube.h"
 #include "TextureLoader.h"
 
+
+
 Cube::Cube(
 	Microsoft::WRL::ComPtr<ID3D11Device>& pDevice, 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>& pDeviceContext, 
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState>& pRasterState,
-	std::string& name
-	) : name(name)
+	std::string& name,
+	apto::Transform* transform
+	) : name(name), transform(transform)
 {
 	pDevice.CopyTo(_3DDevice.GetAddressOf());
 	pDeviceContext.CopyTo(_3DDeviceContext.GetAddressOf());
@@ -48,16 +51,10 @@ void Cube::Render()
 	// &_cubVertexBuffer와 AddressOf차이가 뭐일까-> &는 초기화를 해버린다.
 	_3DDeviceContext->IASetIndexBuffer(_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-	///[TW] 텍스쳐 임시 확인용 회전.
-	// DirectX::XMMATRIX tw_local = DirectX::XMMatrixRotationX(remainderf(tw_rot1, 360.0f));
-	// _World = DirectX::XMMatrixMultiply(tw_local, _World);
-	// 
-	// tw_local = DirectX::XMMatrixRotationY(remainderf(tw_rot2, 360.0f));
-	// _World = DirectX::XMMatrixMultiply(tw_local, _World);
-
-
 	///WVP TM등을 셋팅
+	_world = this->transform->GetMatrix4f();
 	DirectX::XMMATRIX worldViewProj = _world * _view * _proj;
+
 	_textureboxMatrixVariable->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
 	_gworldMatrixVariable->SetMatrix(reinterpret_cast<float*>(&_world));
 

@@ -142,6 +142,8 @@ void FbxLoaderV4::LoadMesh(FbxMesh* meshl)
 		_Indecies.push_back(i * 3 + 2);
 	}
 
+	std::cout << vertexCount << std::endl;
+
 	delete[] _positions;
 	_positions = nullptr;
 
