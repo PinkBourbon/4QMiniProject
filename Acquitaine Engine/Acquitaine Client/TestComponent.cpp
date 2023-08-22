@@ -29,11 +29,6 @@ void TestComponent::InputEvent()
 
 }
 
-void TestComponent::Phsics()
-{
-
-}
-
 void TestComponent::Awake()
 {
 }
@@ -50,7 +45,7 @@ void TestComponent::Start()
 	_gameObject->AddObject<TestObject_Find>("createTestObject");
 }
 
-void TestComponent::FixedUpdate()
+void TestComponent::RateUpdate()
 {
 }
 

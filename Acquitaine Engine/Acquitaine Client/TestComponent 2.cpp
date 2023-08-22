@@ -25,10 +25,6 @@ void TestComponent2::InputEvent()
 {
 }
 
-void TestComponent2::Phsics()
-{
-}
-
 void TestComponent2::Awake()
 {
 }
@@ -42,7 +38,7 @@ void TestComponent2::Start()
 	std::cout << _gameObject->objectName << " : component2 Start is sucessed." << std::endl;
 }
 
-void TestComponent2::FixedUpdate()
+void TestComponent2::RateUpdate()
 {
 }
 

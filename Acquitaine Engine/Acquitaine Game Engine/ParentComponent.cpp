@@ -20,6 +20,11 @@ namespace act
 		_gameObject = parentObject;
 	}
 
+	act::ParentObject& ParentComponent::GetGameObject()
+{
+		return *_gameObject;
+	}
+
 	void ParentComponent::Initialize()
 	{
 	}
@@ -44,15 +49,11 @@ namespace act
 	{
 	}
 
-	void ParentComponent::FixedUpdate()
+	void ParentComponent::RateUpdate()
 	{
 	}
 
 	void ParentComponent::Update()
-	{
-	}
-
-	void ParentComponent::Phsics()
 	{
 	}
 

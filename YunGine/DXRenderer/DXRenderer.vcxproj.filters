@@ -104,7 +104,9 @@
     <ClInclude Include="Model.h">
       <Filter>Source File\Object\Model</Filter>
     </ClInclude>
-    <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="InputSystem.h">
+      <Filter>Source File\Util\InputSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DX11Render.cpp">
@@ -138,7 +140,7 @@
       <Filter>Source File\Object</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem.cpp">
-      <Filter>Source File</Filter>
+      <Filter>Source File\Util\InputSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
