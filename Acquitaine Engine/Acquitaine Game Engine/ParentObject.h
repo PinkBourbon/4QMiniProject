@@ -45,6 +45,35 @@ namespace act
 			return nullptr;
 		}
 
+		template<typename T>
+		T* GetComponentPointer(std::string componentName)
+		{
+			for (auto pComponent : _componentList)
+			{
+				if (pComponent->_componentName == componentName)
+				{
+					return pComponent;
+				}
+			}
+			return nullptr;
+		}
+
+		template<typename T>
+		std::vector<T*>* GetComponentPointers()
+		{
+			std::vector<T*> temp;
+
+			for (auto pComponent : _componentList)
+			{
+				T* childComponent = dynamic_cast<T*>(pComponent);
+				if (childComponent != nullptr)
+				{
+					temp.push_back(childComponent);
+				}
+			}
+			return &temp;
+		}
+
 		std::vector<ParentComponent*>& GetComponentlist();
 		void RemoveComponent();
 		void SetActive(bool state);
