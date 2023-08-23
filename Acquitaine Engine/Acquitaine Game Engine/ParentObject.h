@@ -113,5 +113,4 @@ namespace act
 		ParentScene* _includedScene;
 		int _includedSceneID;
 	};
-
 }
