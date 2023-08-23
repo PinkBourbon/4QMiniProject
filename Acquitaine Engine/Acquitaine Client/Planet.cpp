@@ -1,7 +1,24 @@
 #include "Planet.h"
+#include "TransformComponent.h"
+#include "RenderComponent.h"
 
-Planet::Planet(const std::string& name) :
+Planet::Planet(std::string name, act::ParentScene* parentScene) :
 	_radius(1.0f)
 {
 	this->objectName = name;
+	this->_includedScene = parentScene;
+
+	AddComponent<TransformComponent>("Transform", this);
+
+	AddComponent<RenderComponent>("spaceShip", this);
+
+	RenderComponent* renderComponent = GetComponentPointer<RenderComponent>();
+	renderComponent->SetRenderable(
+		aptoCore::Renderable::DrawType::Solid,
+		aptoCore::Renderable::MeshType::StaticMesh,
+		"Cube",
+		"",
+		"",
+		"",
+		"");
 }

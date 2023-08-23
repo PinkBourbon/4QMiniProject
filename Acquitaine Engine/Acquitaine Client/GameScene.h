@@ -4,5 +4,7 @@
 
 class GameScene : public act::ParentScene
 {
+public:
 	GameScene();
+
 };

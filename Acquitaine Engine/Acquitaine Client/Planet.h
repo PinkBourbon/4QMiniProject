@@ -7,7 +7,7 @@ import apto.math;
 class Planet : public act::ParentObject
 {
 public:
-	Planet(const std::string& name);
+	Planet(std::string name, act::ParentScene* parentScene);
 
 private:
 	float _radius;
