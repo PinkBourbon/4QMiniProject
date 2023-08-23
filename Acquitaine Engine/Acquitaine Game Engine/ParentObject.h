@@ -62,7 +62,6 @@ namespace act
 		std::vector<T*>* GetComponentPointers()
 		{
 			std::vector<T*> temp;
-
 			for (auto pComponent : _componentList)
 			{
 				T* childComponent = dynamic_cast<T*>(pComponent);
