@@ -23,6 +23,7 @@ RenderComponent::~RenderComponent()
 
 void RenderComponent::Awake()
 {
+	RegisterObject(*_renderObject);
 }
 
 void RenderComponent::Enable()
@@ -36,6 +37,7 @@ void RenderComponent::Start()
 
 void RenderComponent::RateUpdate()
 {
+	RegisterObject(*_renderObject);
 }
 
 void RenderComponent::Update()
