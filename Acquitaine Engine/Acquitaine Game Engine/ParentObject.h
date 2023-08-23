@@ -24,15 +24,14 @@ namespace act
 			_includedScene->AddObject<T>(objectName);
 		}
 
-		template<typename T>
-		void AddComponent(std::string componentname, ParentObject* thispointer)
+		template<typename T> ParentComponent* AddComponent(std::string componentname, ParentObject* thispointer)
 		{
 			ParentComponent* temp = new T(componentname, thispointer);
 			_componentList.push_back(temp);
 		}
 
 		template<typename T>
-		T* GetComponentPointer()
+		ParentComponent* GetComponentPointer()
 		{
 			for (auto pComponent : _componentList)
 			{
@@ -46,11 +45,11 @@ namespace act
 		}
 
 		template<typename T>
-		T* GetComponentPointer(std::string componentName)
+		ParentComponent* GetComponentPointer(std::string componentName)
 		{
 			for (auto pComponent : _componentList)
 			{
-				if (pComponent->_componentName == componentName)
+				if (pComponent->GetComonentName() == componentName)
 				{
 					return pComponent;
 				}
@@ -59,18 +58,18 @@ namespace act
 		}
 
 		template<typename T>
-		std::vector<T*>* GetComponentPointers()
+		std::vector<ParentComponent*>* GetComponentPointers()
 		{
-			std::vector<T*> temp;
+			std::vector<ParentComponent*>* temp = new std::vector<ParentComponent*>;
 			for (auto pComponent : _componentList)
 			{
 				T* childComponent = dynamic_cast<T*>(pComponent);
 				if (childComponent != nullptr)
 				{
-					temp.push_back(childComponent);
+					temp->push_back(childComponent);
 				}
 			}
-			return &temp;
+			return temp;
 		}
 
 		std::vector<ParentComponent*>& GetComponentlist();

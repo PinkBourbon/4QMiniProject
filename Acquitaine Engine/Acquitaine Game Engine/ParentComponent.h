@@ -31,6 +31,7 @@ namespace act
 
 		virtual void SetGameObject(ParentObject* parentObject);
 		virtual ParentObject& GetGameObject();
+		std::string GetComonentName();
 
 	protected:
 		std::string _componentName;		// 컴포넌트의 이름
