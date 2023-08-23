@@ -3,7 +3,6 @@
 #include <d3d11.h>
 #include "d3dx11effect.h"
 #include "FbxLoaderV4.h"
-#include <vector>
 
 #include <d3dcompiler.h>
 #include <d3dcommon.h>
@@ -20,6 +19,9 @@ class RenderableBase
 public:
 	void SetVertexBuffer(ID3D11Buffer* vertexBuffer);
 	void SetIndexBuffer(ID3D11Buffer* indexBuffer);
+
+	aptoCore::Renderable renderable;
+	apto::Transform* transform;
 
 	// 업데이트와 랜더는 필요
 protected:
@@ -53,12 +55,5 @@ protected:
 	ID3D10Blob* _compilationMsgs = 0;
 
 	MyVertex _position;
-
-	aptoCore::Renderable* renderable;
-	apto::Transform* transform;
-
-	// D3D쪽에서 쓰는 버퍼가있으므로 굳이필요하지않음
-	//std::vector<Vertex> _vertexVector;
-	//std::vector<UINT> _indecies;
 
 };

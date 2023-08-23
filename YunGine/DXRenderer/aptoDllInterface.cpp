@@ -18,25 +18,21 @@ void Finalize()
 	DeleteRenderer(g_renderer);
 }
 
-
 void Render(float deltaTime)
 {
 	g_renderer->Update(deltaTime);
 	g_renderer->Render();
 }
 
-
 bool Resize(unsigned __int32 screenWidth, unsigned __int32 screenHeight)
 {
 	return false;
 }
 
-
 YUNGINEDLL void RegisterObject(aptoCore::Renderable& object)
 {
 	g_renderer->RegisterObject(object);
 }
-
 
 YUNGINEDLL void DeregisterObject(aptoCore::Renderable& object)
 {

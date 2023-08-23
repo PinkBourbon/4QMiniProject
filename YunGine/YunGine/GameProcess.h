@@ -41,8 +41,10 @@ class Test
 public:
 	Test()
 	{
-		renderable.MeshFilePath = "..\\Resource\\eyeball\\eyeball.fbx";
-		renderable.objectName = "eyeball";
+		//renderable.MeshFilePath = "..\\Resource\\eyeball\\eyeball.fbx";
+		//renderable.objectName = "eyeball";
+		renderable.MeshFilePath = "..\\Resource\\box.fbx";
+		renderable.objectName = "box";
 		renderable.objectTransform = &transform;
 	}
 
@@ -76,7 +78,7 @@ private:
 
 public:
 	// 게임용 윈도 프레임웍을 초기화한다.
-	HRESULT MyInitialize(HINSTANCE hInstance);
+	HRESULT MyInitialize();
 
 	// 메인 게임 루프. 실제 게임이 진행되는 반복구문
 	void Loop();

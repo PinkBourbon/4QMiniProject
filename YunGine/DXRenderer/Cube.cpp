@@ -3,8 +3,6 @@
 #include "Cube.h"
 #include "TextureLoader.h"
 
-
-
 Cube::Cube(
 	Microsoft::WRL::ComPtr<ID3D11Device>& pDevice, 
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>& pDeviceContext, 
@@ -290,7 +288,11 @@ void Cube::GetTextureFile()
 	HRESULT hr = S_OK;
 
 	Microsoft::WRL::ComPtr<ID3D11Resource> texResource = nullptr;	// Release를 제대로 할 수 있을까?
-	DirectX::CreateDDSTextureFromFile(_3DDevice.Get(), L"..//Textures//WoodCrate01.dds", &texResource, &_diffuseMapSRV);
+	DirectX::CreateDDSTextureFromFile(
+		_3DDevice.Get(),
+		L"..//Textures//WoodCrate01.dds",
+		&texResource,
+		&_diffuseMapSRV);
 	// effect 라이브러리 를 추가해야함
 	// 라이브러리 추가후 내용을 읽어 오지 못해서 엔진있는 곳에 TextureLoader를 가져왔음
 

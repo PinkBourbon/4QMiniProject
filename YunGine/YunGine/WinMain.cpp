@@ -23,7 +23,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 // 내부에서 윈도 생성과 메시지 콜백을 처리한다.
 	// 또한 그래픽스 엔진 등을 포함한다.
 	GameProcess* pGameProcess = new GameProcess();
-	pGameProcess->MyInitialize(hInstance);
+	pGameProcess->MyInitialize();
 	pGameProcess->Loop();
 	pGameProcess->Finalize();
 

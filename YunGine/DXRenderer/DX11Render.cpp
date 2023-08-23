@@ -137,6 +137,11 @@ void DX11Render::Update(float deltaTime)
 		cube->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
 	}
 
+	for (auto& models : _modelVector)
+	{
+		models->ObjectUpdate(DirectX::XMMatrixIdentity(), _pCamera->View(), _pCamera->Proj());
+	}
+
 }
 
 void DX11Render::Render()
@@ -191,6 +196,11 @@ void DX11Render::DrawObject()
 	for (auto& cube : _cubeVector)
 	{
 		cube->Render();
+	}
+
+	for (auto& models : _modelVector)
+	{
+		models->Render();
 	}
 
 	// fbx에있는 버텍스를받아서 그려야함
@@ -468,12 +478,6 @@ HRESULT DX11Render::CreateObject()
 		return hr;
 	}
 
-	hr = CreateShip();
-	if (FAILED(hr))
-	{
-		return hr;
-	}
-
 	return hr;
 }
 
@@ -532,11 +536,37 @@ void DX11Render::RegisterObject(aptoCore::Renderable& object)
 	}
 	else
 	{
-		// 1. Renderable을 읽고 RawData로 변환 (fbx)
+		// 만들어
+		_loader = new FbxLoaderV4;
+		///어느 타이밍에 만들지?
 		LoadFbx(object);
-		// 2. RawData를 내가 쓸 수 있는 DX11 객체로 변환(Model)
-		DataConversion();
-		// 3. DX11 객체 관리
+
+		//_modelVector.push_back(new Model(
+		//	object,
+		//	object.objectTransform,
+		//	_p3DDevice,
+		//	_p3DDeviceContext,
+		//	_pSolidRasterState,
+		//	_loader->GetVertices(),
+		//	_loader->GetIndecis()));
+
+		_modelVector.push_back(new Model(
+			object,
+			object.objectTransform,
+			_p3DDevice,
+			_p3DDeviceContext,
+			_pSolidRasterState,
+			_loader->_Vertices,
+			_loader->_Indecies
+			));
+
+		object.handle = _modelVector.size();
+		// 없애
+		if (_loader)
+		{
+			delete _loader;
+		}
+
 	}
 }
 
@@ -551,31 +581,23 @@ void DX11Render::DeregisterObject(aptoCore::Renderable& object)
 			break;
 		}
 	}
-}
 
-HRESULT DX11Render::CreateShip()
-{
-	HRESULT hr = S_OK;
-
-	//Model* ship = new Model(L"..\\Resource\\spaceship.fbx");
-
-	//_pLoader->Load(L"..//Resource//spaceship.fbx");
-
-	//_Assimp->LoadFbx(L"..//Resource//spaceship.fbx");
-
-	return S_OK;
+	for (auto& models : _modelVector)
+	{
+		if (models->renderable.handle == object.handle)
+		{
+			models = _modelVector[_modelVector.size() - 1];
+			_modelVector.pop_back();
+		}
+	}
 }
 
 void DX11Render::LoadFbx(aptoCore::Renderable& object)
 {
-	FbxLoaderV4* loader = new FbxLoaderV4;
-	loader->Load(object.MeshFilePath);
-
-	delete loader;
-}
-
-void DX11Render::DataConversion()
-{
+	// vector의 size로 처박아
+	_loader->Load(object.MeshFilePath);
+	//models->_vertexVector = _loader->GetVertices();
+	//models->_indecies = _loader->GetIndecis();
 
 }
 

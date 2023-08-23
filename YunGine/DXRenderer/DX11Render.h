@@ -41,7 +41,6 @@ class Grid;
 class Camera;
 
 class FbxLoaderV4;
-class AssimpLoader;
 class Model;
 
 class DX11Render : public IDX11Render
@@ -94,9 +93,7 @@ private:
 	HRESULT CreateAxis();
 
 	// 테스트용
-	HRESULT CreateShip();
 	void LoadFbx(aptoCore::Renderable& object);
-	void DataConversion();
 
 	// 메시지 핸들러 (윈도 콜백)
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -150,16 +147,19 @@ private:
 	// 오브젝트
 	Axis* _pAxis;
 	Grid* _pGrid;
+	//Model* _model;
 	std::vector<Cube*> _cubeVector;
+	std::vector<Model*> _modelVector;
 	Camera* _pCamera;
 
 	// 테스트용 fbx 로더
-	FbxLoaderV4* _pLoader = nullptr; ///제작중
-	AssimpLoader* _Assimp = nullptr;
 
 	// 버퍼
 	ID3D11Buffer* VertexBuffer;
 	ID3D11Buffer* IndexBuffer;
 
+	// 로더
+	FbxLoaderV4* _loader = nullptr;
+	
 };
 
