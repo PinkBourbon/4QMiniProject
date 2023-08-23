@@ -5,7 +5,7 @@ GameProcess::~GameProcess()
 
 }
 
-HRESULT GameProcess::MyInitialize(HINSTANCE hInstance)
+HRESULT GameProcess::MyInitialize()
 {
 	
 	if (CreateGraphicEngine() == S_FALSE)
@@ -15,24 +15,22 @@ HRESULT GameProcess::MyInitialize(HINSTANCE hInstance)
 
 	// 오브젝트 등록
 	::RegisterObject(testCube.renderable);
-	::RegisterObject(testCube1.renderable);
-	::RegisterObject(testCube2.renderable);
-	::RegisterObject(testCube3.renderable);
-	::RegisterObject(testCube4.renderable);
+	//::RegisterObject(testCube1.renderable);
+	//::RegisterObject(testCube2.renderable);
+	//::RegisterObject(testCube3.renderable);
+	//::RegisterObject(testCube4.renderable);
 	
-	testCube1.transform.SetPosition(1.0f, 2.0f, 3.0f);
-	testCube2.transform.SetPosition(2.0f, 4.0f, 6.0f);
-	testCube3.transform.SetPosition(3.0f, 6.0f, 9.0f);
-	testCube4.transform.SetPosition(4.0f, 8.0f, 10.0f);
+	//testCube1.transform.SetPosition(1.0f, 2.0f, 3.0f);
+	//testCube2.transform.SetPosition(2.0f, 4.0f, 6.0f);
+	//testCube3.transform.SetPosition(3.0f, 6.0f, 9.0f);
+	//testCube4.transform.SetPosition(4.0f, 8.0f, 10.0f);
 
 	// 지우기
-	::DeregisterObject(testCube.renderable);
+	//::DeregisterObject(testCube.renderable);
 
 	// 테스팅
 	::RegisterObject(myTest.renderable);
 	myTest.transform.SetPosition(0.0f, 0.0f, 0.0f);
-
-
 
 	_timer = new GameTimer();
 	_timer->Reset();

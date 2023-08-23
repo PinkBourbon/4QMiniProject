@@ -51,7 +51,7 @@ private:
 
 public:
 	std::vector<Vertex> _Vertices;
-	std::vector<unsigned int>	_Indecies;
+	std::vector<unsigned int> _Indecies;
 
 	std::vector<Vertex>& GetVertices()
 	{

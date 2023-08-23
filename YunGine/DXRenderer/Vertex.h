@@ -91,11 +91,11 @@ struct Vertex
 	//apto::Vector2f uv;
 	//apto::Vector3f binormal;
 
-	MyVertex pos;
-	MyVertex normal;
-	MyTexture uv;
-	MyVertex binormal;
-	MyVertex tangent;
+	MyVertex pos;  // 0
+	MyVertex normal; // 12
+	MyTexture uv;	// 24
+	MyVertex binormal; // 32
+	MyVertex tangent; // 46
 
 	bool operator==(const Vertex& other) const
 	{

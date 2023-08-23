@@ -34,7 +34,6 @@ export namespace aptoCore
 		std::string vertexShaderFilePath;
 		std::string pixelShaderFilePath;
 
-	private:
 		__int64 handle;
 	};
 }
