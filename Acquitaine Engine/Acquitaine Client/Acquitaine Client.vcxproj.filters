@@ -31,6 +31,24 @@
     <ClCompile Include="CameraComponent.cpp">
       <Filter>Component\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Test\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceShip.cpp">
+      <Filter>Test\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Test\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Gravity.cpp">
+      <Filter>Test\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GravitySystem.cpp">
+      <Filter>Test\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Kinematic.cpp">
+      <Filter>Test\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -62,6 +80,27 @@
     </ClInclude>
     <ClInclude Include="CameraComponent.h">
       <Filter>Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Test\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceShip.h">
+      <Filter>Test\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Planet.h">
+      <Filter>Test\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Gravity.h">
+      <Filter>Test\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionSystem.h">
+      <Filter>Test\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GravitySystem.h">
+      <Filter>Test\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Kinematic.h">
+      <Filter>Test\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
