@@ -12,5 +12,5 @@ Kinematic::Kinematic(std::string name, act::ParentObject* pObject) :
 
 void Kinematic::Update()
 {
-	_gameObject->GetComponentPointer<TransformComponent>()->AddPosition(velocity.x, 0.0f, velocity.y);
+	static_cast<TransformComponent*>(_gameObject->GetComponentPointer<TransformComponent>())->AddPosition(velocity.x, 0.0f, velocity.y);
 }

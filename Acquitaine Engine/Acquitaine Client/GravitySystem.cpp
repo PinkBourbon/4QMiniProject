@@ -22,7 +22,7 @@ void GravitySystem::Update()
 		return;
 	}
 
-	apto::Vector3f shipPosition = (apto::Vector3f)ship->GetComponentPointer<TransformComponent>()->GetPosition();
+	apto::Vector3f shipPosition = (apto::Vector3f)static_cast<TransformComponent*>(ship->GetComponentPointer<TransformComponent>())->GetPosition();
 
 	for (auto& [name, gravity] : gravityMap)
 	{

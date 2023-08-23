@@ -27,6 +27,8 @@ void TestComponent1::Enable()
 void TestComponent1::Start()
 {
 	std::cout << _gameObject->objectName << " : component1 Start is sucessed." << std::endl;
+	TransformComponent* tempcomp = static_cast<TransformComponent*>(_gameObject->GetComponentPointer<TransformComponent>());
+	tempcomp->SetPosition(12.0f, 8.0f, 10.0f);
 }
 
 void TestComponent1::RateUpdate()
@@ -37,6 +39,9 @@ void TestComponent1::Update()
 {
 	std::cout << _gameObject->objectName << " : component1 Update is sucessed." << std::endl;
 	//_gameObject->AddComponent<TestComponent2>("test", _gameObject);
+	TransformComponent* tempcomp = static_cast<TransformComponent*>(_gameObject->GetComponentPointer<TransformComponent>());
+	tempcomp->SetPosition(tempcomp->GetPosition().x+1, 8.0f, 10.0f);
+	std::cout << tempcomp->GetPosition().x << " " << tempcomp->GetPosition().y << " " << tempcomp->GetPosition().z << " " << std::endl;
 }
 
 void TestComponent1::Disable()

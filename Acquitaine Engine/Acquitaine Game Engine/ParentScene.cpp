@@ -41,5 +41,4 @@ namespace act
 	{
 		_gameProcess->DeleteObject(pObject);
 	}
-
 }

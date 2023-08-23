@@ -15,7 +15,7 @@ SpaceShip::SpaceShip(std::string objectName, act::ParentScene* parentScene) :
 	AddComponent<TransformComponent>("Transform", this);
 	AddComponent<RenderComponent>("spaceShip", this);
 
-	RenderComponent* renderComponent = GetComponentPointer<RenderComponent>();
+	RenderComponent* renderComponent = static_cast<RenderComponent*>(GetComponentPointer<RenderComponent>());
 	renderComponent->SetRenderable(
 		aptoCore::Renderable::DrawType::Solid,
 		aptoCore::Renderable::MeshType::StaticMesh,

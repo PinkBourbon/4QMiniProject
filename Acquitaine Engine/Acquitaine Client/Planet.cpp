@@ -12,7 +12,8 @@ Planet::Planet(std::string name, act::ParentScene* parentScene) :
 
 	AddComponent<RenderComponent>("spaceShip", this);
 
-	RenderComponent* renderComponent = GetComponentPointer<RenderComponent>();
+	RenderComponent* renderComponent = static_cast<RenderComponent*>(GetComponentPointer<RenderComponent>());
+	
 	renderComponent->SetRenderable(
 		aptoCore::Renderable::DrawType::Solid,
 		aptoCore::Renderable::MeshType::StaticMesh,
