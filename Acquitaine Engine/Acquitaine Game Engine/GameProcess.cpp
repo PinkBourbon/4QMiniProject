@@ -132,7 +132,7 @@ namespace act
 
 	void GameProcess::RateUpdate()
 {
-		for (auto pObject : _RateUpdateObjectList)
+		for (auto pObject : _updateObjectList)
 		{
 			pObject->RateUpdate();
 		}
@@ -198,11 +198,6 @@ namespace act
 					_updateObjectList.push_back(buff.second);
 					_objectList.find(buff.second)->second = eObjectState::UPDATE;
 				}break;
-				case eObjectState::RATEUPDATE:
-				{
-					_RateUpdateObjectList.push_back(buff.second);
-					_objectList.find(buff.second)->second = eObjectState::UPDATE;
-				}break;
 				case eObjectState::DISABLE:
 				{
 					_disableObjectList.push_back(buff.second);
@@ -259,10 +254,6 @@ namespace act
 			case eObjectState::START:
 			{
 				_startObjectList.erase(tempfunc(_startObjectList, pObject));
-			}break;
-			case eObjectState::RATEUPDATE:
-			{
-				_RateUpdateObjectList.erase(tempfunc(_RateUpdateObjectList, pObject));
 			}break;
 			case eObjectState::UPDATE:
 			{
