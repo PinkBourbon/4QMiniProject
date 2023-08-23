@@ -30,14 +30,15 @@ void RenderComponent::Enable()
 {
 	RegisterObject(*_renderObject);
 }
-
+ 
 void RenderComponent::Start()
 {
+	RegisterObject(*_renderObject);
 }
 
 void RenderComponent::RateUpdate()
 {
-	RegisterObject(*_renderObject);
+
 }
 
 void RenderComponent::Update()
