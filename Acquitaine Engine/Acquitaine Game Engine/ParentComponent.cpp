@@ -31,6 +31,11 @@ namespace act
 		return *_gameObject;
 	}
 
+	std::string ParentComponent::GetComonentName()
+	{
+		return _componentName;
+	}
+
 	void ParentComponent::Initialize()
 	{
 	}
