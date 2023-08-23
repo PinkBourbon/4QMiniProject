@@ -28,6 +28,7 @@ namespace act
 		{
 			ParentComponent* temp = new T(componentname, thispointer);
 			_componentList.push_back(temp);
+			return temp;
 		}
 
 		template<typename T>
