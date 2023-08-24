@@ -1,4 +1,6 @@
 #include "RenderComponent.h"
+#include "TransformComponent.h"
+#include "ParentObject.h"
 
 RenderComponent::RenderComponent(std::string componentname, act::ParentObject* pObject)
 {
@@ -23,17 +25,20 @@ RenderComponent::~RenderComponent()
 
 void RenderComponent::Awake()
 {
-	//RegisterObject(*_renderObject);
+	_renderObject->objectTransform = static_cast<TransformComponent*>(_gameObject->GetComponentPointer<TransformComponent>())->GetTransform();
+	RegisterObject(*_renderObject);
 }
 
 void RenderComponent::Enable()
 {
-	//RegisterObject(*_renderObject);
+	_renderObject->objectTransform = static_cast<TransformComponent*>(_gameObject->GetComponentPointer<TransformComponent>())->GetTransform();
+	RegisterObject(*_renderObject);
 }
  
 void RenderComponent::Start()
 {
-	//RegisterObject(*_renderObject);
+	_renderObject->objectTransform = static_cast<TransformComponent*>(_gameObject->GetComponentPointer<TransformComponent>())->GetTransform();
+	RegisterObject(*_renderObject);
 }
 
 void RenderComponent::RateUpdate()
