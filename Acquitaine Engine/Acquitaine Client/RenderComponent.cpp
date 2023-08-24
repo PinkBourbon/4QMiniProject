@@ -23,21 +23,22 @@ RenderComponent::~RenderComponent()
 
 void RenderComponent::Awake()
 {
-	RegisterObject(*_renderObject);
+	//RegisterObject(*_renderObject);
 }
 
 void RenderComponent::Enable()
 {
-	RegisterObject(*_renderObject);
+	//RegisterObject(*_renderObject);
 }
-
+ 
 void RenderComponent::Start()
 {
+	//RegisterObject(*_renderObject);
 }
 
 void RenderComponent::RateUpdate()
 {
-	RegisterObject(*_renderObject);
+
 }
 
 void RenderComponent::Update()

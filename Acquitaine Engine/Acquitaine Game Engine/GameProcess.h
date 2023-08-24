@@ -21,7 +21,6 @@ namespace act
 		AWAKE,
 		ENABLE,
 		START,
-		RATEUPDATE,
 		UPDATE,
 		DISABLE,
 		RELEASE
@@ -103,7 +102,6 @@ namespace act
 		std::vector<ParentObject*> _enableObjectList;	// Enable State의 오브젝트를 가지고 있는 리스트
 		std::vector<ParentObject*> _startObjectList;	// Start State의 오브젝트를 가지고 있는 리스트
 		std::vector<ParentObject*> _updateObjectList;	// Update State의 오브젝트를 가지고 있는 리스트
-		std::vector<ParentObject*> _RateUpdateObjectList;	// RateUpdate State의 오브젝트를 가지고 있는 리스트
 		std::vector<ParentObject*> _disableObjectList; // Disable State의 오브젝트를 가지고 있는 리스트
 		std::vector<ParentObject*> _releaseObjectList; // Release State의 오브젝트를 가지고 있는 리스트
 
