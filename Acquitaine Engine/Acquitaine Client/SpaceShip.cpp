@@ -19,7 +19,7 @@ SpaceShip::SpaceShip(std::string objectName, act::ParentScene* parentScene) :
 	renderComponent->SetRenderable(
 		aptoCore::Renderable::DrawType::Solid,
 		aptoCore::Renderable::MeshType::StaticMesh,
-		"spaceship.fbx",
+		"Cube",
 		"",
 		"",
 		"",
