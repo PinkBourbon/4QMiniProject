@@ -31,6 +31,8 @@ namespace act
 
 		void DeleteObject(ParentObject* pObject);
 
+		float GetDeltaTime();
+
 	protected:
 		std::string _SceneName;
 		std::vector<IObject*>  _inControlObjects;

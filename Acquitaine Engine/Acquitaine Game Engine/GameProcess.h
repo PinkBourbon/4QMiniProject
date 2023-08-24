@@ -58,6 +58,8 @@ namespace act
 		// 그러나 사실 이곳에선 오브젝트를 삭제 하지 않는다.
 		// 이곳에선 순서적인 절차를 거친 후에 삭제된다.
 
+		float GetDeltaTime();
+
 	private:
 		/// 함수들의 실행 주기에 맞춰 함수들을 나열
 		/// 각 오브젝트들이 한 프레임에 한번의 상태를 가지도록 하는것이 원칙.
@@ -88,12 +90,12 @@ namespace act
 		// 바로 바꿔주는것은 안되므로 이 함수를 통해 풀에 넣어두고 나중에 바꾼다.
 		// 리소스 매니저가 추가된다면 리소스 매니저로 넣어주라는 명령함수만 가지고 있는 놈이 될지도
 
+		
+
 	public:
 		static GameProcess* s_gameEnginePointer;
 	private:
-
 		float _deltatime;		// 프레임당 시간
-
 
 		std::unordered_map<ParentObject*, eObjectState > _objectList; // 단순히 오브젝트를 담고 있을 리스트. 여기 들어 있는 오브젝트 들은 엔진이 관리 해주는것.
 		std::unordered_map< std::string, ParentObject* > _objectNameList; // 위쪽은 내부관리를 위해 쓰는 리스트이고, 이쪽은 외부에서 오브젝트를 검색할 수 있게 만든 맵

@@ -132,4 +132,9 @@ namespace act
 		Finalize();
 	}
 
+	float ParentObject::GetDeltaTime()
+	{
+		return _includedScene->GetDeltaTime();
+	}
+
 }
