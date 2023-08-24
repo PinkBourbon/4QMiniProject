@@ -41,4 +41,8 @@ namespace act
 	{
 		_gameProcess->DeleteObject(pObject);
 	}
+	float ParentScene::GetDeltaTime()
+	{
+		return _gameProcess->GetDeltaTime();
+	}
 }

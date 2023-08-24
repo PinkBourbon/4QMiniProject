@@ -34,6 +34,8 @@ namespace act
 	{
 		std::cout << std::endl << "Engine is working" << std::endl << std::endl;
 
+		_deltatime = deltaTime;
+
 		/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		ObjectStateChange();
 
@@ -57,7 +59,7 @@ namespace act
 		/// 스크립팅 할때 보이지 않는 부분ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		InitializeObjects();
 
-		Sleep(1000);
+		//Sleep(1000);
 	}
 
 	void GameProcess::AddScene(ParentScene* pscene)
@@ -221,6 +223,11 @@ namespace act
 	void GameProcess::DeleteObject(ParentObject* pObject)
 	{
 		PutStateChangeBuffer(eObjectState::RELEASE, pObject);
+	}
+
+	float GameProcess::GetDeltaTime()
+	{
+		return _deltatime;
 	}
 
 	void GameProcess::PutStateChangeBuffer(eObjectState newstate, ParentObject* pObject)

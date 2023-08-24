@@ -79,6 +79,8 @@ namespace act
 		ParentObject& FindObject(std::string objectname);
 		void Delete();
 
+		float GetDeltaTime();
+
 		//private:
 	public:
 		virtual void Initialize();
